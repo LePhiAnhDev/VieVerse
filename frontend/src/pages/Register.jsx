@@ -145,9 +145,9 @@ const Register = () => {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-50 via-white to-blue-50 p-4">
+        <div className="min-h-screen flex items-center justify-center modern-gradient p-4">
             {/* Background decoration */}
-            <div className="absolute inset-0 bg-dot-pattern opacity-5" />
+            <div className="absolute inset-0 grid-pattern opacity-20" />
 
             <div className="w-full max-w-2xl relative z-10">
                 {/* Logo */}
@@ -307,8 +307,8 @@ const Register = () => {
 
                             {/* Role-specific fields */}
                             {formData.role === USER_ROLES.STUDENT ? (
-                                <div className="space-y-4 p-4 bg-blue-50 rounded-xl border border-blue-200">
-                                    <h3 className="font-semibold text-blue-900 flex items-center">
+                                <div className="space-y-4 p-4 bg-purple-50 rounded-xl border border-purple-200">
+                                    <h3 className="font-semibold text-purple-900 flex items-center">
                                         <GraduationCap className="h-5 w-5 mr-2" />
                                         Thông tin học tập
                                     </h3>
@@ -363,8 +363,8 @@ const Register = () => {
                                     </div>
                                 </div>
                             ) : (
-                                <div className="space-y-4 p-4 bg-purple-50 rounded-xl border border-purple-200">
-                                    <h3 className="font-semibold text-purple-900 flex items-center">
+                                <div className="space-y-4 p-4 bg-indigo-50 rounded-xl border border-indigo-200">
+                                    <h3 className="font-semibold text-indigo-900 flex items-center">
                                         <Building className="h-5 w-5 mr-2" />
                                         Thông tin công ty
                                     </h3>
@@ -457,7 +457,7 @@ const Register = () => {
                                 Đã có tài khoản?{' '}
                                 <Link
                                     to="/login"
-                                    className="font-medium text-blue-600 hover:text-blue-700"
+                                    className="font-medium text-purple-600 hover:text-purple-700"
                                 >
                                     Đăng nhập ngay
                                 </Link>

@@ -10,38 +10,38 @@ export default {
                 sans: ['Inter', 'system-ui', 'sans-serif'],
             },
             colors: {
-                border: 'hsl(214 32% 91%)',
-                input: 'hsl(214 32% 91%)',
-                ring: 'hsl(221 83% 53%)',
-                background: 'hsl(0 0% 100%)',
-                foreground: 'hsl(222 84% 5%)',
+                border: 'hsl(var(--border))',
+                input: 'hsl(var(--border))',
+                ring: 'hsl(var(--ring))',
+                background: 'hsl(var(--background))',
+                foreground: 'hsl(var(--foreground))',
                 primary: {
-                    DEFAULT: 'hsl(221 83% 53%)',
-                    foreground: 'hsl(210 40% 98%)',
+                    DEFAULT: 'hsl(var(--primary))',
+                    foreground: 'hsl(var(--primary-foreground))',
                 },
                 secondary: {
-                    DEFAULT: 'hsl(210 40% 96%)',
-                    foreground: 'hsl(222 84% 5%)',
+                    DEFAULT: 'hsl(var(--secondary))',
+                    foreground: 'hsl(var(--secondary-foreground))',
+                },
+                accent: {
+                    DEFAULT: 'hsl(var(--accent))',
+                    foreground: 'hsl(var(--accent-foreground))',
                 },
                 destructive: {
                     DEFAULT: 'hsl(0 84% 60%)',
-                    foreground: 'hsl(210 40% 98%)',
+                    foreground: 'hsl(0 0% 100%)',
                 },
                 muted: {
                     DEFAULT: 'hsl(210 40% 96%)',
                     foreground: 'hsl(215 16% 47%)',
                 },
-                accent: {
-                    DEFAULT: 'hsl(210 40% 96%)',
-                    foreground: 'hsl(222 84% 5%)',
-                },
                 popover: {
                     DEFAULT: 'hsl(0 0% 100%)',
-                    foreground: 'hsl(222 84% 5%)',
+                    foreground: 'hsl(var(--foreground))',
                 },
                 card: {
                     DEFAULT: 'hsl(0 0% 100%)',
-                    foreground: 'hsl(222 84% 5%)',
+                    foreground: 'hsl(var(--foreground))',
                 },
             },
             borderRadius: {
@@ -55,6 +55,7 @@ export default {
                 'scale-in': 'scaleIn 0.3s ease-out',
                 'bounce-gentle': 'bounceGentle 2s infinite',
                 'float': 'float 3s ease-in-out infinite',
+                'gradient-shift': 'gradientShift 15s ease infinite',
             },
             keyframes: {
                 fadeIn: {
@@ -76,6 +77,11 @@ export default {
                 float: {
                     '0%, 100%': { transform: 'translateY(0px)' },
                     '50%': { transform: 'translateY(-20px)' },
+                },
+                gradientShift: {
+                    '0%': { backgroundPosition: '0% 50%' },
+                    '50%': { backgroundPosition: '100% 50%' },
+                    '100%': { backgroundPosition: '0% 50%' },
                 },
             },
             backdropBlur: {

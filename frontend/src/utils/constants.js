@@ -53,21 +53,21 @@ export const APPLICATION_STATUS_LABELS = {
 };
 
 export const STATUS_COLORS = {
-    [TASK_STATUS.OPEN]: 'bg-blue-50 text-blue-700 border-blue-200',
+    [TASK_STATUS.OPEN]: 'bg-purple-50 text-purple-700 border-purple-200',
     [TASK_STATUS.IN_PROGRESS]: 'bg-amber-50 text-amber-700 border-amber-200',
-    [TASK_STATUS.COMPLETED]: 'bg-emerald-50 text-emerald-700 border-emerald-200',
+    [TASK_STATUS.COMPLETED]: 'bg-teal-50 text-teal-700 border-teal-200',
     [TASK_STATUS.CANCELLED]: 'bg-red-50 text-red-700 border-red-200'
 };
 
 export const DIFFICULTY_COLORS = {
-    [TASK_DIFFICULTY.BEGINNER]: 'bg-green-50 text-green-700 border-green-200',
+    [TASK_DIFFICULTY.BEGINNER]: 'bg-teal-50 text-teal-700 border-teal-200',
     [TASK_DIFFICULTY.INTERMEDIATE]: 'bg-amber-50 text-amber-700 border-amber-200',
     [TASK_DIFFICULTY.ADVANCED]: 'bg-red-50 text-red-700 border-red-200'
 };
 
 export const APPLICATION_STATUS_COLORS = {
     [APPLICATION_STATUS.PENDING]: 'bg-amber-50 text-amber-700 border-amber-200',
-    [APPLICATION_STATUS.ACCEPTED]: 'bg-emerald-50 text-emerald-700 border-emerald-200',
+    [APPLICATION_STATUS.ACCEPTED]: 'bg-teal-50 text-teal-700 border-teal-200',
     [APPLICATION_STATUS.REJECTED]: 'bg-red-50 text-red-700 border-red-200'
 };
 
