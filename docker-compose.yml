@@ -1,0 +1,55 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: vieverse-postgres
+    environment:
+      POSTGRES_DB: vieverse
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./backend/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - vieverse-network
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: vieverse-pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@vieverse.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "5050:80"
+    depends_on:
+      - postgres
+    networks:
+      - vieverse-network
+  # Backend service (uncomment when ready)
+  # backend:
+  #   build: ./backend
+  #   container_name: vieverse-backend
+  #   ports:
+  #     - "5000:5000"
+  #   depends_on:
+  #     - postgres
+  #   environment:
+  #     - NODE_ENV=production
+  #     - DB_HOST=postgres
+  #     - DB_PORT=5432
+  #     - DB_NAME=vieverse
+  #     - DB_USER=postgres
+  #     - DB_PASSWORD=password
+  #   networks:
+  #     - vieverse-network
+
+volumes:
+  postgres_data:
+
+
+networks:
+  vieverse-network:
+    driver: bridge
