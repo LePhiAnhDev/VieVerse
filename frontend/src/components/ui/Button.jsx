@@ -32,7 +32,7 @@ const Button = React.forwardRef(({
     return (
         <button
             className={cn(
-                'inline-flex items-center justify-center rounded-lg font-medium transition-all duration-200',
+                'inline-flex items-center justify-center rounded-xl font-medium transition-all duration-200',
                 'focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2',
                 'disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:transform-none',
                 'active:scale-95',
