@@ -32,11 +32,11 @@ const StatsCard = ({
         <Card
             className={cn(
                 'overflow-hidden transition-all duration-300 hover:shadow-lg hover:-translate-y-1',
-                gradient && 'bg-gradient-to-br from-purple-50 to-indigo-50 border-purple-200',
+                gradient && 'bg-gradient-to-br from-green-50 to-emerald-50 border-green-200',
                 className
             )}
         >
-            <CardContent className="p-6">
+            <CardContent className="p-7"> {/* Increased padding from p-6 */}
                 <div className="flex items-center justify-between">
                     <div className="flex-1">
                         <p className="text-sm font-medium text-gray-600 mb-1">
@@ -74,10 +74,10 @@ const StatsCard = ({
                     </div>
                     {Icon && (
                         <div className={cn(
-                            'p-3 rounded-xl',
+                            'p-3.5 rounded-xl', /* Increased padding */
                             gradient
-                                ? 'bg-gradient-to-br from-purple-500 to-indigo-600 text-white'
-                                : 'bg-purple-100 text-purple-600'
+                                ? 'bg-gradient-to-br from-green-500 to-emerald-600 text-white'
+                                : 'bg-green-100 text-green-600'
                         )}>
                             <Icon className="h-6 w-6" />
                         </div>

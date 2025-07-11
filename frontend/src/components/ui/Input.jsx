@@ -20,9 +20,9 @@ const Input = React.forwardRef(({
             <input
                 type={type}
                 className={cn(
-                    'flex h-10 w-full rounded-xl border border-gray-300 bg-white px-3 py-2 text-sm',
+                    'flex h-11 w-full rounded-xl border border-gray-300 bg-white px-3 py-2 text-sm', // Increased height from h-10
                     'placeholder:text-gray-500',
-                    'focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500',
+                    'focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500',
                     'disabled:cursor-not-allowed disabled:opacity-50 disabled:bg-gray-50',
                     'transition-colors duration-200',
                     Icon && iconPosition === 'left' && 'pl-10',

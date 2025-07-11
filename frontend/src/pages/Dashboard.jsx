@@ -50,9 +50,9 @@ const Dashboard = () => {
     const stats = dashboardData?.dashboard?.stats || {};
 
     return (
-        <div className="space-y-8 animate-fade-in">
+        <div className="space-y-9 animate-fade-in"> {/* Increased space from space-y-8 */}
             {/* Welcome Header */}
-            <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-purple-600 via-indigo-600 to-indigo-700 p-8 text-white">
+            <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-green-600 via-emerald-600 to-emerald-700 p-9 text-white"> {/* Changed colors and increased padding */}
                 <div className="absolute inset-0 grid-pattern opacity-10" />
                 <div className="relative z-10">
                     <div className="flex flex-col md:flex-row items-start md:items-center justify-between">
@@ -60,7 +60,7 @@ const Dashboard = () => {
                             <h1 className="text-3xl font-bold">
                                 {getGreeting()}, {user?.name}! 👋
                             </h1>
-                            <p className="text-indigo-100 text-lg">
+                            <p className="text-emerald-100 text-lg">
                                 {user?.role === 'student'
                                     ? 'Sẵn sàng khám phá những cơ hội mới hôm nay?'
                                     : 'Hãy quản lý dự án và kết nối với những tài năng trẻ!'}
@@ -69,17 +69,17 @@ const Dashboard = () => {
 
                         <div className="mt-4 md:mt-0 flex items-center space-x-4">
                             {user?.role === 'student' && (
-                                <div className="flex items-center space-x-2 bg-white/20 backdrop-blur-sm rounded-xl px-4 py-2">
+                                <div className="flex items-center space-x-2 bg-white/20 backdrop-blur-sm rounded-xl px-5 py-2.5"> {/* Increased padding */}
                                     <Coins className="h-5 w-5 text-yellow-300" />
                                     <span className="font-semibold text-lg">{user?.tokens || 0}</span>
-                                    <span className="text-indigo-100">Token</span>
+                                    <span className="text-emerald-100">Token</span>
                                 </div>
                             )}
 
                             <img
-                                src={`https://ui-avatars.com/api/?name=${encodeURIComponent(user?.name || 'User')}&size=64&background=ffffff&color=7c3aed&format=svg`}
+                                src={`https://ui-avatars.com/api/?name=${encodeURIComponent(user?.name || 'User')}&size=64&background=ffffff&color=43A047&format=svg`}
                                 alt={user?.name}
-                                className="h-16 w-16 rounded-full border-4 border-white/20"
+                                className="h-18 w-18 rounded-full border-4 border-white/20" /* Increased size */
                             />
                         </div>
                     </div>
@@ -87,7 +87,7 @@ const Dashboard = () => {
             </div>
 
             {/* Stats Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-7"> {/* Increased gap */}
                 {user?.role === 'student' ? (
                     <>
                         <StatsCard
@@ -150,14 +150,14 @@ const Dashboard = () => {
             </div>
 
             {/* Main Content Grid */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-9"> {/* Increased gap */}
                 {/* Recent Activity */}
                 <div className="lg:col-span-2">
                     <Card className="h-full">
-                        <CardHeader className="pb-4">
+                        <CardHeader className="pb-5"> {/* Increased padding */}
                             <div className="flex items-center justify-between">
                                 <CardTitle className="flex items-center space-x-2">
-                                    <Clock className="h-5 w-5 text-purple-600" />
+                                    <Clock className="h-5 w-5 text-green-600" />
                                     <span>
                                         {user?.role === 'student' ? 'Ứng tuyển gần đây' : 'Nhiệm vụ gần đây'}
                                     </span>
@@ -172,13 +172,13 @@ const Dashboard = () => {
                         </CardHeader>
                         <CardContent>
                             {user?.role === 'student' ? (
-                                <div className="space-y-4">
+                                <div className="space-y-5"> {/* Increased space */}
                                     {dashboardData?.dashboard?.recent_applications?.length > 0 ? (
                                         dashboardData.dashboard.recent_applications.map((application) => (
-                                            <div key={application.id} className="group border border-gray-200 rounded-xl p-4 hover:border-purple-200 hover:shadow-md transition-all duration-200">
+                                            <div key={application.id} className="group border border-gray-200 rounded-xl p-5 hover:border-green-200 hover:shadow-md transition-all duration-200"> {/* Increased padding */}
                                                 <div className="flex items-start justify-between">
                                                     <div className="flex-1">
-                                                        <h3 className="font-semibold text-gray-900 group-hover:text-purple-600 transition-colors">
+                                                        <h3 className="font-semibold text-gray-900 group-hover:text-green-600 transition-colors">
                                                             {application.task.title}
                                                         </h3>
                                                         <p className="text-sm text-gray-600 mt-1">
@@ -215,17 +215,17 @@ const Dashboard = () => {
                                     )}
                                 </div>
                             ) : (
-                                <div className="space-y-4">
+                                <div className="space-y-5"> {/* Increased space */}
                                     {dashboardData?.dashboard?.recent_tasks?.length > 0 ? (
                                         dashboardData.dashboard.recent_tasks.map((task) => (
-                                            <div key={task.id} className="group border border-gray-200 rounded-xl p-4 hover:border-purple-200 hover:shadow-md transition-all duration-200">
+                                            <div key={task.id} className="group border border-gray-200 rounded-xl p-5 hover:border-green-200 hover:shadow-md transition-all duration-200"> {/* Increased padding */}
                                                 <div className="flex items-start justify-between">
                                                     <div className="flex-1">
-                                                        <h3 className="font-semibold text-gray-900 group-hover:text-purple-600 transition-colors">
+                                                        <h3 className="font-semibold text-gray-900 group-hover:text-green-600 transition-colors">
                                                             {task.title}
                                                         </h3>
                                                         <div className="flex items-center space-x-4 mt-3">
-                                                            <span className={`px-3 py-1 text-xs font-medium rounded-full ${task.status === 'open' ? 'bg-purple-50 text-purple-700 border border-purple-200' :
+                                                            <span className={`px-3 py-1 text-xs font-medium rounded-full ${task.status === 'open' ? 'bg-green-50 text-green-700 border border-green-200' :
                                                                 task.status === 'in_progress' ? 'bg-amber-50 text-amber-700 border border-amber-200' :
                                                                     'bg-teal-50 text-teal-700 border border-teal-200'
                                                                 }`}>
@@ -264,16 +264,16 @@ const Dashboard = () => {
                 </div>
 
                 {/* Quick Actions & Insights */}
-                <div className="space-y-6">
+                <div className="space-y-7"> {/* Increased space */}
                     {/* Quick Actions */}
                     <Card>
                         <CardHeader>
                             <CardTitle className="flex items-center space-x-2">
-                                <Star className="h-5 w-5 text-purple-600" />
+                                <Star className="h-5 w-5 text-green-600" />
                                 <span>Hành động nhanh</span>
                             </CardTitle>
                         </CardHeader>
-                        <CardContent className="space-y-3">
+                        <CardContent className="space-y-3.5"> {/* Increased space */}
                             {user?.role === 'student' ? (
                                 <>
                                     <Link to="/tasks" className="block">
@@ -338,19 +338,19 @@ const Dashboard = () => {
                         </CardHeader>
                         <CardContent>
                             {user?.role === 'student' ? (
-                                <div className="space-y-4">
-                                    <div className="p-4 bg-gradient-to-r from-purple-50 to-indigo-50 rounded-xl border border-purple-200">
+                                <div className="space-y-5"> {/* Increased space */}
+                                    <div className="p-5 bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl border border-green-200"> {/* Changed colors and increased padding */}
                                         <h4 className="font-semibold text-gray-900 mb-2">🚀 Nhiệm vụ hot nhất tuần</h4>
                                         <p className="text-sm text-gray-600 mb-3">
                                             Phát triển ứng dụng React Native cho startup công nghệ
                                         </p>
                                         <div className="flex items-center justify-between">
-                                            <span className="text-lg font-bold text-purple-600">500 Token</span>
+                                            <span className="text-lg font-bold text-green-600">500 Token</span>
                                             <Button size="sm">Xem ngay</Button>
                                         </div>
                                     </div>
 
-                                    <div className="p-4 bg-gradient-to-r from-teal-50 to-cyan-50 rounded-xl border border-teal-200">
+                                    <div className="p-5 bg-gradient-to-r from-teal-50 to-cyan-50 rounded-xl border border-teal-200"> {/* Increased padding */}
                                         <h4 className="font-semibold text-gray-900 mb-2">💡 Mẹo thành công</h4>
                                         <p className="text-sm text-gray-600">
                                             Hoàn thiện hồ sơ để tăng 70% cơ hội được chấp nhận
@@ -358,15 +358,15 @@ const Dashboard = () => {
                                     </div>
                                 </div>
                             ) : (
-                                <div className="space-y-4">
-                                    <div className="p-4 bg-gradient-to-r from-purple-50 to-pink-50 rounded-xl border border-purple-200">
+                                <div className="space-y-5"> {/* Increased space */}
+                                    <div className="p-5 bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl border border-green-200"> {/* Changed colors and increased padding */}
                                         <h4 className="font-semibold text-gray-900 mb-2">📊 Xu hướng tuyển dụng</h4>
                                         <p className="text-sm text-gray-600">
                                             React, Node.js và Python là những kỹ năng được tìm kiếm nhiều nhất
                                         </p>
                                     </div>
 
-                                    <div className="p-4 bg-gradient-to-r from-amber-50 to-orange-50 rounded-xl border border-amber-200">
+                                    <div className="p-5 bg-gradient-to-r from-amber-50 to-orange-50 rounded-xl border border-amber-200"> {/* Increased padding */}
                                         <h4 className="font-semibold text-gray-900 mb-2">⭐ Đánh giá cao</h4>
                                         <p className="text-sm text-gray-600">
                                             Công ty của bạn có rating 4.8/5 từ sinh viên

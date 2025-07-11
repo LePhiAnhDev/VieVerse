@@ -9,6 +9,16 @@ export default {
             fontFamily: {
                 sans: ['Inter', 'system-ui', 'sans-serif'],
             },
+            fontSize: {
+                xs: ['0.8125rem', { lineHeight: '1.25rem' }], // Increased from 0.75rem
+                sm: ['0.9375rem', { lineHeight: '1.375rem' }], // Increased from 0.875rem
+                base: ['1.0625rem', { lineHeight: '1.5rem' }], // Increased from 1rem
+                lg: ['1.1875rem', { lineHeight: '1.75rem' }], // Increased from 1.125rem
+                xl: ['1.3125rem', { lineHeight: '1.75rem' }], // Increased from 1.25rem
+                '2xl': ['1.5625rem', { lineHeight: '2rem' }], // Increased from 1.5rem
+                '3xl': ['1.9375rem', { lineHeight: '2.25rem' }], // Increased from 1.875rem
+                '4xl': ['2.4375rem', { lineHeight: '2.5rem' }], // Increased from 2.25rem
+            },
             colors: {
                 border: 'hsl(var(--border))',
                 input: 'hsl(var(--border))',
@@ -44,6 +54,10 @@ export default {
                     foreground: 'hsl(var(--foreground))',
                 },
             },
+            spacing: {
+                '18': '4.75rem', // Added new spacing
+                '22': '5.75rem', // Added new spacing
+            },
             borderRadius: {
                 lg: 'var(--radius)',
                 md: 'calc(var(--radius) - 2px)',
@@ -63,20 +77,20 @@ export default {
                     to: { opacity: '1' },
                 },
                 slideUp: {
-                    from: { opacity: '0', transform: 'translateY(20px)' },
+                    from: { opacity: '0', transform: 'translateY(22px)' }, // Increased from 20px
                     to: { opacity: '1', transform: 'translateY(0)' },
                 },
                 scaleIn: {
-                    from: { opacity: '0', transform: 'scale(0.95)' },
+                    from: { opacity: '0', transform: 'scale(0.94)' }, // Decreased from 0.95
                     to: { opacity: '1', transform: 'scale(1)' },
                 },
                 bounceGentle: {
                     '0%, 100%': { transform: 'translateY(0)' },
-                    '50%': { transform: 'translateY(-10px)' },
+                    '50%': { transform: 'translateY(-11px)' }, // Increased from -10px
                 },
                 float: {
                     '0%, 100%': { transform: 'translateY(0px)' },
-                    '50%': { transform: 'translateY(-20px)' },
+                    '50%': { transform: 'translateY(-22px)' }, // Increased from -20px
                 },
                 gradientShift: {
                     '0%': { backgroundPosition: '0% 50%' },

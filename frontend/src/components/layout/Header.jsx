@@ -48,15 +48,15 @@ const Header = () => {
     return (
         <header className="sticky top-0 z-40 w-full border-b border-white/10 bg-white/80 backdrop-blur-md">
             <div className="mx-auto max-w-[1920px] px-4 sm:px-6 lg:px-8">
-                <div className="flex h-16 items-center justify-between">
+                <div className="flex h-18 items-center justify-between"> {/* Increased height from h-16 to h-18 */}
                     {/* Left side - Logo & Navigation */}
-                    <div className="flex items-center space-x-8">
+                    <div className="flex items-center space-x-9"> {/* Increased space from space-x-8 */}
                         {/* Logo */}
                         <Link to="/dashboard" className="flex items-center space-x-3">
                             <img
                                 src="/logo.svg"
                                 alt="VieVerse"
-                                className="h-8 w-8"
+                                className="h-9 w-9" /* Increased from h-8 w-8 */
                             />
                             <span className="hidden sm:block text-xl font-bold text-gradient">
                                 VieVerse
@@ -70,8 +70,8 @@ const Header = () => {
                                     key={item.name}
                                     to={item.href}
                                     className={({ isActive }) =>
-                                        `flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-colors duration-200 ${isActive
-                                            ? 'bg-purple-50 text-purple-600'
+                                        `flex items-center px-4 py-2.5 text-sm font-medium rounded-lg transition-colors duration-200 ${isActive
+                                            ? 'bg-green-50 text-green-600'
                                             : 'text-gray-700 hover:text-gray-900 hover:bg-gray-50'
                                         }`
                                     }
@@ -83,25 +83,25 @@ const Header = () => {
                         </nav>
                     </div>
 
-                    {/* Center - Search (Only on larger screens) */}
-                    <div className="hidden lg:flex flex-1 max-w-md mx-8">
+                    {/* Center - Search (Longer and only on larger screens) */}
+                    <div className="hidden lg:flex flex-1 max-w-2xl mx-12"> {/* Changed from max-w-md mx-8 to max-w-2xl mx-12 */}
                         <Input
                             type="text"
                             placeholder="Tìm kiếm nhiệm vụ, công ty..."
                             icon={Search}
-                            className="w-full"
+                            className="w-full h-11" /* Increased height */
                         />
                     </div>
 
                     {/* Right side */}
-                    <div className="flex items-center space-x-2">
+                    <div className="flex items-center space-x-3"> {/* Increased space from space-x-2 */}
                         {/* Create Task Button (For companies) */}
                         {user?.role === 'company' && (
                             <Link to="/tasks/create" className="hidden sm:block">
                                 <Button
                                     variant="gradient"
-                                    size="sm"
-                                    className="mr-2"
+                                    size="default" /* Changed from sm to default */
+                                    className="mr-2 h-11" /* Increased height */
                                 >
                                     Tạo nhiệm vụ
                                 </Button>
@@ -112,7 +112,7 @@ const Header = () => {
                         <Button
                             variant="ghost"
                             size="icon"
-                            className="lg:hidden"
+                            className="lg:hidden h-11 w-11" /* Increased size */
                         >
                             <Search className="h-5 w-5" />
                         </Button>
@@ -121,17 +121,17 @@ const Header = () => {
                         <Button
                             variant="ghost"
                             size="icon"
-                            className="relative"
+                            className="relative h-11 w-11" /* Increased size */
                         >
                             <Bell className="h-5 w-5" />
-                            <span className="absolute -top-1 -right-1 h-4 w-4 bg-purple-500 text-white text-xs rounded-full flex items-center justify-center">
+                            <span className="absolute -top-1 -right-1 h-4 w-4 bg-green-500 text-white text-xs rounded-full flex items-center justify-center">
                                 3
                             </span>
                         </Button>
 
                         {/* Token display for students */}
                         {user?.role === 'student' && (
-                            <div className="hidden sm:flex items-center space-x-1 bg-amber-50 text-amber-700 px-3 py-1.5 rounded-lg border border-amber-200">
+                            <div className="hidden sm:flex items-center space-x-1 bg-amber-50 text-amber-700 px-4 py-2 rounded-lg border border-amber-200"> {/* Increased padding */}
                                 <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
                                     <path d="M8.433 7.418c.155-.103.346-.196.567-.267v1.698a2.305 2.305 0 01-.567-.267C8.07 8.34 8 8.114 8 8c0-.114.07-.34.433-.582zM11 12.849v-1.698c.22.071.412.164.567.267.364.243.433.468.433.582 0 .114-.07.34-.433.582a2.305 2.305 0 01-.567.267z" />
                                     <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-13a1 1 0 10-2 0v.092a4.535 4.535 0 00-1.676.662C6.602 6.234 6 7.009 6 8c0 .99.602 1.765 1.324 2.246.48.32 1.054.545 1.676.662v1.941c-.391-.127-.68-.317-.843-.504a1 1 0 10-1.51 1.31c.562.649 1.413 1.076 2.353 1.253V15a1 1 0 102 0v-.092a4.535 4.535 0 001.676-.662C13.398 13.766 14 12.991 14 12c0-.99-.602-1.765-1.324-2.246A4.535 4.535 0 0011 9.092V7.151c.391.127.68.317.843.504a1 1 0 101.511-1.31c-.563-.649-1.413-1.076-2.354-1.253V5z" clipRule="evenodd" />
@@ -145,7 +145,7 @@ const Header = () => {
                             variant="ghost"
                             size="icon"
                             onClick={() => setMobileMenuOpen(true)}
-                            className="md:hidden"
+                            className="md:hidden h-11 w-11" /* Increased size */
                         >
                             <Menu className="h-5 w-5" />
                         </Button>
@@ -155,12 +155,12 @@ const Header = () => {
                             <Button
                                 variant="ghost"
                                 onClick={() => setShowUserMenu(!showUserMenu)}
-                                className="flex items-center space-x-2"
+                                className="flex items-center space-x-2 h-11" /* Increased height */
                             >
                                 <img
                                     src={getAvatarUrl(user?.name)}
                                     alt={user?.name}
-                                    className="h-8 w-8 rounded-full"
+                                    className="h-9 w-9 rounded-full" /* Increased from h-8 w-8 */
                                 />
                                 <span className="hidden sm:block text-sm font-medium">
                                     {user?.name}
@@ -169,11 +169,11 @@ const Header = () => {
 
                             {/* Dropdown menu */}
                             {showUserMenu && (
-                                <div className="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-lg border border-gray-100 py-2 z-50">
-                                    <div className="px-4 py-3 border-b border-gray-100">
+                                <div className="absolute right-0 mt-2 w-60 bg-white rounded-xl shadow-lg border border-gray-100 py-2 z-50"> {/* Increased width */}
+                                    <div className="px-5 py-4 border-b border-gray-100"> {/* Increased padding */}
                                         <p className="text-sm font-medium text-gray-900">{user?.name}</p>
                                         <p className="text-xs text-gray-500">{user?.email}</p>
-                                        <p className="text-xs text-purple-600 mt-1">
+                                        <p className="text-xs text-green-600 mt-1">
                                             {user?.role === 'student' ? 'Sinh viên' : 'Doanh nghiệp'}
                                         </p>
                                     </div>
@@ -182,7 +182,7 @@ const Header = () => {
                                         <Link
                                             to="/profile"
                                             onClick={() => setShowUserMenu(false)}
-                                            className="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                                            className="flex items-center w-full px-5 py-3 text-sm text-gray-700 hover:bg-gray-50" /* Increased padding */
                                         >
                                             <User className="h-4 w-4 mr-3" />
                                             Hồ sơ cá nhân
@@ -193,7 +193,7 @@ const Header = () => {
                                                 setShowUserMenu(false);
                                                 // Navigate to settings
                                             }}
-                                            className="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                                            className="flex items-center w-full px-5 py-3 text-sm text-gray-700 hover:bg-gray-50" /* Increased padding */
                                         >
                                             <Settings className="h-4 w-4 mr-3" />
                                             Cài đặt
@@ -206,7 +206,7 @@ const Header = () => {
                                                 setShowUserMenu(false);
                                                 logout();
                                             }}
-                                            className="flex items-center w-full px-4 py-2 text-sm text-red-600 hover:bg-red-50"
+                                            className="flex items-center w-full px-5 py-3 text-sm text-red-600 hover:bg-red-50" /* Increased padding */
                                         >
                                             <LogOut className="h-4 w-4 mr-3" />
                                             Đăng xuất
@@ -230,21 +230,22 @@ const Header = () => {
 
                     {/* Menu */}
                     <div className="relative flex w-full max-w-xs flex-1 flex-col bg-white">
-                        <div className="flex items-center justify-between p-4 border-b">
+                        <div className="flex items-center justify-between p-5 border-b"> {/* Increased padding */}
                             <div className="flex items-center space-x-2">
-                                <img src="/logo.svg" alt="VieVerse" className="h-8 w-8" />
+                                <img src="/logo.svg" alt="VieVerse" className="h-9 w-9" /> {/* Increased size */}
                                 <span className="text-xl font-bold text-gradient">VieVerse</span>
                             </div>
                             <Button
                                 variant="ghost"
                                 size="icon"
                                 onClick={() => setMobileMenuOpen(false)}
+                                className="h-11 w-11" /* Increased size */
                             >
                                 <X className="h-5 w-5" />
                             </Button>
                         </div>
 
-                        <div className="flex-1 overflow-y-auto p-4">
+                        <div className="flex-1 overflow-y-auto p-5"> {/* Increased padding */}
                             <nav className="flex flex-col space-y-2">
                                 {navigation.map((item) => (
                                     <NavLink
@@ -252,8 +253,8 @@ const Header = () => {
                                         to={item.href}
                                         onClick={() => setMobileMenuOpen(false)}
                                         className={({ isActive }) =>
-                                            `flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors duration-200 ${isActive
-                                                ? 'bg-purple-50 text-purple-600'
+                                            `flex items-center px-4 py-3.5 text-sm font-medium rounded-lg transition-colors duration-200 ${isActive
+                                                ? 'bg-green-50 text-green-600'
                                                 : 'text-gray-700 hover:text-gray-900 hover:bg-gray-50'
                                             }`
                                         }
@@ -267,7 +268,7 @@ const Header = () => {
                                     <Link
                                         to="/tasks/create"
                                         onClick={() => setMobileMenuOpen(false)}
-                                        className="flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors duration-200 text-white bg-gradient-to-r from-purple-600 to-indigo-600"
+                                        className="flex items-center px-4 py-3.5 text-sm font-medium rounded-lg transition-colors duration-200 text-white bg-gradient-to-r from-green-600 to-emerald-600"
                                     >
                                         <Plus className="mr-3 h-5 w-5" />
                                         Tạo nhiệm vụ mới
@@ -276,12 +277,12 @@ const Header = () => {
                             </nav>
                         </div>
 
-                        <div className="border-t border-gray-200 p-4">
+                        <div className="border-t border-gray-200 p-5"> {/* Increased padding */}
                             <div className="flex items-center">
                                 <img
                                     src={getAvatarUrl(user?.name)}
                                     alt={user?.name}
-                                    className="h-10 w-10 rounded-full"
+                                    className="h-11 w-11 rounded-full" /* Increased size */
                                 />
                                 <div className="ml-3">
                                     <p className="text-sm font-medium text-gray-900">{user?.name}</p>
@@ -303,7 +304,7 @@ const Header = () => {
                                     setMobileMenuOpen(false);
                                     logout();
                                 }}
-                                className="mt-4 flex w-full items-center justify-center rounded-lg border border-gray-200 px-4 py-2 text-sm font-medium text-red-600 hover:bg-red-50"
+                                className="mt-4 flex w-full items-center justify-center rounded-lg border border-gray-200 px-4 py-3 text-sm font-medium text-red-600 hover:bg-red-50" /* Increased padding */
                             >
                                 <LogOut className="mr-2 h-4 w-4" />
                                 Đăng xuất
@@ -319,7 +320,7 @@ const Header = () => {
                     type="text"
                     placeholder="Tìm kiếm nhiệm vụ, công ty..."
                     icon={Search}
-                    className="w-full"
+                    className="w-full h-11" /* Increased height */
                 />
             </div>
         </header>

@@ -5,11 +5,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
 :root {
-    --primary: 262 83% 58%;
-    /* Purple */
+    --primary: 122 39% 49%;
+    /* Green #43A047 */
     --primary-foreground: 0 0% 100%;
-    --secondary: 262 83% 96%;
-    --secondary-foreground: 262 83% 28%;
+    --secondary: 122 39% 96%;
+    --secondary-foreground: 122 39% 28%;
     --accent: 187 75% 64%;
     /* Teal */
     --accent-foreground: 187 75% 24%;
@@ -18,7 +18,7 @@
     --card: 0 0% 100%;
     --card-foreground: 220 30% 15%;
     --border: 220 20% 90%;
-    --ring: 262 83% 58%;
+    --ring: 122 39% 49%;
 }
 
 @layer base {
@@ -29,10 +29,14 @@
     body {
         @apply bg-background text-foreground font-sans antialiased;
         font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        font-size: 15px;
+        /* Increased from default */
     }
 
     html {
         scroll-behavior: smooth;
+        font-size: 16px;
+        /* Increased base font size */
     }
 }
 
@@ -45,8 +49,9 @@
     }
 
     .scrollbar-thin::-webkit-scrollbar {
-        width: 6px;
-        height: 6px;
+        width: 7px;
+        /* Increased from 6px */
+        height: 7px;
     }
 
     .scrollbar-thin::-webkit-scrollbar-track {
@@ -55,7 +60,8 @@
 
     .scrollbar-thin::-webkit-scrollbar-thumb {
         background-color: rgb(203 213 225);
-        border-radius: 3px;
+        border-radius: 4px;
+        /* Increased from 3px */
     }
 
     .scrollbar-thin::-webkit-scrollbar-thumb:hover {
@@ -73,7 +79,7 @@
 
     /* Modern background */
     .modern-gradient {
-        background: linear-gradient(120deg, theme('colors.purple.50'), theme('colors.indigo.50'), theme('colors.teal.50'));
+        background: linear-gradient(120deg, theme('colors.green.50'), theme('colors.emerald.50'), theme('colors.teal.50'));
         background-size: 200% 200%;
         animation: gradientShift 15s ease infinite;
     }
@@ -81,14 +87,15 @@
     /* Grid background */
     .grid-pattern {
         background-image:
-            linear-gradient(rgba(123, 97, 255, 0.05) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(123, 97, 255, 0.05) 1px, transparent 1px);
-        background-size: 40px 40px;
+            linear-gradient(rgba(67, 160, 71, 0.05) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(67, 160, 71, 0.05) 1px, transparent 1px);
+        background-size: 42px 42px;
+        /* Increased from 40px */
     }
 
     /* Gradient backgrounds */
     .gradient-primary {
-        background: linear-gradient(135deg, theme('colors.purple.500'), theme('colors.indigo.600'));
+        background: linear-gradient(135deg, theme('colors.green.500'), theme('colors.emerald.600'));
     }
 
     .gradient-secondary {
@@ -125,7 +132,8 @@
     @keyframes slideUp {
         from {
             opacity: 0;
-            transform: translateY(20px);
+            transform: translateY(22px);
+            /* Increased from 20px */
         }
 
         to {
@@ -137,7 +145,8 @@
     @keyframes scaleIn {
         from {
             opacity: 0;
-            transform: scale(0.95);
+            transform: scale(0.94);
+            /* Decreased from 0.95 for more noticeable effect */
         }
 
         to {
@@ -162,7 +171,7 @@
 
     /* Text utilities */
     .text-gradient {
-        @apply bg-gradient-to-r from-purple-600 to-teal-400 bg-clip-text text-transparent;
+        @apply bg-gradient-to-r from-green-600 to-teal-400 bg-clip-text text-transparent;
     }
 
     /* Card hover effects */
@@ -172,12 +181,12 @@
 
     /* Focus styles */
     .focus-ring {
-        @apply focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2;
+        @apply focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2;
     }
 
     /* Loading spinner */
     .spinner {
-        @apply animate-spin rounded-full border-2 border-gray-300 border-t-purple-600;
+        @apply animate-spin rounded-full border-2 border-gray-300 border-t-green-600;
     }
 }
 

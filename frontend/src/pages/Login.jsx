@@ -154,7 +154,7 @@ const Login = () => {
                             <div className="flex justify-end">
                                 <Link
                                     to="/forgot-password"
-                                    className="text-sm text-purple-600 hover:text-purple-700 font-medium"
+                                    className="text-sm text-green-600 hover:text-green-700 font-medium"
                                 >
                                     Quên mật khẩu?
                                 </Link>
@@ -172,22 +172,13 @@ const Login = () => {
                             </Button>
                         </form>
 
-                        {/* Demo account info */}
-                        <div className="mt-6 p-4 bg-purple-50 rounded-xl border border-purple-200">
-                            <p className="text-sm font-medium text-purple-900 mb-2">🚀 Tài khoản demo:</p>
-                            <div className="space-y-1 text-xs text-purple-700">
-                                <p><strong>Sinh viên:</strong> student1@example.com / password123</p>
-                                <p><strong>Doanh nghiệp:</strong> company1@example.com / password123</p>
-                            </div>
-                        </div>
-
                         {/* Register link */}
                         <div className="mt-6 text-center">
                             <p className="text-gray-600">
                                 Chưa có tài khoản?{' '}
                                 <Link
                                     to="/register"
-                                    className="font-medium text-purple-600 hover:text-purple-700"
+                                    className="font-medium text-green-600 hover:text-green-700"
                                 >
                                     Đăng ký ngay
                                 </Link>

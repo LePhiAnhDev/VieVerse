@@ -10,9 +10,9 @@ const Textarea = React.forwardRef(({
     return (
         <textarea
             className={cn(
-                'flex min-h-[80px] w-full rounded-xl border border-gray-300 bg-white px-3 py-2 text-sm',
+                'flex min-h-[88px] w-full rounded-xl border border-gray-300 bg-white px-3 py-2.5 text-sm', // Increased min-height and padding
                 'placeholder:text-gray-500',
-                'focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500',
+                'focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500',
                 'disabled:cursor-not-allowed disabled:opacity-50 disabled:bg-gray-50',
                 'transition-colors duration-200',
                 'resize-vertical',
