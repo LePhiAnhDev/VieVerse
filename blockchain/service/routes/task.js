@@ -12,9 +12,9 @@ router.post("/submit", taskController.submitTask);
 router.post("/verify", taskController.verifyTask);
 // GET /api/task/:taskId
 router.get("/:taskId", taskController.getTask);
-// GET /api/company/:address/tasks
-router.get("/company/:address/tasks", taskController.getCompanyTasks);
-// GET /api/student/:address/tasks
-router.get("/student/:address/tasks", taskController.getStudentTasks);
+// GET /api/task/company/:address (for tests compatibility)
+router.get("/company/:address", taskController.getCompanyTasks);
+// GET /api/task/student/:address (for tests compatibility)
+router.get("/student/:address", taskController.getStudentTasks);
 
 module.exports = router;

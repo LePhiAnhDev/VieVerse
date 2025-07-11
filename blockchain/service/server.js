@@ -1,72 +1,83 @@
+const path = require("path");
+require("dotenv").config({ path: path.resolve(__dirname, "../.env") });
 const express = require("express");
 const cors = require("cors");
 const chalk = require("chalk");
-require("dotenv").config();
+const config = require("../config/config");
+const { errorHandler } = require("./middleware/errorHandler");
+const { processResponseData } = require("./utils/bigIntUtils");
 
 const app = express();
+
+// Middleware
 app.use(cors());
-app.use(express.json());
+
+// Conditional body parsing - only for POST/PUT/PATCH requests
+app.use((req, res, next) => {
+  if (req.method === "POST" || req.method === "PUT" || req.method === "PATCH") {
+    express.json({ limit: "10mb" })(req, res, next);
+  } else {
+    next();
+  }
+});
+
+app.use((req, res, next) => {
+  if (req.method === "POST" || req.method === "PUT" || req.method === "PATCH") {
+    express.urlencoded({ extended: true, limit: "10mb" })(req, res, next);
+  } else {
+    next();
+  }
+});
 
 // Logging middleware
 app.use((req, res, next) => {
   console.log(
-    chalk.cyan(
-      `[${new Date().toISOString()}] ${req.method} ${req.originalUrl} - Body:`
-    ),
-    req.body
+    chalk.cyan(`[${new Date().toISOString()}] ${req.method} ${req.originalUrl}`)
   );
+
+  // Only log body if it exists and is not empty
+  if (req.body && Object.keys(req.body).length > 0) {
+    console.log(chalk.cyan("Body:"), req.body);
+  }
+
   const oldJson = res.json;
   res.json = function (data) {
-    if (data && data.error) {
-      console.log(chalk.red(`[${new Date().toISOString()}] Response:`, data));
-    } else if (data && data.success === false) {
-      console.log(
-        chalk.yellow(`[${new Date().toISOString()}] Response:`, data)
-      );
-    } else {
-      console.log(chalk.green(`[${new Date().toISOString()}] Response:`, data));
+    if (data && typeof data === "object") {
+      // Process BigInt/BigNumber before sending
+      const processedData = processResponseData(data);
+      console.log(chalk.green("Response:"), processedData);
+      return oldJson.call(this, processedData);
     }
+    console.log(chalk.green("Response:"), data);
     return oldJson.call(this, data);
   };
+
   next();
 });
 
+// Routes (both singular and plural for compatibility)
+app.use("/api/task", require("./routes/task"));
+app.use("/api/tasks", require("./routes/task")); // Alias for tests
+app.use("/api/token", require("./routes/token"));
+app.use("/api/tokens", require("./routes/token")); // Alias for tests
+app.use("/api/utility", require("./routes/utility"));
+app.use("/api/company", require("./routes/company"));
+app.use("/api/student", require("./routes/student"));
+app.use("/api/reputation", require("./routes/reputation"));
+app.use("/api/ipfs", require("./routes/ipfs"));
+app.use("/api/gas", require("./routes/gas"));
+
 // Health check
-app.get("/api/health", (req, res) => {
-  res.json({ status: "ok", message: "Blockchain service is running" });
+app.get("/health", (req, res) => {
+  res.json({ status: "ok", timestamp: new Date().toISOString() });
 });
 
-const taskRoutes = require("./routes/task");
-app.use("/api/task", taskRoutes);
+// Error handling
+app.use(errorHandler);
 
-const reputationRoutes = require("./routes/reputation");
-app.use("/api/reputation", reputationRoutes);
+const PORT = config.port || 5001;
 
-const studentRoutes = require("./routes/student");
-app.use("/api/student", studentRoutes);
-
-const companyRoutes = require("./routes/company");
-app.use("/api/company", companyRoutes);
-
-const ipfsRoutes = require("./routes/ipfs");
-app.use("/api/ipfs", ipfsRoutes);
-
-const tokenRoutes = require("./routes/token");
-app.use("/api/token", tokenRoutes);
-
-const utilityRoutes = require("./routes/utility");
-app.use("/api/utility", utilityRoutes);
-
-// TODO: Import and use routes here
-
-const PORT = process.env.BLOCKCHAIN_SERVICE_PORT || 5001;
-
-// Only start server if this file is run directly
-if (require.main === module) {
-  app.listen(PORT, () => {
-    console.log(chalk.green(`Blockchain service running on port ${PORT}`));
-  });
-}
-
-// Export app for testing
-module.exports = app;
+app.listen(PORT, () => {
+  console.log(chalk.green(`🚀 Blockchain service running on port ${PORT}`));
+  console.log(chalk.blue(`📊 Health check: http://localhost:${PORT}/health`));
+});

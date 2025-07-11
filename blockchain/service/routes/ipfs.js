@@ -6,6 +6,8 @@ const ipfsController = require("../controllers/ipfsController");
 router.post("/upload", ipfsController.uploadFile);
 // POST /api/ipfs/upload-json (application/json)
 router.post("/upload-json", ipfsController.uploadJSON);
+// POST /api/ipfs/json (alias for tests compatibility)
+router.post("/json", ipfsController.uploadJSON);
 // GET /api/ipfs/:hash
 router.get("/:hash", ipfsController.getFileByHash);
 
