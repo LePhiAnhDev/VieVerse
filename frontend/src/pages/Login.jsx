@@ -82,7 +82,7 @@ const Login = () => {
                     <img
                         src="/logo.svg"
                         alt="VieVerse"
-                        className="h-16 w-16 mx-auto mb-4"
+                        className="h-16 w-16 mx-auto mb-1"
                     />
                     <h1 className="text-3xl font-bold text-gradient">VieVerse</h1>
                     <p className="text-gray-600 mt-2">Kết nối sinh viên và doanh nghiệp</p>
