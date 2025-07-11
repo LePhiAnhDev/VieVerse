@@ -72,9 +72,9 @@ const Login = () => {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-purple-50 p-4">
+        <div className="min-h-screen flex items-center justify-center modern-gradient p-4">
             {/* Background decoration */}
-            <div className="absolute inset-0 bg-grid-pattern opacity-5" />
+            <div className="absolute inset-0 grid-pattern opacity-20" />
 
             <div className="w-full max-w-md relative z-10">
                 {/* Logo */}
@@ -154,7 +154,7 @@ const Login = () => {
                             <div className="flex justify-end">
                                 <Link
                                     to="/forgot-password"
-                                    className="text-sm text-blue-600 hover:text-blue-700 font-medium"
+                                    className="text-sm text-purple-600 hover:text-purple-700 font-medium"
                                 >
                                     Quên mật khẩu?
                                 </Link>
@@ -173,9 +173,9 @@ const Login = () => {
                         </form>
 
                         {/* Demo account info */}
-                        <div className="mt-6 p-4 bg-blue-50 rounded-xl border border-blue-200">
-                            <p className="text-sm font-medium text-blue-900 mb-2">🚀 Tài khoản demo:</p>
-                            <div className="space-y-1 text-xs text-blue-700">
+                        <div className="mt-6 p-4 bg-purple-50 rounded-xl border border-purple-200">
+                            <p className="text-sm font-medium text-purple-900 mb-2">🚀 Tài khoản demo:</p>
+                            <div className="space-y-1 text-xs text-purple-700">
                                 <p><strong>Sinh viên:</strong> student1@example.com / password123</p>
                                 <p><strong>Doanh nghiệp:</strong> company1@example.com / password123</p>
                             </div>
@@ -187,7 +187,7 @@ const Login = () => {
                                 Chưa có tài khoản?{' '}
                                 <Link
                                     to="/register"
-                                    className="font-medium text-blue-600 hover:text-blue-700"
+                                    className="font-medium text-purple-600 hover:text-purple-700"
                                 >
                                     Đăng ký ngay
                                 </Link>

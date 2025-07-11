@@ -21,7 +21,7 @@ const StatsCard = ({
     };
 
     const getTrendColor = () => {
-        if (trend > 0) return 'text-emerald-600';
+        if (trend > 0) return 'text-teal-600';
         if (trend < 0) return 'text-red-600';
         return 'text-gray-600';
     };
@@ -32,7 +32,7 @@ const StatsCard = ({
         <Card
             className={cn(
                 'overflow-hidden transition-all duration-300 hover:shadow-lg hover:-translate-y-1',
-                gradient && 'bg-gradient-to-br from-blue-50 to-purple-50 border-blue-200',
+                gradient && 'bg-gradient-to-br from-purple-50 to-indigo-50 border-purple-200',
                 className
             )}
         >
@@ -55,7 +55,7 @@ const StatsCard = ({
                                 {change !== undefined && (
                                     <span className={cn(
                                         'text-sm font-medium',
-                                        changeType === 'positive' ? 'text-emerald-600' :
+                                        changeType === 'positive' ? 'text-teal-600' :
                                             changeType === 'negative' ? 'text-red-600' : 'text-gray-600'
                                     )}>
                                         {change}
@@ -76,8 +76,8 @@ const StatsCard = ({
                         <div className={cn(
                             'p-3 rounded-xl',
                             gradient
-                                ? 'bg-gradient-to-br from-blue-500 to-purple-600 text-white'
-                                : 'bg-gray-100 text-gray-600'
+                                ? 'bg-gradient-to-br from-purple-500 to-indigo-600 text-white'
+                                : 'bg-purple-100 text-purple-600'
                         )}>
                             <Icon className="h-6 w-6" />
                         </div>

@@ -1,31 +1,22 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Outlet } from 'react-router-dom';
 import Header from './Header';
-import Sidebar from './Sidebar';
 
 const Layout = () => {
-    const [sidebarOpen, setSidebarOpen] = useState(false);
-
     return (
-        <div className="h-screen flex bg-gray-50">
-            {/* Sidebar */}
-            <Sidebar
-                isOpen={sidebarOpen}
-                onClose={() => setSidebarOpen(false)}
-            />
+        <div className="min-h-screen flex flex-col bg-background">
+            {/* Background pattern */}
+            <div className="fixed inset-0 grid-pattern opacity-80 pointer-events-none"></div>
 
-            {/* Main content */}
-            <div className="flex-1 flex flex-col overflow-hidden lg:ml-0">
-                {/* Header */}
-                <Header onMenuClick={() => setSidebarOpen(true)} />
+            {/* Header */}
+            <Header />
 
-                {/* Page content */}
-                <main className="flex-1 overflow-y-auto scrollbar-thin">
-                    <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 max-w-7xl">
-                        <Outlet />
-                    </div>
-                </main>
-            </div>
+            {/* Page content */}
+            <main className="flex-1 overflow-y-auto scrollbar-thin relative z-10">
+                <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 max-w-7xl">
+                    <Outlet />
+                </div>
+            </main>
         </div>
     );
 };

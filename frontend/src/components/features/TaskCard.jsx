@@ -37,7 +37,7 @@ const TaskCard = ({ task, showApplyButton = true, className }) => {
         <Card
             className={cn(
                 'group overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-2',
-                'border-gray-200 hover:border-blue-200',
+                'border-gray-200 hover:border-purple-200',
                 className
             )}
         >
@@ -56,8 +56,8 @@ const TaskCard = ({ task, showApplyButton = true, className }) => {
                             </p>
                             {task.company?.is_verified && (
                                 <div className="flex items-center space-x-1">
-                                    <CheckCircle className="h-3 w-3 text-blue-500" />
-                                    <span className="text-xs text-blue-600">Đã xác minh</span>
+                                    <CheckCircle className="h-3 w-3 text-purple-500" />
+                                    <span className="text-xs text-purple-600">Đã xác minh</span>
                                 </div>
                             )}
                         </div>
@@ -76,7 +76,7 @@ const TaskCard = ({ task, showApplyButton = true, className }) => {
                 {/* Task title */}
                 <Link
                     to={`/tasks/${task.id}`}
-                    className="block group-hover:text-blue-600 transition-colors"
+                    className="block group-hover:text-purple-600 transition-colors"
                 >
                     <h3 className="text-lg font-semibold text-gray-900 line-clamp-2 leading-tight">
                         {task.title}
@@ -119,8 +119,8 @@ const TaskCard = ({ task, showApplyButton = true, className }) => {
                     </div>
 
                     <div className="flex items-center space-x-2">
-                        <div className="p-1.5 bg-blue-50 rounded-lg">
-                            <Users className="h-4 w-4 text-blue-600" />
+                        <div className="p-1.5 bg-purple-50 rounded-lg">
+                            <Users className="h-4 w-4 text-purple-600" />
                         </div>
                         <div>
                             <p className="text-sm font-semibold text-gray-900">
@@ -152,8 +152,8 @@ const TaskCard = ({ task, showApplyButton = true, className }) => {
                     </div>
 
                     <div className="flex items-center space-x-2">
-                        <div className="p-1.5 bg-emerald-50 rounded-lg">
-                            <MapPin className="h-4 w-4 text-emerald-600" />
+                        <div className="p-1.5 bg-teal-50 rounded-lg">
+                            <MapPin className="h-4 w-4 text-teal-600" />
                         </div>
                         <div>
                             <p className="text-sm font-semibold text-gray-900">
