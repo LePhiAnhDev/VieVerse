@@ -1,0 +1,43 @@
+{
+  "name": "origin-verification-nft",
+  "version": "1.0.0",
+  "description": "NFT contract for origin verification of physical items",
+  "main": "index.js",
+  "scripts": {
+    "compile": "hardhat compile",
+    "test": "hardhat test",
+    "deploy:local": "hardhat run scripts/deploy.js --network localhost",
+    "deploy:sepolia": "hardhat run scripts/deploy.js --network sepolia",
+    "deploy:mainnet": "hardhat run scripts/deploy.js --network mainnet",
+    "node": "hardhat node",
+    "clean": "hardhat clean",
+    "start:service": "node service/server.js"
+  },
+  "keywords": [
+    "nft",
+    "blockchain",
+    "ethereum",
+    "solidity",
+    "origin-verification"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^4.0.0",
+    "@openzeppelin/contracts": "^5.0.0",
+    "chai": "^4.3.0",
+    "dotenv": "^16.3.1",
+    "hardhat": "^2.19.0",
+    "mocha": "^11.7.1",
+    "supertest": "^7.1.3"
+  },
+  "dependencies": {
+    "@pinata/sdk": "^2.1.0",
+    "chalk": "^4.1.2",
+    "cors": "^2.8.5",
+    "ethers": "^6.7.0",
+    "express": "^4.18.2",
+    "keccak256": "^1.0.6",
+    "multer": "^1.4.5-lts.1"
+  }
+}

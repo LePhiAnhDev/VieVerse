@@ -1,0 +1,18 @@
+const companyService = require("../services/companyService");
+
+exports.getCompany = async (req, res) => {
+  try {
+    const address = req.params.address;
+    if (!address || !/^0x[a-fA-F0-9]{40}$/.test(address)) {
+      return res.status(400).json({ error: "Invalid address" });
+    }
+    const result = await companyService.getCompany(address);
+    if (result.success) {
+      res.json({ success: true, address, company: result.company });
+    } else {
+      res.status(500).json({ success: false, error: result.error });
+    }
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
