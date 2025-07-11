@@ -586,8 +586,3 @@ console.log(`Balance: ${balanceData.balance} VVT`);
 - **Blockchain**: Sepolia Testnet
 - **File Storage**: IPFS via Pinata
 - **Authentication**: JWT tokens
-
----
-
-**📅 Last Updated:** December 2024
-**�� Version:** 1.0.0
