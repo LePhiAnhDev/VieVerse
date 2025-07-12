@@ -52,76 +52,12 @@ VieVerse/
 - **JWT Authentication**
 - **Rate limiting** + **Security middleware**
 
+
 ### Blockchain
 - **Hardhat** + **Ethers.js**
 - **Solidity** smart contracts
 - **Sepolia Testnet**
 - **IPFS** (Pinata) integration
-
-## 📦 Cài đặt và chạy
-
-### 1. Clone repository
-```bash
-git clone <repository-url>
-cd VieVerse
-```
-
-### 2. Cài đặt dependencies
-```bash
-# Backend
-cd backend && npm install
-
-# Frontend
-cd frontend && npm install
-
-# Blockchain
-cd blockchain && npm install
-```
-
-### 3. Cấu hình environment variables
-
-#### Backend (.env)
-```env
-PORT=5000
-DATABASE_URL=postgresql://username:password@localhost:5432/vieverse
-JWT_SECRET=your-jwt-secret
-FRONTEND_URL=http://localhost:5173
-```
-
-#### Blockchain Service (.env)
-```env
-BLOCKCHAIN_SERVICE_PORT=5001
-SEPOLIA_URL=https://sepolia.infura.io/v3/your-infura-key
-PRIVATE_KEY=your-private-key
-INTERNAL_SERVICE_KEY=your-internal-key
-PINATA_API_KEY=your-pinata-key
-PINATA_API_SECRET=your-pinata-secret
-```
-
-### 4. Khởi động các service
-
-#### Terminal 1: Backend
-```bash
-cd backend
-npm start
-```
-
-#### Terminal 2: Blockchain Service
-```bash
-cd blockchain
-npm run start:service
-```
-
-#### Terminal 3: Frontend
-```bash
-cd frontend
-npm run dev
-```
-
-### 5. Truy cập ứng dụng
-- **Frontend**: http://localhost:5173
-- **Backend API**: http://localhost:5000
-- **Blockchain Service**: http://localhost:5001
 
 ## 🔧 Smart Contracts
 
@@ -184,21 +120,3 @@ docker-compose up -d
 ## 📄 License
 
 MIT License - xem file [LICENSE](LICENSE) để biết thêm chi tiết.
-
-## 🤝 Contributing
-
-1. Fork repository
-2. Tạo feature branch: `git checkout -b feature/new-feature`
-3. Commit changes: `git commit -am 'Add new feature'`
-4. Push branch: `git push origin feature/new-feature`
-5. Tạo Pull Request
-
-## 📞 Support
-
-- **Email**: support@vieverse.com
-- **Documentation**: [API_ENDPOINTS.md](API_ENDPOINTS.md)
-- **Issues**: GitHub Issues
-
----
-
-**VieVerse** - Kết nối tài năng trẻ với cơ hội thực tế! 🚀
