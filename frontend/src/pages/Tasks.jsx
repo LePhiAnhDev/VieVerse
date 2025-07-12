@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Plus, Search } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
+import { useWeb3 } from '../contexts/Web3Context';
 import axios from 'axios';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/Card';
 import Button from '../components/ui/Button';
@@ -10,12 +11,15 @@ import EmptyState from '../components/common/EmptyState';
 import Pagination from '../components/common/Pagination';
 import TaskCard from '../components/features/TaskCard';
 import TaskFilters from '../components/features/TaskFilters';
+import CreateTaskModal from '../components/features/CreateTaskModal';
 import { ITEMS_PER_PAGE } from '../utils/constants';
 
 const Tasks = () => {
     const { user } = useAuth();
+    const { isConnected } = useWeb3();
     const [tasks, setTasks] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [showCreateModal, setShowCreateModal] = useState(false);
     const [filters, setFilters] = useState({
         search: '',
         difficulty: '',
@@ -111,12 +115,14 @@ const Tasks = () => {
                     </div>
 
                     {user?.role === 'company' && (
-                        <Link to="/tasks/create">
-                            <Button variant="gradient" className="shadow-lg">
-                                <Plus className="h-4 w-4 mr-2" />
-                                Tạo nhiệm vụ mới
-                            </Button>
-                        </Link>
+                        <Button
+                            variant="gradient"
+                            className="shadow-lg"
+                            onClick={() => setShowCreateModal(true)}
+                        >
+                            <Plus className="h-4 w-4 mr-2" />
+                            Tạo nhiệm vụ mới
+                        </Button>
                     )}
                 </div>
             </div>
@@ -212,12 +218,10 @@ const Tasks = () => {
                         }
                         action={
                             user?.role === 'company' ? (
-                                <Link to="/tasks/create">
-                                    <Button variant="gradient">
-                                        <Plus className="h-4 w-4 mr-2" />
-                                        Tạo nhiệm vụ đầu tiên
-                                    </Button>
-                                </Link>
+                                <Button variant="gradient" onClick={() => setShowCreateModal(true)}>
+                                    <Plus className="h-4 w-4 mr-2" />
+                                    Tạo nhiệm vụ đầu tiên
+                                </Button>
                             ) : (
                                 <Button variant="outline" onClick={clearFilters}>
                                     Xóa bộ lọc
@@ -241,16 +245,25 @@ const Tasks = () => {
 
             {/* FAB for mobile */}
             {user?.role === 'company' && (
-                <Link to="/tasks/create">
-                    <Button
-                        variant="gradient"
-                        size="icon"
-                        className="fixed bottom-6 right-6 h-14 w-14 rounded-full shadow-2xl md:hidden z-40"
-                    >
-                        <Plus className="h-6 w-6" />
-                    </Button>
-                </Link>
+                <Button
+                    variant="gradient"
+                    size="icon"
+                    className="fixed bottom-6 right-6 h-14 w-14 rounded-full shadow-2xl md:hidden z-40"
+                    onClick={() => setShowCreateModal(true)}
+                >
+                    <Plus className="h-6 w-6" />
+                </Button>
             )}
+
+            {/* Create Task Modal */}
+            <CreateTaskModal
+                isOpen={showCreateModal}
+                onClose={() => setShowCreateModal(false)}
+                onSuccess={(result) => {
+                    // Refresh tasks after successful creation
+                    fetchTasks();
+                }}
+            />
         </div>
     );
 };

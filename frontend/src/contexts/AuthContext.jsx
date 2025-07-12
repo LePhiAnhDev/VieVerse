@@ -52,14 +52,16 @@ export const AuthProvider = ({ children }) => {
                 console.error('Error parsing user data:', error);
                 logout();
             }
+        } else {
+            setLoading(false);
         }
-        setLoading(false);
     }, []);
 
     const verifyToken = async () => {
         try {
             const response = await axios.get('/auth/profile');
             setUser(response.data.user);
+            setLoading(false);
         } catch (error) {
             console.error('Token verification failed:', error);
             logout();

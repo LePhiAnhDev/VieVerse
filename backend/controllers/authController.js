@@ -18,7 +18,7 @@ export const register = async (req, res) => {
             });
         }
 
-        const { email, password, name, role, ...additionalData } = req.body;
+        const { email, password, name, role, wallet_address, ...additionalData } = req.body;
 
         // Check if user already exists
         const existingUser = await User.findOne({ where: { email } });
@@ -28,12 +28,24 @@ export const register = async (req, res) => {
             });
         }
 
+        // Check if wallet address is already registered
+        if (wallet_address) {
+            const existingWalletUser = await User.findOne({ where: { wallet_address } });
+            if (existingWalletUser) {
+                return res.status(409).json({
+                    error: 'Wallet address is already registered'
+                });
+            }
+        }
+
         // Create user data based on role
         let userData = {
             email,
             password,
             name,
-            role: role || 'student'
+            role: role || 'student',
+            wallet_address: wallet_address || null,
+            blockchain_registered: !!wallet_address
         };
 
         if (role === 'student') {

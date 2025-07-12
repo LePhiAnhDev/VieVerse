@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { Toaster } from 'react-hot-toast';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
+import { Web3Provider } from './contexts/Web3Context';
 
 // Components
 import Layout from './components/layout/Layout';
@@ -51,81 +52,83 @@ const PublicRoute = ({ children }) => {
 function App() {
     return (
         <QueryClientProvider client={queryClient}>
-            <AuthProvider>
-                <Router>
-                    <div className="min-h-screen bg-gray-50">
-                        {/* Toast notifications */}
-                        <Toaster
-                            position="top-right"
-                            toastOptions={{
-                                duration: 4000,
-                                style: {
-                                    background: '#363636',
-                                    color: '#fff',
-                                    borderRadius: '12px',
-                                    padding: '16px',
-                                    fontSize: '14px',
-                                    fontWeight: '500',
-                                },
-                                success: {
+            <Web3Provider>
+                <AuthProvider>
+                    <Router>
+                        <div className="min-h-screen bg-gray-50">
+                            {/* Toast notifications */}
+                            <Toaster
+                                position="top-right"
+                                toastOptions={{
+                                    duration: 4000,
                                     style: {
-                                        background: '#10B981',
+                                        background: '#363636',
+                                        color: '#fff',
+                                        borderRadius: '12px',
+                                        padding: '16px',
+                                        fontSize: '14px',
+                                        fontWeight: '500',
                                     },
-                                },
-                                error: {
-                                    style: {
-                                        background: '#EF4444',
+                                    success: {
+                                        style: {
+                                            background: '#10B981',
+                                        },
                                     },
-                                },
-                                loading: {
-                                    style: {
-                                        background: '#3B82F6',
+                                    error: {
+                                        style: {
+                                            background: '#EF4444',
+                                        },
                                     },
-                                },
-                            }}
-                        />
-
-                        <Routes>
-                            {/* Public routes */}
-                            <Route
-                                path="/login"
-                                element={
-                                    <PublicRoute>
-                                        <Login />
-                                    </PublicRoute>
-                                }
-                            />
-                            <Route
-                                path="/register"
-                                element={
-                                    <PublicRoute>
-                                        <Register />
-                                    </PublicRoute>
-                                }
+                                    loading: {
+                                        style: {
+                                            background: '#3B82F6',
+                                        },
+                                    },
+                                }}
                             />
 
-                            {/* Protected routes */}
-                            <Route
-                                path="/"
-                                element={
-                                    <ProtectedRoute>
-                                        <Layout />
-                                    </ProtectedRoute>
-                                }
-                            >
-                                <Route index element={<Navigate to="/dashboard" replace />} />
-                                <Route path="dashboard" element={<Dashboard />} />
-                                <Route path="tasks" element={<Tasks />} />
-                                <Route path="tasks/:id" element={<TaskDetail />} />
-                                <Route path="profile" element={<Profile />} />
-                            </Route>
+                            <Routes>
+                                {/* Public routes */}
+                                <Route
+                                    path="/login"
+                                    element={
+                                        <PublicRoute>
+                                            <Login />
+                                        </PublicRoute>
+                                    }
+                                />
+                                <Route
+                                    path="/register"
+                                    element={
+                                        <PublicRoute>
+                                            <Register />
+                                        </PublicRoute>
+                                    }
+                                />
 
-                            {/* Fallback route */}
-                            <Route path="*" element={<Navigate to="/dashboard" replace />} />
-                        </Routes>
-                    </div>
-                </Router>
-            </AuthProvider>
+                                {/* Protected routes */}
+                                <Route
+                                    path="/"
+                                    element={
+                                        <ProtectedRoute>
+                                            <Layout />
+                                        </ProtectedRoute>
+                                    }
+                                >
+                                    <Route index element={<Navigate to="/dashboard" replace />} />
+                                    <Route path="dashboard" element={<Dashboard />} />
+                                    <Route path="tasks" element={<Tasks />} />
+                                    <Route path="tasks/:id" element={<TaskDetail />} />
+                                    <Route path="profile" element={<Profile />} />
+                                </Route>
+
+                                {/* Fallback route */}
+                                <Route path="*" element={<Navigate to="/dashboard" replace />} />
+                            </Routes>
+                        </div>
+                    </Router>
+                </AuthProvider>
+            </Web3Provider>
         </QueryClientProvider>
     );
 }

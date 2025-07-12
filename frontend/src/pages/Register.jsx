@@ -9,9 +9,12 @@ import {
     Building,
     GraduationCap,
     Globe,
-    Phone
+    Phone,
+    Wallet,
+    AlertCircle
 } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
+import { useWeb3 } from '../contexts/Web3Context';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/Card';
 import Button from '../components/ui/Button';
 import Input from '../components/ui/Input';
@@ -19,6 +22,8 @@ import Select from '../components/ui/Select';
 import Textarea from '../components/ui/Textarea';
 import { isValidEmail, isValidUrl, parseSkills } from '../utils/helpers';
 import { USER_ROLES } from '../utils/constants';
+import { companyService, studentService } from '../services/blockchainService';
+import toast from 'react-hot-toast';
 
 const Register = () => {
     const [formData, setFormData] = useState({
@@ -44,6 +49,7 @@ const Register = () => {
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
     const { register } = useAuth();
+    const { connectWallet, isConnected, account, chainId } = useWeb3();
     const navigate = useNavigate();
 
     const handleChange = (e) => {
@@ -112,14 +118,48 @@ const Register = () => {
 
         if (!validateForm()) return;
 
+        // Check if wallet is connected
+        if (!isConnected) {
+            toast.error('Bạn cần kết nối ví MetaMask để đăng ký!');
+            return;
+        }
+        // Check if on correct network (Sepolia testnet - chainId 11155111)
+        if (chainId !== 11155111) {
+            toast.error('Vui lòng chuyển sang mạng Sepolia Testnet để tiếp tục!');
+            return;
+        }
+
         setLoading(true);
+
         try {
+            // Step 1: Register on blockchain
+            let blockchainResult;
+            if (formData.role === USER_ROLES.STUDENT) {
+                blockchainResult = await studentService.registerStudent(
+                    formData.name,
+                    JSON.stringify(parseSkills(formData.skills)),
+                    account
+                );
+            } else {
+                blockchainResult = await companyService.registerCompany(
+                    formData.company_name,
+                    formData.description || 'No description provided',
+                    account
+                );
+            }
+
+            if (!blockchainResult.success) {
+                throw new Error(blockchainResult.error || 'Blockchain registration failed');
+            }
+
+            // Step 2: Register on backend
             const registrationData = {
                 name: formData.name,
                 email: formData.email,
                 password: formData.password,
                 role: formData.role,
-                phone: formData.phone
+                phone: formData.phone,
+                wallet_address: account // Add wallet address to backend
             };
 
             if (formData.role === USER_ROLES.STUDENT) {
@@ -135,13 +175,21 @@ const Register = () => {
 
             const result = await register(registrationData);
             if (result.success) {
-                navigate('/dashboard');
+                toast.success('Đăng ký thành công!');
+                setTimeout(() => {
+                    navigate('/dashboard');
+                }, 1500);
             }
         } catch (error) {
             console.error('Registration error:', error);
+            toast.error(error.message || 'Đăng ký thất bại');
         } finally {
             setLoading(false);
         }
+    };
+
+    const handleConnectWallet = async () => {
+        await connectWallet();
     };
 
     return (
@@ -172,6 +220,51 @@ const Register = () => {
                     </CardHeader>
 
                     <CardContent>
+                        {/* Wallet Connection Section - always visible */}
+                        <div className="mb-6 p-4 rounded-lg border-2 border-dashed border-blue-200 bg-blue-50">
+                            <div className="flex items-center space-x-3">
+                                <Wallet className="h-5 w-5 text-blue-600" />
+                                <div className="flex-1">
+                                    {isConnected ? (
+                                        <>
+                                            <h3 className="font-medium text-blue-900">Ví đã kết nối</h3>
+                                            <p className="text-sm text-blue-700 mb-1">
+                                                Địa chỉ: {account?.slice(0, 6)}...{account?.slice(-4)}
+                                            </p>
+                                            {chainId !== 11155111 ? (
+                                                <div className="flex items-center text-red-600 text-sm">
+                                                    <AlertCircle className="h-4 w-4 mr-1" />
+                                                    Sai mạng! Vui lòng chuyển sang Sepolia Testnet.
+                                                </div>
+                                            ) : (
+                                                <div className="flex items-center text-green-600 text-sm">
+                                                    <span className="h-3 w-3 rounded-full bg-green-400 inline-block mr-2" />
+                                                    Đã kết nối Sepolia Testnet
+                                                </div>
+                                            )}
+                                        </>
+                                    ) : (
+                                        <>
+                                            <h3 className="font-medium text-blue-900">Chưa kết nối ví</h3>
+                                            <p className="text-sm text-blue-700 mb-2">
+                                                Để sử dụng đầy đủ tính năng của VieVerse, bạn cần kết nối ví MetaMask và đăng ký trên blockchain.
+                                            </p>
+                                            <Button
+                                                type="button"
+                                                onClick={handleConnectWallet}
+                                                className="bg-blue-600 hover:bg-blue-700"
+                                            >
+                                                <Wallet className="h-4 w-4 mr-2" />
+                                                Kết nối MetaMask
+                                            </Button>
+                                        </>
+                                    )}
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Network Warning (if connected but wrong network) - already handled above */}
+
                         <form onSubmit={handleSubmit} className="space-y-6">
                             {/* Role selection */}
                             <div className="space-y-2">
@@ -445,7 +538,7 @@ const Register = () => {
                                 variant="gradient"
                                 className="w-full h-12"
                                 loading={loading}
-                                disabled={loading}
+                                disabled={loading || !isConnected || chainId !== 11155111}
                             >
                                 Tạo tài khoản
                             </Button>

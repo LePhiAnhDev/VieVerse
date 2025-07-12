@@ -20,6 +20,7 @@ import LoadingSpinner from '../components/common/LoadingSpinner';
 import EmptyState from '../components/common/EmptyState';
 import StatsCard from '../components/features/StatsCard';
 import TaskCard from '../components/features/TaskCard';
+import BlockchainInfo from '../components/features/BlockchainInfo';
 import { getGreeting } from '../utils/helpers';
 import { formatDate } from '../utils/formatters';
 
@@ -45,6 +46,41 @@ const Dashboard = () => {
 
     if (loading) {
         return <LoadingSpinner size="lg" text="Đang tải dashboard..." fullScreen />;
+    }
+
+    // Fallback for when dashboardData is null
+    if (!dashboardData) {
+        return (
+            <div className="space-y-9 animate-fade-in">
+                <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-green-600 via-emerald-600 to-emerald-700 p-9 text-white">
+                    <div className="absolute inset-0 grid-pattern opacity-10" />
+                    <div className="relative z-10">
+                        <div className="flex flex-col md:flex-row items-start md:items-center justify-between">
+                            <div className="space-y-2">
+                                <h1 className="text-3xl font-bold">
+                                    {getGreeting()}, {user?.name}! 👋
+                                </h1>
+                                <p className="text-emerald-100 text-lg">
+                                    {user?.role === 'student'
+                                        ? 'Sẵn sàng khám phá những cơ hội mới hôm nay?'
+                                        : 'Hãy quản lý dự án và kết nối với những tài năng trẻ!'}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="text-center py-12">
+                    <EmptyState
+                        icon={Briefcase}
+                        title="Không thể tải dữ liệu dashboard"
+                        description="Vui lòng thử lại sau hoặc liên hệ hỗ trợ nếu vấn đề vẫn tiếp tục."
+                        actionLabel="Thử lại"
+                        action={<Button onClick={fetchDashboardData}>Thử lại</Button>}
+                    />
+                </div>
+            </div>
+        );
     }
 
     const stats = dashboardData?.dashboard?.stats || {};
@@ -173,7 +209,7 @@ const Dashboard = () => {
                         <CardContent>
                             {user?.role === 'student' ? (
                                 <div className="space-y-5"> {/* Increased space */}
-                                    {dashboardData?.dashboard?.recent_applications?.length > 0 ? (
+                                    {dashboardData?.dashboard?.recent_applications && dashboardData.dashboard.recent_applications.length > 0 ? (
                                         dashboardData.dashboard.recent_applications.map((application) => (
                                             <div key={application.id} className="group border border-gray-200 rounded-xl p-5 hover:border-green-200 hover:shadow-md transition-all duration-200"> {/* Increased padding */}
                                                 <div className="flex items-start justify-between">
@@ -216,7 +252,7 @@ const Dashboard = () => {
                                 </div>
                             ) : (
                                 <div className="space-y-5"> {/* Increased space */}
-                                    {dashboardData?.dashboard?.recent_tasks?.length > 0 ? (
+                                    {dashboardData?.dashboard?.recent_tasks && dashboardData.dashboard.recent_tasks.length > 0 ? (
                                         dashboardData.dashboard.recent_tasks.map((task) => (
                                             <div key={task.id} className="group border border-gray-200 rounded-xl p-5 hover:border-green-200 hover:shadow-md transition-all duration-200"> {/* Increased padding */}
                                                 <div className="flex items-start justify-between">
@@ -265,6 +301,9 @@ const Dashboard = () => {
 
                 {/* Quick Actions & Insights */}
                 <div className="space-y-7"> {/* Increased space */}
+                    {/* Blockchain Info */}
+                    <BlockchainInfo user={user} />
+
                     {/* Quick Actions */}
                     <Card>
                         <CardHeader>

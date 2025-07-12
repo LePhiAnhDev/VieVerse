@@ -1,109 +1,204 @@
-# VieVerse - Student Networking Platform
+# VieVerse - Blockchain-Powered Student-Company Platform
 
-Một nền tảng mạng xã hội dành cho sinh viên, kết nối với các doanh nghiệp để thực hiện các nhiệm vụ freelance và thực tập, với hệ thống token blockchain.
+VieVerse là một nền tảng kết nối sinh viên và doanh nghiệp thông qua công nghệ blockchain, cho phép tạo và quản lý các nhiệm vụ thực tế với hệ thống token và reputation.
 
-## API Endpoints
+## 🚀 Tính năng chính
 
-### Authentication
-- `POST /api/auth/register` - Đăng ký
-- `POST /api/auth/login` - Đăng nhập
-- `GET /api/auth/profile` - Lấy thông tin profile
-- `PUT /api/auth/profile` - Cập nhật profile
-- `PUT /api/auth/change-password` - Đổi mật khẩu
+### Cho Sinh viên
+- Đăng ký và tạo hồ sơ trên blockchain
+- Tìm kiếm và ứng tuyển vào các nhiệm vụ
+- Nhận token thưởng khi hoàn thành nhiệm vụ
+- Xây dựng reputation score
+- Tham gia các khóa học và sự kiện
 
-### Tasks
-- `GET /api/tasks` - Lấy danh sách nhiệm vụ (với filter, pagination)
-- `GET /api/tasks/:id` - Lấy chi tiết nhiệm vụ
-- `POST /api/tasks` - Tạo nhiệm vụ (Company)
-- `PUT /api/tasks/:id` - Cập nhật nhiệm vụ
-- `DELETE /api/tasks/:id` - Xóa nhiệm vụ
-- `POST /api/tasks/:id/apply` - Ứng tuyển
-- `PUT /api/tasks/:id/applications/:appId` - Duyệt ứng tuyển
-- `POST /api/tasks/:id/submit` - Nộp bài
-- `POST /api/tasks/:id/complete` - Xác nhận hoàn thành
+### Cho Doanh nghiệp
+- Đăng ký và xác minh trên blockchain
+- Tạo và quản lý nhiệm vụ
+- Tìm kiếm tài năng trẻ
+- Đánh giá và thưởng token cho sinh viên
+- Theo dõi hiệu suất dự án
 
-### Users
-- `GET /api/users/dashboard` - Dashboard data
-- `GET /api/users/profile/:id` - Xem profile người khác
+### Hệ thống Blockchain
+- Smart contracts cho quản lý user, task, token
+- Hệ thống reputation và verification
+- Token VVT (VieVerse Token) cho thưởng
+- IPFS integration cho lưu trữ file
+- Gas optimization và retry mechanisms
 
-## Cài đặt và chạy dự án
+## 🏗️ Kiến trúc hệ thống
 
-### Prerequisites
-- Node.js 
-- Docker & Docker Compose
+```
+VieVerse/
+├── frontend/          # React + Vite frontend
+├── backend/           # Express.js API server
+├── blockchain/        # Hardhat + Smart contracts + Service
+│   ├── contracts/     # Solidity smart contracts
+│   ├── service/       # Blockchain API service
+│   └── test/          # Contract tests
+└── docker-compose.yml # Docker configuration
+```
+
+## 🛠️ Công nghệ sử dụng
+
+### Frontend
+- **React 18** + **Vite**
+- **Tailwind CSS** + **Lucide React**
+- **React Router** + **React Query**
+- **Web3.js** + **MetaMask integration**
+
+### Backend
+- **Node.js** + **Express.js**
+- **Sequelize ORM** + **PostgreSQL**
+- **JWT Authentication**
+- **Rate limiting** + **Security middleware**
+
+### Blockchain
+- **Hardhat** + **Ethers.js**
+- **Solidity** smart contracts
+- **Sepolia Testnet**
+- **IPFS** (Pinata) integration
+
+## 📦 Cài đặt và chạy
 
 ### 1. Clone repository
 ```bash
-git clone [repo-link]
+git clone <repository-url>
 cd VieVerse
 ```
 
 ### 2. Cài đặt dependencies
+```bash
+# Backend
+cd backend && npm install
 
-**Backend:**
+# Frontend
+cd frontend && npm install
+
+# Blockchain
+cd blockchain && npm install
+```
+
+### 3. Cấu hình environment variables
+
+#### Backend (.env)
+```env
+PORT=5000
+DATABASE_URL=postgresql://username:password@localhost:5432/vieverse
+JWT_SECRET=your-jwt-secret
+FRONTEND_URL=http://localhost:5173
+```
+
+#### Blockchain Service (.env)
+```env
+BLOCKCHAIN_SERVICE_PORT=5001
+SEPOLIA_URL=https://sepolia.infura.io/v3/your-infura-key
+PRIVATE_KEY=your-private-key
+INTERNAL_SERVICE_KEY=your-internal-key
+PINATA_API_KEY=your-pinata-key
+PINATA_API_SECRET=your-pinata-secret
+```
+
+### 4. Khởi động các service
+
+#### Terminal 1: Backend
 ```bash
 cd backend
-npm install
+npm start
 ```
 
-**Frontend:**
+#### Terminal 2: Blockchain Service
+```bash
+cd blockchain
+npm run start:service
+```
+
+#### Terminal 3: Frontend
 ```bash
 cd frontend
-npm install --legacy-peer-deps
+npm run dev
 ```
 
-### 3. Cấu hình môi trường
+### 5. Truy cập ứng dụng
+- **Frontend**: http://localhost:5173
+- **Backend API**: http://localhost:5000
+- **Blockchain Service**: http://localhost:5001
 
-**Backend (.env):**
-```env
-NODE_ENV=development
-DB_HOST=localhost
-DB_PORT=5432
-DB_NAME=VieVerse
-DB_USER=postgres
-DB_PASSWORD=password
-JWT_SECRET=your-super-secret-jwt-key-change-this-in-production
-JWT_EXPIRE=7d
-FRONTEND_URL=http://localhost:5173
-PORT=5000
+## 🔧 Smart Contracts
+
+### VieVerseTaskVerification
+- Quản lý đăng ký user (student/company)
+- Tạo và quản lý nhiệm vụ
+- Hệ thống verification và reputation
+
+### VieVerseToken (VVT)
+- ERC-20 token cho thưởng
+- Mint/burn functionality
+- Transfer và balance tracking
+
+### VieVerseTokenUtility
+- Khóa học và sự kiện
+- Certification system
+- Reward redemption
+
+## 📡 API Endpoints
+
+### Backend API (Port 5000)
+- `POST /api/auth/register` - Đăng ký user
+- `POST /api/auth/login` - Đăng nhập
+- `GET /api/users/dashboard` - Dashboard data
+- `GET /api/tasks` - Danh sách nhiệm vụ
+
+### Blockchain API (Port 5001)
+- `POST /api/student/register` - Đăng ký student
+- `POST /api/company/register` - Đăng ký company
+- `POST /api/task/create` - Tạo nhiệm vụ
+- `GET /api/token/balance/:address` - Token balance
+- `GET /api/reputation/:address` - Reputation score
+
+## 🧪 Testing
+
+### Smart Contract Tests
+```bash
+cd blockchain
+npm test
 ```
 
-### 4. Chạy database
+### API Tests
+```bash
+cd backend
+npm test
+```
+
+## 🚀 Deployment
+
+### Docker
 ```bash
 docker-compose up -d
 ```
 
-### 5. Chạy ứng dụng
+### Manual Deployment
+1. Build frontend: `cd frontend && npm run build`
+2. Start backend: `cd backend && npm start`
+3. Start blockchain service: `cd blockchain && npm run start:service`
 
-**Backend:**
-```bash
-cd backend
-npm run dev
-```
+## 📄 License
 
-**Frontend:**
-```bash
-cd frontend
-npm run dev
-```
+MIT License - xem file [LICENSE](LICENSE) để biết thêm chi tiết.
 
-## Database Schema
+## 🤝 Contributing
 
-### Users
-- Thông tin chung: email, password, name, role, avatar
-- Sinh viên: university, major, skills, tokens
-- Doanh nghiệp: company_name, industry, description, website
+1. Fork repository
+2. Tạo feature branch: `git checkout -b feature/new-feature`
+3. Commit changes: `git commit -am 'Add new feature'`
+4. Push branch: `git push origin feature/new-feature`
+5. Tạo Pull Request
 
-### Tasks
-- Thông tin cơ bản: title, description, requirements
-- Cấu hình: skills_required, reward_tokens, deadline, difficulty
-- Trạng thái: status, max_applicants, location
+## 📞 Support
 
-### Applications
-- Liên kết: task_id, student_id
-- Theo dõi: status, cover_letter, work_submission
-- Timestamps: applied_at, reviewed_at, completed_at
+- **Email**: support@vieverse.com
+- **Documentation**: [API_ENDPOINTS.md](API_ENDPOINTS.md)
+- **Issues**: GitHub Issues
 
-## License
+---
 
-This project is licensed under the Apache-2.0 license.
+**VieVerse** - Kết nối tài năng trẻ với cơ hội thực tế! 🚀

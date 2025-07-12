@@ -5,24 +5,57 @@ import { vi } from 'date-fns/locale';
  * Format date to Vietnamese format
  */
 export function formatDate(date, pattern = 'dd/MM/yyyy') {
-    return format(new Date(date), pattern, { locale: vi });
+    if (!date) return 'N/A';
+
+    try {
+        const dateObj = new Date(date);
+        if (isNaN(dateObj.getTime())) {
+            return 'N/A';
+        }
+        return format(dateObj, pattern, { locale: vi });
+    } catch (error) {
+        console.error('Error formatting date:', error, date);
+        return 'N/A';
+    }
 }
 
 /**
  * Format date and time
  */
 export function formatDateTime(date) {
-    return format(new Date(date), 'dd/MM/yyyy HH:mm', { locale: vi });
+    if (!date) return 'N/A';
+
+    try {
+        const dateObj = new Date(date);
+        if (isNaN(dateObj.getTime())) {
+            return 'N/A';
+        }
+        return format(dateObj, 'dd/MM/yyyy HH:mm', { locale: vi });
+    } catch (error) {
+        console.error('Error formatting date time:', error, date);
+        return 'N/A';
+    }
 }
 
 /**
  * Format relative time (e.g., "2 hours ago")
  */
 export function formatRelativeTime(date) {
-    return formatDistanceToNow(new Date(date), {
-        addSuffix: true,
-        locale: vi
-    });
+    if (!date) return 'N/A';
+
+    try {
+        const dateObj = new Date(date);
+        if (isNaN(dateObj.getTime())) {
+            return 'N/A';
+        }
+        return formatDistanceToNow(dateObj, {
+            addSuffix: true,
+            locale: vi
+        });
+    } catch (error) {
+        console.error('Error formatting relative time:', error, date);
+        return 'N/A';
+    }
 }
 
 /**

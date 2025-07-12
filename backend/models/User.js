@@ -84,6 +84,19 @@ const User = sequelize.define('User', {
     last_login: {
         type: DataTypes.DATE,
         allowNull: true
+    },
+    // Blockchain fields
+    wallet_address: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        unique: true,
+        validate: {
+            is: /^0x[a-fA-F0-9]{40}$/ // Ethereum address format
+        }
+    },
+    blockchain_registered: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false
     }
 });
 
