@@ -15,7 +15,7 @@ DB_HOST=localhost
 DB_PORT=5432
 DB_NAME=vieverse
 DB_USER=postgres
-DB_PASSWORD=your_db_password_here
+DB_PASSWORD=password
 
 # Optional: Full database URL (used by some ORMs like Prisma, Sequelize, etc.)
 DATABASE_URL=postgresql://postgres:your_db_password_here@localhost:5432/vieverse
@@ -61,6 +61,7 @@ NODE_ENV=test
 ## Run blockchain
 ```
 cd blockchain
+npx hardhat run scripts/deploy.js --network sepolia
 npm run start:service
 ```
 
