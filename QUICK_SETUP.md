@@ -18,7 +18,7 @@ DB_USER=postgres
 DB_PASSWORD=password
 
 # Optional: Full database URL (used by some ORMs like Prisma, Sequelize, etc.)
-DATABASE_URL=postgresql://postgres:your_db_password_here@localhost:5432/vieverse
+DATABASE_URL=postgresql://postgres:password@localhost:5432/vieverse
 
 # ───── JWT Authentication ─────
 JWT_SECRET=your-super-secret-jwt-key-change-this-in-production
@@ -61,6 +61,7 @@ NODE_ENV=test
 ## Run blockchain
 ```
 cd blockchain
+npm install
 npx hardhat run scripts/deploy.js --network sepolia
 npm run start:service
 ```
