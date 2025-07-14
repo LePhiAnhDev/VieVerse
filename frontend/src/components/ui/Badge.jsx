@@ -2,20 +2,19 @@ import React from 'react';
 import { cn } from '../../utils/helpers';
 
 const badgeVariants = {
-    default: 'bg-gray-100 text-gray-800 border-gray-200',
-    primary: 'bg-green-50 text-green-700 border-green-200',
-    secondary: 'bg-gray-50 text-gray-600 border-gray-200',
-    success: 'bg-teal-50 text-teal-700 border-teal-200',
-    warning: 'bg-amber-50 text-amber-700 border-amber-200',
-    danger: 'bg-red-50 text-red-700 border-red-200',
-    info: 'bg-cyan-50 text-cyan-700 border-cyan-200',
-    purple: 'bg-green-50 text-green-700 border-green-200' // Changed from purple to green
+    default: 'bg-gray-100 text-gray-800',
+    primary: 'bg-blue-100 text-blue-800 border border-blue-200',
+    secondary: 'bg-gray-100 text-gray-800 border border-gray-200',
+    success: 'bg-teal-100 text-teal-800 border border-teal-200',
+    warning: 'bg-amber-100 text-amber-800 border border-amber-200',
+    danger: 'bg-red-100 text-red-800 border border-red-200',
+    outline: 'border border-gray-300 text-gray-700'
 };
 
 const badgeSizes = {
-    sm: 'px-2.5 py-1 text-xs', // Increased padding
-    default: 'px-3.5 py-1.5 text-sm', // Increased padding
-    lg: 'px-4.5 py-2 text-base' // Increased padding
+    sm: 'px-2 py-1 text-xs',
+    default: 'px-3 py-1 text-sm',
+    lg: 'px-4 py-2 text-base'
 };
 
 const Badge = React.forwardRef(({
@@ -27,13 +26,13 @@ const Badge = React.forwardRef(({
 }, ref) => {
     return (
         <span
+            ref={ref}
             className={cn(
-                'inline-flex items-center rounded-full border-2 font-medium transition-colors',
+                'inline-flex items-center rounded-full font-medium transition-colors duration-200',
                 badgeVariants[variant],
                 badgeSizes[size],
                 className
             )}
-            ref={ref}
             {...props}
         >
             {children}

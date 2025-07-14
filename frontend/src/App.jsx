@@ -55,7 +55,7 @@ function App() {
             <Web3Provider>
                 <AuthProvider>
                     <Router>
-                        <div className="min-h-screen bg-gray-50">
+                        <div className="min-h-screen bg-background">
                             {/* Toast notifications */}
                             <Toaster
                                 position="top-right"
@@ -71,7 +71,7 @@ function App() {
                                     },
                                     success: {
                                         style: {
-                                            background: '#10B981',
+                                            background: '#2563EB',
                                         },
                                     },
                                     error: {

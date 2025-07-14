@@ -4,40 +4,34 @@ import { cn } from '../../utils/helpers';
 const Input = React.forwardRef(({
     className,
     type = 'text',
-    error,
     icon: Icon,
-    iconPosition = 'left',
+    error,
     ...props
 }, ref) => {
     return (
         <div className="relative">
-            {Icon && iconPosition === 'left' && (
-                <div className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400">
-                    <Icon className="h-4 w-4" />
+            {Icon && (
+                <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+                    <Icon className="h-5 w-5" />
                 </div>
             )}
-
             <input
                 type={type}
                 className={cn(
-                    'flex h-11 w-full rounded-2xl border-2 border-gray-300 bg-white px-4 py-2 text-sm',
+                    'flex h-11 w-full rounded-xl border-2 border-gray-200 bg-white px-4 py-2 text-sm',
                     'placeholder:text-gray-500',
-                    'focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500',
-                    'disabled:cursor-not-allowed disabled:opacity-50 disabled:bg-gray-50',
-                    'transition-colors duration-200',
-                    Icon && iconPosition === 'left' && 'pl-14',
-                    Icon && iconPosition === 'right' && 'pr-14',
-                    error && 'border-red-300 focus:border-red-500 focus:ring-red-500',
+                    'focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500',
+                    'disabled:cursor-not-allowed disabled:opacity-50',
+                    'transition-all duration-200',
+                    Icon && 'pl-11',
+                    error && 'border-red-500 focus:ring-red-500 focus:border-red-500',
                     className
                 )}
                 ref={ref}
                 {...props}
             />
-
-            {Icon && iconPosition === 'right' && (
-                <div className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400">
-                    <Icon className="h-4 w-4" />
-                </div>
+            {error && (
+                <p className="mt-1 text-sm text-red-600">{error}</p>
             )}
         </div>
     );

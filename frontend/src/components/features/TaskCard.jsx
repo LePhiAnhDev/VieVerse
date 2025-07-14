@@ -36,8 +36,8 @@ const TaskCard = ({ task, showApplyButton = true, className }) => {
     return (
         <Card
             className={cn(
-                'group overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-2',
-                'border-gray-200 hover:border-purple-200',
+                'group overflow-hidden transition-all duration-200 hover:shadow-md',
+                'border-gray-200 hover:border-blue-200',
                 className
             )}
         >
@@ -48,7 +48,7 @@ const TaskCard = ({ task, showApplyButton = true, className }) => {
                         <img
                             src={getAvatarUrl(task.company?.company_name || task.company?.name)}
                             alt={task.company?.company_name || task.company?.name}
-                            className="h-8 w-8 rounded-full border-2 border-gray-200"
+                            className="h-8 w-8 rounded-full border-2 border-gray-200 group-hover:border-blue-200 transition-colors duration-200"
                         />
                         <div>
                             <p className="text-sm font-medium text-gray-900">
@@ -56,8 +56,8 @@ const TaskCard = ({ task, showApplyButton = true, className }) => {
                             </p>
                             {task.company?.is_verified && (
                                 <div className="flex items-center space-x-1">
-                                    <CheckCircle className="h-3 w-3 text-purple-500" />
-                                    <span className="text-xs text-purple-600">Đã xác minh</span>
+                                    <CheckCircle className="h-3 w-3 text-blue-500" />
+                                    <span className="text-xs text-blue-600">Đã xác minh</span>
                                 </div>
                             )}
                         </div>
@@ -76,7 +76,7 @@ const TaskCard = ({ task, showApplyButton = true, className }) => {
                 {/* Task title */}
                 <Link
                     to={`/tasks/${task.id}`}
-                    className="block group-hover:text-purple-600 transition-colors"
+                    className="block group-hover:text-blue-600 transition-colors duration-200"
                 >
                     <h3 className="text-lg font-semibold text-gray-900 line-clamp-2 leading-tight">
                         {task.title}
@@ -107,7 +107,7 @@ const TaskCard = ({ task, showApplyButton = true, className }) => {
                 {/* Stats */}
                 <div className="grid grid-cols-2 gap-4">
                     <div className="flex items-center space-x-2">
-                        <div className="p-1.5 bg-amber-50 rounded-lg">
+                        <div className="p-1.5 bg-amber-50 rounded-lg group-hover:bg-amber-100 transition-colors duration-200">
                             <Coins className="h-4 w-4 text-amber-600" />
                         </div>
                         <div>
@@ -119,8 +119,8 @@ const TaskCard = ({ task, showApplyButton = true, className }) => {
                     </div>
 
                     <div className="flex items-center space-x-2">
-                        <div className="p-1.5 bg-purple-50 rounded-lg">
-                            <Users className="h-4 w-4 text-purple-600" />
+                        <div className="p-1.5 bg-blue-50 rounded-lg group-hover:bg-blue-100 transition-colors duration-200">
+                            <Users className="h-4 w-4 text-blue-600" />
                         </div>
                         <div>
                             <p className="text-sm font-semibold text-gray-900">
@@ -132,8 +132,10 @@ const TaskCard = ({ task, showApplyButton = true, className }) => {
 
                     <div className="flex items-center space-x-2">
                         <div className={cn(
-                            'p-1.5 rounded-lg',
-                            deadlinePassed ? 'bg-red-50' : deadlineSoon ? 'bg-orange-50' : 'bg-gray-50'
+                            'p-1.5 rounded-lg transition-colors duration-200',
+                            deadlinePassed ? 'bg-red-50 group-hover:bg-red-100' :
+                                deadlineSoon ? 'bg-orange-50 group-hover:bg-orange-100' :
+                                    'bg-gray-50 group-hover:bg-gray-100'
                         )}>
                             <Calendar className={cn(
                                 'h-4 w-4',
@@ -152,7 +154,7 @@ const TaskCard = ({ task, showApplyButton = true, className }) => {
                     </div>
 
                     <div className="flex items-center space-x-2">
-                        <div className="p-1.5 bg-teal-50 rounded-lg">
+                        <div className="p-1.5 bg-teal-50 rounded-lg group-hover:bg-teal-100 transition-colors duration-200">
                             <MapPin className="h-4 w-4 text-teal-600" />
                         </div>
                         <div>
@@ -186,7 +188,7 @@ const TaskCard = ({ task, showApplyButton = true, className }) => {
                 {showApplyButton && canApply && (
                     <Link to={`/tasks/${task.id}`} className="block">
                         <Button
-                            className="w-full group-hover:shadow-lg transition-all duration-300"
+                            className="w-full transition-all duration-200"
                             variant="gradient"
                         >
                             Xem chi tiết & Ứng tuyển

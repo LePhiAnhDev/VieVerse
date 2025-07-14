@@ -3,13 +3,13 @@ import { cn } from '../../utils/helpers';
 import { Loader2 } from 'lucide-react';
 
 const buttonVariants = {
-    default: 'bg-green-600 text-white hover:bg-green-700 shadow-sm',
+    default: 'bg-blue-600 text-white hover:bg-blue-700 shadow-sm transition-colors duration-200',
     destructive: 'bg-red-600 text-white hover:bg-red-700 shadow-sm',
     outline: 'border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 hover:border-gray-400',
-    secondary: 'bg-green-100 text-green-900 hover:bg-green-200',
+    secondary: 'bg-blue-100 text-blue-900 hover:bg-blue-200',
     ghost: 'text-gray-600 hover:text-gray-900 hover:bg-gray-100',
-    link: 'text-green-600 underline-offset-4 hover:underline p-0 h-auto',
-    gradient: 'bg-gradient-to-r from-green-600 to-emerald-600 text-white hover:from-green-700 hover:to-emerald-700 shadow-lg',
+    link: 'text-blue-600 underline-offset-4 hover:underline p-0 h-auto',
+    gradient: 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white hover:from-blue-700 hover:to-indigo-700 shadow-lg transition-all duration-200',
     success: 'bg-teal-600 text-white hover:bg-teal-700 shadow-sm'
 };
 
@@ -33,8 +33,8 @@ const Button = React.forwardRef(({
         <button
             className={cn(
                 'inline-flex items-center justify-center rounded-2xl font-medium transition-all duration-200',
-                'focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2',
-                'disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:transform-none',
+                'focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2',
+                'disabled:opacity-50 disabled:cursor-not-allowed',
                 'active:scale-95',
                 buttonVariants[variant],
                 buttonSizes[size],

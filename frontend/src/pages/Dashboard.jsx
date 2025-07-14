@@ -73,15 +73,16 @@ const Dashboard = () => {
     if (!dashboardData) {
         return (
             <div className="space-y-9 animate-fade-in">
-                <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-green-600 via-emerald-600 to-emerald-700 p-9 text-white">
+                <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-700 p-9 text-white">
                     <div className="absolute inset-0 grid-pattern opacity-10" />
+                    <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-indigo-600/20" />
                     <div className="relative z-10">
                         <div className="flex flex-col md:flex-row items-start md:items-center justify-between">
                             <div className="space-y-2">
                                 <h1 className="text-3xl font-bold">
                                     {getGreeting()}, {user?.name}! 👋
                                 </h1>
-                                <p className="text-emerald-100 text-lg">
+                                <p className="text-blue-100 text-lg">
                                     {user?.role === 'student'
                                         ? 'Sẵn sàng khám phá những cơ hội mới hôm nay?'
                                         : 'Hãy quản lý dự án và kết nối với những tài năng trẻ!'}
@@ -109,15 +110,16 @@ const Dashboard = () => {
     return (
         <div className="space-y-9 animate-fade-in">
             {/* Welcome Header */}
-            <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-green-600 via-emerald-600 to-emerald-700 p-9 text-white">
+            <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-700 p-9 text-white">
                 <div className="absolute inset-0 grid-pattern opacity-10" />
+                <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-indigo-600/20" />
                 <div className="relative z-10">
                     <div className="flex flex-col md:flex-row items-start md:items-center justify-between">
                         <div className="space-y-2">
                             <h1 className="text-3xl font-bold">
                                 {getGreeting()}, {user?.name}! 👋
                             </h1>
-                            <p className="text-emerald-100 text-lg">
+                            <p className="text-blue-100 text-lg">
                                 {user?.role === 'student'
                                     ? 'Sẵn sàng khám phá những cơ hội mới hôm nay?'
                                     : 'Hãy quản lý dự án và kết nối với những tài năng trẻ!'}
@@ -129,12 +131,12 @@ const Dashboard = () => {
                                 <div className="flex items-center space-x-2 bg-white/20 backdrop-blur-sm rounded-xl px-5 py-2.5">
                                     <Coins className="h-5 w-5 text-yellow-300" />
                                     <span className="font-semibold text-lg">{user?.tokens || 0}</span>
-                                    <span className="text-emerald-100">Token</span>
+                                    <span className="text-blue-100">Token</span>
                                 </div>
                             )}
 
                             <img
-                                src={`https://ui-avatars.com/api/?name=${encodeURIComponent(user?.name || 'User')}&size=64&background=ffffff&color=43A047&format=svg`}
+                                src={`https://ui-avatars.com/api/?name=${encodeURIComponent(user?.name || 'User')}&size=64&background=ffffff&color=2563EB&format=svg`}
                                 alt={user?.name}
                                 className="h-18 w-18 rounded-full border-4 border-white/20"
                             />
@@ -145,7 +147,7 @@ const Dashboard = () => {
 
             {/* Thêm cảnh báo nếu chưa liên kết ví */}
             {!user?.wallet_address && (
-                <div className="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 mb-6 rounded">
+                <div className="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 mb-6 rounded-lg shadow-sm">
                     <div className="flex items-center justify-between">
                         <span>Bạn chưa liên kết ví MetaMask. Một số chức năng sẽ yêu cầu liên kết ví.</span>
                         <Button onClick={handleConnectWallet} loading={walletLoading} disabled={walletLoading} className="ml-4 bg-yellow-500 hover:bg-yellow-600 text-white">
@@ -222,11 +224,11 @@ const Dashboard = () => {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-9">
                 {/* Recent Activity */}
                 <div className="lg:col-span-2">
-                    <Card className="h-full">
+                    <Card className="h-full card-hover">
                         <CardHeader className="pb-5">
                             <div className="flex items-center justify-between">
                                 <CardTitle className="flex items-center space-x-2">
-                                    <Clock className="h-5 w-5 text-green-600" />
+                                    <Clock className="h-5 w-5 text-blue-600" />
                                     <span>
                                         {user?.role === 'student' ? 'Ứng tuyển gần đây' : 'Nhiệm vụ gần đây'}
                                     </span>
@@ -244,10 +246,10 @@ const Dashboard = () => {
                                 <div className="space-y-5">
                                     {dashboardData?.dashboard?.recent_applications && dashboardData.dashboard.recent_applications.length > 0 ? (
                                         dashboardData.dashboard.recent_applications.map((application) => (
-                                            <div key={application.id} className="group border border-gray-200 rounded-xl p-5 hover:border-green-200 hover:shadow-md transition-all duration-200">
+                                            <div key={application.id} className="group border border-gray-200 rounded-xl p-5 hover:border-blue-200 hover:shadow-md transition-all duration-200">
                                                 <div className="flex items-start justify-between">
                                                     <div className="flex-1">
-                                                        <h3 className="font-semibold text-gray-900 group-hover:text-green-600 transition-colors">
+                                                        <h3 className="font-semibold text-gray-900 group-hover:text-blue-600 transition-colors">
                                                             {application.task.title}
                                                         </h3>
                                                         <p className="text-sm text-gray-600 mt-1">
@@ -287,14 +289,14 @@ const Dashboard = () => {
                                 <div className="space-y-5">
                                     {dashboardData?.dashboard?.recent_tasks && dashboardData.dashboard.recent_tasks.length > 0 ? (
                                         dashboardData.dashboard.recent_tasks.map((task) => (
-                                            <div key={task.id} className="group border border-gray-200 rounded-xl p-5 hover:border-green-200 hover:shadow-md transition-all duration-200">
+                                            <div key={task.id} className="group border border-gray-200 rounded-xl p-5 hover:border-blue-200 hover:shadow-md transition-all duration-200">
                                                 <div className="flex items-start justify-between">
                                                     <div className="flex-1">
-                                                        <h3 className="font-semibold text-gray-900 group-hover:text-green-600 transition-colors">
+                                                        <h3 className="font-semibold text-gray-900 group-hover:text-blue-600 transition-colors">
                                                             {task.title}
                                                         </h3>
                                                         <div className="flex items-center space-x-4 mt-3">
-                                                            <span className={`px-3 py-1 text-xs font-medium rounded-full ${task.status === 'open' ? 'bg-green-50 text-green-700 border border-green-200' :
+                                                            <span className={`px-3 py-1 text-xs font-medium rounded-full ${task.status === 'open' ? 'bg-blue-50 text-blue-700 border border-blue-200' :
                                                                 task.status === 'in_progress' ? 'bg-amber-50 text-amber-700 border border-amber-200' :
                                                                     'bg-teal-50 text-teal-700 border border-teal-200'
                                                                 }`}>
@@ -338,10 +340,10 @@ const Dashboard = () => {
                     <BlockchainInfo user={user} />
 
                     {/* Quick Actions */}
-                    <Card>
+                    <Card className="card-hover">
                         <CardHeader>
                             <CardTitle className="flex items-center space-x-2">
-                                <Star className="h-5 w-5 text-green-600" />
+                                <Star className="h-5 w-5 text-blue-600" />
                                 <span>Hành động nhanh</span>
                             </CardTitle>
                         </CardHeader>
@@ -393,7 +395,7 @@ const Dashboard = () => {
                     </Card>
 
                     {/* Featured Tasks/Opportunities */}
-                    <Card>
+                    <Card className="card-hover">
                         <CardHeader>
                             <CardTitle className="flex items-center space-x-2">
                                 <Star className="h-5 w-5 text-amber-500" />
@@ -405,18 +407,18 @@ const Dashboard = () => {
                         <CardContent>
                             {user?.role === 'student' ? (
                                 <div className="space-y-5">
-                                    <div className="p-5 bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl border border-green-200">
+                                    <div className="p-5 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl border border-blue-200 hover:shadow-md transition-all duration-200">
                                         <h4 className="font-semibold text-gray-900 mb-2">🚀 Nhiệm vụ hot nhất tuần</h4>
                                         <p className="text-sm text-gray-600 mb-3">
                                             Phát triển ứng dụng React Native cho startup công nghệ
                                         </p>
                                         <div className="flex items-center justify-between">
-                                            <span className="text-lg font-bold text-green-600">500 Token</span>
+                                            <span className="text-lg font-bold text-blue-600">500 Token</span>
                                             <Button size="sm">Xem ngay</Button>
                                         </div>
                                     </div>
 
-                                    <div className="p-5 bg-gradient-to-r from-teal-50 to-cyan-50 rounded-xl border border-teal-200">
+                                    <div className="p-5 bg-gradient-to-r from-teal-50 to-cyan-50 rounded-xl border border-teal-200 hover:shadow-md transition-all duration-200">
                                         <h4 className="font-semibold text-gray-900 mb-2">💡 Mẹo thành công</h4>
                                         <p className="text-sm text-gray-600">
                                             Hoàn thiện hồ sơ để tăng 70% cơ hội được chấp nhận
@@ -425,14 +427,14 @@ const Dashboard = () => {
                                 </div>
                             ) : (
                                 <div className="space-y-5">
-                                    <div className="p-5 bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl border border-green-200">
+                                    <div className="p-5 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl border border-blue-200 hover:shadow-md transition-all duration-200">
                                         <h4 className="font-semibold text-gray-900 mb-2">📊 Xu hướng tuyển dụng</h4>
                                         <p className="text-sm text-gray-600">
                                             React, Node.js và Python là những kỹ năng được tìm kiếm nhiều nhất
                                         </p>
                                     </div>
 
-                                    <div className="p-5 bg-gradient-to-r from-amber-50 to-orange-50 rounded-xl border border-amber-200">
+                                    <div className="p-5 bg-gradient-to-r from-amber-50 to-orange-50 rounded-xl border border-amber-200 hover:shadow-md transition-all duration-200">
                                         <h4 className="font-semibold text-gray-900 mb-2">⭐ Đánh giá cao</h4>
                                         <p className="text-sm text-gray-600">
                                             Công ty của bạn có rating 4.8/5 từ sinh viên

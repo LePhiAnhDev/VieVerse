@@ -76,19 +76,27 @@ const Login = () => {
             {/* Background decoration */}
             <div className="absolute inset-0 grid-pattern opacity-20" />
 
+            {/* Floating elements */}
+            <div className="absolute top-20 left-20 w-32 h-32 bg-blue-500/10 rounded-full blur-3xl animate-float"></div>
+            <div className="absolute bottom-20 right-20 w-40 h-40 bg-indigo-500/10 rounded-full blur-3xl animate-float" style={{ animationDelay: '2s' }}></div>
+            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-60 h-60 bg-blue-400/5 rounded-full blur-3xl animate-pulse-glow"></div>
+
             <div className="w-full max-w-md relative z-10">
                 {/* Logo */}
                 <div className="text-center mb-8 animate-fade-in">
-                    <img
-                        src="/logo.svg"
-                        alt="VieVerse"
-                        className="h-16 w-16 mx-auto mb-1"
-                    />
+                    <div className="relative inline-block">
+                        <img
+                            src="/logo.svg"
+                            alt="VieVerse"
+                            className="h-16 w-16 mx-auto mb-1"
+                        />
+                        <div className="absolute inset-0 bg-blue-500/20 rounded-full blur-sm"></div>
+                    </div>
                     <h1 className="text-3xl font-bold text-gradient">VieVerse</h1>
                     <p className="text-gray-600 mt-2">Kết nối sinh viên và doanh nghiệp</p>
                 </div>
 
-                <Card className="animate-slide-up shadow-2xl border-0 bg-white/80 backdrop-blur-md">
+                <Card className="animate-slide-up shadow-2xl border-0 bg-white/90 backdrop-blur-xl">
                     <CardHeader className="space-y-1 pb-6">
                         <CardTitle className="text-2xl font-bold text-center text-gray-900">
                             Đăng nhập
@@ -140,7 +148,7 @@ const Login = () => {
                                     <button
                                         type="button"
                                         onClick={() => setShowPassword(!showPassword)}
-                                        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                                        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors duration-200"
                                     >
                                         {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                                     </button>
@@ -154,7 +162,7 @@ const Login = () => {
                             <div className="flex justify-end">
                                 <Link
                                     to="/forgot-password"
-                                    className="text-sm text-green-600 hover:text-green-700 font-medium"
+                                    className="text-sm text-blue-600 hover:text-blue-700 font-medium transition-colors duration-200"
                                 >
                                     Quên mật khẩu?
                                 </Link>
@@ -178,7 +186,7 @@ const Login = () => {
                                 Chưa có tài khoản?{' '}
                                 <Link
                                     to="/register"
-                                    className="font-medium text-green-600 hover:text-green-700"
+                                    className="font-medium text-blue-600 hover:text-blue-700 transition-colors duration-200"
                                 >
                                     Đăng ký ngay
                                 </Link>
