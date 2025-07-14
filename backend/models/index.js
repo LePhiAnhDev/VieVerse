@@ -2,7 +2,6 @@ import User from './User.js';
 import Task from './Task.js';
 import Application from './Application.js';
 
-// Define associations
 User.hasMany(Task, {
     foreignKey: 'company_id',
     as: 'createdTasks',

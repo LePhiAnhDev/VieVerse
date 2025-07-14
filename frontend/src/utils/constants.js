@@ -6,7 +6,7 @@ export const ROUTES = {
     TASKS: '/tasks',
     TASK_DETAIL: '/tasks/:id',
     PROFILE: '/profile',
-    TOKENS: '/tokens'
+
 };
 
 export const USER_ROLES = {

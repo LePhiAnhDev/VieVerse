@@ -308,61 +308,7 @@ export const searchUsers = async (req, res) => {
     }
 };
 
-export const getTokenHistory = async (req, res) => {
-    try {
-        if (req.user.role !== 'student') {
-            return res.status(403).json({
-                error: 'Access denied. Only students can view token history.'
-            });
-        }
 
-        const history = await Application.findAll({
-            where: {
-                student_id: req.user.id,
-                work_status: 'completed'
-            },
-            include: [
-                {
-                    model: Task,
-                    as: 'task',
-                    attributes: ['id', 'title', 'reward_tokens'],
-                    include: [
-                        {
-                            model: User,
-                            as: 'company',
-                            attributes: ['id', 'name', 'company_name', 'avatar']
-                        }
-                    ]
-                }
-            ],
-            order: [['completed_at', 'DESC']]
-        });
-
-        const tokenHistory = history.map(app => ({
-            id: app.id,
-            task_id: app.task.id,
-            task_title: app.task.title,
-            company: app.task.company,
-            tokens_earned: app.task.reward_tokens,
-            completed_at: app.completed_at,
-            rating: app.rating,
-            feedback: app.feedback
-        }));
-
-        const totalTokens = tokenHistory.reduce((sum, item) => sum + item.tokens_earned, 0);
-
-        res.json({
-            current_tokens: req.user.tokens,
-            total_earned: totalTokens,
-            history: tokenHistory
-        });
-    } catch (error) {
-        console.error('Get token history error:', error);
-        res.status(500).json({
-            error: 'Internal server error'
-        });
-    }
-};
 
 export const getApplications = async (req, res) => {
     try {

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useWeb3 } from '../../contexts/Web3Context';
-import { tokenService, studentService, companyService } from '../../services/blockchainService';
+import { studentService, companyService } from '../../services/blockchainService';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/Card';
 import Button from '../ui/Button';
 import LoadingSpinner from '../common/LoadingSpinner';
@@ -9,7 +9,7 @@ import toast from 'react-hot-toast';
 
 const BlockchainInfo = ({ user }) => {
     const { account, isConnected, connectWallet } = useWeb3();
-    const [tokenBalance, setTokenBalance] = useState(null);
+
     const [blockchainInfo, setBlockchainInfo] = useState(null);
     const [loading, setLoading] = useState(false);
 
@@ -24,12 +24,6 @@ const BlockchainInfo = ({ user }) => {
 
         setLoading(true);
         try {
-            // Fetch token balance
-            const balanceResult = await tokenService.getBalance(account);
-            if (balanceResult.success) {
-                setTokenBalance(balanceResult.balance);
-            }
-
             // Fetch user info from blockchain
             if (user?.role === 'student') {
                 const studentResult = await studentService.getStudent(account);
@@ -83,38 +77,7 @@ const BlockchainInfo = ({ user }) => {
 
     return (
         <div className="space-y-4">
-            {/* Token Balance */}
-            <Card>
-                <CardHeader>
-                    <CardTitle className="flex items-center space-x-2">
-                        <Coins className="h-5 w-5 text-yellow-600" />
-                        <span>Token Balance</span>
-                    </CardTitle>
-                </CardHeader>
-                <CardContent>
-                    {loading ? (
-                        <LoadingSpinner size="sm" />
-                    ) : (
-                        <div className="space-y-2">
-                            <div className="flex items-center justify-between">
-                                <span className="text-2xl font-bold text-gray-900">
-                                    {tokenBalance ? `${parseInt(tokenBalance) / Math.pow(10, 18)} VVT` : '0 VVT'}
-                                </span>
-                                <Button
-                                    variant="outline"
-                                    size="sm"
-                                    onClick={fetchBlockchainData}
-                                >
-                                    Refresh
-                                </Button>
-                            </div>
-                            <p className="text-sm text-gray-600">
-                                Địa chỉ: {account?.slice(0, 6)}...{account?.slice(-4)}
-                            </p>
-                        </div>
-                    )}
-                </CardContent>
-            </Card>
+
 
             {/* Blockchain Profile */}
             {blockchainInfo && (

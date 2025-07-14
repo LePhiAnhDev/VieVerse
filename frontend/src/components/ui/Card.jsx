@@ -11,7 +11,7 @@ const Card = React.forwardRef(({
         <div
             ref={ref}
             className={cn(
-                'rounded-2xl border border-gray-200 bg-white shadow-sm',
+                'rounded-2xl border-2 border-gray-200 bg-white shadow-sm',
                 hover && 'transition-all duration-300 hover:shadow-lg hover:-translate-y-1 hover:border-green-200',
                 className
             )}
@@ -32,7 +32,7 @@ const CardHeader = React.forwardRef(({
     return (
         <div
             ref={ref}
-            className={cn('flex flex-col space-y-1.5 p-7 pb-5', className)} // Increased padding from p-6 pb-4
+            className={cn('flex flex-col space-y-1.5 p-7 pb-5 rounded-2xl', className)}
             {...props}
         >
             {children}
@@ -50,7 +50,7 @@ const CardTitle = React.forwardRef(({
     return (
         <h3
             ref={ref}
-            className={cn('text-lg font-semibold leading-none tracking-tight text-gray-900', className)}
+            className={cn('text-lg font-semibold leading-none tracking-tight text-gray-900 rounded-2xl', className)}
             {...props}
         >
             {children}
@@ -68,7 +68,7 @@ const CardDescription = React.forwardRef(({
     return (
         <p
             ref={ref}
-            className={cn('text-sm text-gray-600', className)}
+            className={cn('text-sm text-gray-600 rounded-2xl', className)}
             {...props}
         >
             {children}
@@ -86,7 +86,7 @@ const CardContent = React.forwardRef(({
     return (
         <div
             ref={ref}
-            className={cn('p-7 pt-2.5', className)} // Increased padding from p-6 pt-2
+            className={cn('p-7 pt-2.5 rounded-2xl', className)}
             {...props}
         >
             {children}
@@ -104,7 +104,7 @@ const CardFooter = React.forwardRef(({
     return (
         <div
             ref={ref}
-            className={cn('flex items-center p-7 pt-2.5', className)} // Increased padding from p-6 pt-2
+            className={cn('flex items-center p-7 pt-2.5 rounded-2xl', className)}
             {...props}
         >
             {children}

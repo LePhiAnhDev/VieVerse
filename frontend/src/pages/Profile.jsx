@@ -192,7 +192,7 @@ const Profile = () => {
     };
 
     return (
-        <div className="max-w-4xl mx-auto space-y-8 animate-fade-in">
+        <div className="space-y-8 animate-fade-in">
             {/* Header */}
             <Card className="overflow-hidden bg-gradient-to-r from-blue-50 to-purple-50 border-blue-200">
                 <CardContent className="p-8">
@@ -214,7 +214,7 @@ const Profile = () => {
                                     {user?.role === USER_ROLES.STUDENT ? '🎓 Sinh viên' : '🏢 Doanh nghiệp'}
                                 </p>
                                 {user?.role === USER_ROLES.STUDENT && (
-                                    <div className="flex items-center mt-3 bg-amber-100 text-amber-700 px-3 py-1.5 rounded-lg border border-amber-200">
+                                    <div className="flex items-center mt-3 bg-amber-100 text-amber-700 px-3 py-1.5 rounded-2xl border-2 border-amber-200">
                                         <Coins className="h-4 w-4 mr-2" />
                                         <span className="font-semibold">{user?.tokens || 0} Token</span>
                                     </div>
@@ -295,7 +295,7 @@ const Profile = () => {
                                     )}
                                 </>
                             ) : (
-                                <div className="flex items-center p-3 bg-gray-50 rounded-lg">
+                                <div className="flex items-center p-3 bg-gray-50 rounded-2xl border-2 border-gray-200">
                                     <User className="h-4 w-4 text-gray-400 mr-3" />
                                     <span className="text-gray-900">{user?.name}</span>
                                 </div>
@@ -304,7 +304,7 @@ const Profile = () => {
 
                         <div className="space-y-2">
                             <label className="text-sm font-medium text-gray-700">Email</label>
-                            <div className="flex items-center p-3 bg-gray-50 rounded-lg">
+                            <div className="flex items-center p-3 bg-gray-50 rounded-2xl border-2 border-gray-200">
                                 <Mail className="h-4 w-4 text-gray-400 mr-3" />
                                 <span className="text-gray-900">{user?.email}</span>
                                 <Badge variant="secondary" size="sm" className="ml-auto">
@@ -324,7 +324,7 @@ const Profile = () => {
                                     icon={Phone}
                                 />
                             ) : (
-                                <div className="flex items-center p-3 bg-gray-50 rounded-lg">
+                                <div className="flex items-center p-3 bg-gray-50 rounded-2xl border-2 border-gray-200">
                                     <Phone className="h-4 w-4 text-gray-400 mr-3" />
                                     <span className="text-gray-900">{user?.phone || 'Chưa cập nhật'}</span>
                                 </div>
@@ -333,7 +333,7 @@ const Profile = () => {
 
                         <div className="space-y-2">
                             <label className="text-sm font-medium text-gray-700">Vai trò</label>
-                            <div className="flex items-center p-3 bg-gray-50 rounded-lg">
+                            <div className="flex items-center p-3 bg-gray-50 rounded-2xl border-2 border-gray-200">
                                 <Award className="h-4 w-4 text-gray-400 mr-3" />
                                 <span className="text-gray-900">
                                     {user?.role === USER_ROLES.STUDENT ? 'Sinh viên' : 'Doanh nghiệp'}
@@ -376,7 +376,7 @@ const Profile = () => {
                                         )}
                                     </>
                                 ) : (
-                                    <div className="flex items-center p-3 bg-gray-50 rounded-lg">
+                                    <div className="flex items-center p-3 bg-gray-50 rounded-2xl border-2 border-gray-200">
                                         <Building className="h-4 w-4 text-gray-400 mr-3" />
                                         <span className="text-gray-900">{user?.university || 'Chưa cập nhật'}</span>
                                     </div>
@@ -401,7 +401,7 @@ const Profile = () => {
                                         )}
                                     </>
                                 ) : (
-                                    <div className="flex items-center p-3 bg-gray-50 rounded-lg">
+                                    <div className="flex items-center p-3 bg-gray-50 rounded-2xl border-2 border-gray-200">
                                         <Award className="h-4 w-4 text-gray-400 mr-3" />
                                         <span className="text-gray-900">{user?.major || 'Chưa cập nhật'}</span>
                                     </div>
@@ -436,7 +436,7 @@ const Profile = () => {
                                             ))}
                                         </div>
                                     ) : (
-                                        <div className="flex items-center p-3 bg-gray-50 rounded-lg">
+                                        <div className="flex items-center p-3 bg-gray-50 rounded-2xl border-2 border-gray-200">
                                             <Star className="h-4 w-4 text-gray-400 mr-3" />
                                             <span className="text-gray-500">Chưa cập nhật kỹ năng</span>
                                         </div>
@@ -474,7 +474,7 @@ const Profile = () => {
                                         )}
                                     </>
                                 ) : (
-                                    <div className="flex items-center p-3 bg-gray-50 rounded-lg">
+                                    <div className="flex items-center p-3 bg-gray-50 rounded-2xl border-2 border-gray-200">
                                         <Building className="h-4 w-4 text-gray-400 mr-3" />
                                         <span className="text-gray-900">{user?.company_name || 'Chưa cập nhật'}</span>
                                     </div>
@@ -499,7 +499,7 @@ const Profile = () => {
                                         )}
                                     </>
                                 ) : (
-                                    <div className="flex items-center p-3 bg-gray-50 rounded-lg">
+                                    <div className="flex items-center p-3 bg-gray-50 rounded-2xl border-2 border-gray-200">
                                         <Award className="h-4 w-4 text-gray-400 mr-3" />
                                         <span className="text-gray-900">{user?.industry || 'Chưa cập nhật'}</span>
                                     </div>
@@ -523,7 +523,7 @@ const Profile = () => {
                                         )}
                                     </>
                                 ) : (
-                                    <div className="flex items-center p-3 bg-gray-50 rounded-lg">
+                                    <div className="flex items-center p-3 bg-gray-50 rounded-2xl border-2 border-gray-200">
                                         <Globe className="h-4 w-4 text-gray-400 mr-3" />
                                         {user?.website ? (
                                             <a
@@ -553,7 +553,7 @@ const Profile = () => {
                                     rows={4}
                                 />
                             ) : (
-                                <div className="p-3 bg-gray-50 rounded-lg">
+                                <div className="p-3 bg-gray-50 rounded-2xl border-2 border-gray-200">
                                     <p className="text-gray-900">
                                         {user?.description || 'Chưa có mô tả về công ty'}
                                     </p>

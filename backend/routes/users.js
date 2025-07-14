@@ -5,7 +5,6 @@ import {
     getDashboard,
     getUserProfile,
     searchUsers,
-    getTokenHistory,
     getApplications
 } from '../controllers/userController.js';
 
@@ -64,7 +63,7 @@ const applicationQueryValidation = [
 router.get('/dashboard', authenticate, getDashboard);
 router.get('/profile/:id', userIdValidation, getUserProfile);
 router.get('/search', searchValidation, searchUsers);
-router.get('/tokens/history', authenticate, authorize('student'), getTokenHistory);
+
 router.get('/applications', authenticate, authorize('student'), applicationQueryValidation, getApplications);
 
 export default router; 

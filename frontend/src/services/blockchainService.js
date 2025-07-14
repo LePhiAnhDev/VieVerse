@@ -95,64 +95,7 @@ export const taskService = {
     }
 };
 
-// Token Operations
-export const tokenService = {
-    // Get token balance
-    getBalance: async (address) => {
-        try {
-            const response = await blockchainAPI.get(`/tokens/balance/${address}`);
-            return response.data;
-        } catch (error) {
-            throw new Error(error.response?.data?.error || 'Failed to get token balance');
-        }
-    },
 
-    // Mint tokens (owner only)
-    mintTokens: async (to, amount) => {
-        try {
-            const response = await blockchainAPI.post('/tokens/mint', {
-                to,
-                amount
-            });
-            return response.data;
-        } catch (error) {
-            throw new Error(error.response?.data?.error || 'Failed to mint tokens');
-        }
-    },
-
-    // Burn tokens
-    burnTokens: async (from, amount) => {
-        try {
-            const response = await blockchainAPI.post('/tokens/burn', {
-                from,
-                amount
-            });
-            return response.data;
-        } catch (error) {
-            throw new Error(error.response?.data?.error || 'Failed to burn tokens');
-        }
-    },
-
-    // Get total supply
-    getSupply: async () => {
-        try {
-            const response = await blockchainAPI.get('/tokens/supply');
-            return response.data;
-        } catch (error) {
-            throw new Error(error.response?.data?.error || 'Failed to get token supply');
-        }
-    },
-
-    // Get token info
-    getInfo: async () => {
-        try {
-            const response = await blockchainAPI.get('/tokens/info');
-            return response.data;
-        } catch (error) {
-            throw new Error(error.response?.data?.error || 'Failed to get token info');
-        }
-    }
-};
 
 // Company Operations
 export const companyService = {
@@ -322,7 +265,6 @@ export const healthCheck = async () => {
 
 export default {
     taskService,
-    tokenService,
     companyService,
     studentService,
     ipfsService,

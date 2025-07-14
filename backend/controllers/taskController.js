@@ -542,15 +542,6 @@ export const confirmCompletion = async (req, res) => {
             status: 'completed'
         });
 
-        // Award tokens to student (mock blockchain trigger)
-        const student = application.student;
-        await student.update({
-            tokens: student.tokens + task.reward_tokens
-        });
-
-        // Mock blockchain trigger
-        console.log(`[BLOCKCHAIN TRIGGER] Student ${student.id} earned ${task.reward_tokens} tokens for completing task ${task.id}`);
-
         res.json({
             message: 'Task completion confirmed successfully',
             task,

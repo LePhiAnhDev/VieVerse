@@ -107,9 +107,9 @@ const Dashboard = () => {
     const stats = dashboardData?.dashboard?.stats || {};
 
     return (
-        <div className="space-y-9 animate-fade-in"> {/* Increased space from space-y-8 */}
+        <div className="space-y-9 animate-fade-in">
             {/* Welcome Header */}
-            <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-green-600 via-emerald-600 to-emerald-700 p-9 text-white"> {/* Changed colors and increased padding */}
+            <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-green-600 via-emerald-600 to-emerald-700 p-9 text-white">
                 <div className="absolute inset-0 grid-pattern opacity-10" />
                 <div className="relative z-10">
                     <div className="flex flex-col md:flex-row items-start md:items-center justify-between">
@@ -126,7 +126,7 @@ const Dashboard = () => {
 
                         <div className="mt-4 md:mt-0 flex items-center space-x-4">
                             {user?.role === 'student' && (
-                                <div className="flex items-center space-x-2 bg-white/20 backdrop-blur-sm rounded-xl px-5 py-2.5"> {/* Increased padding */}
+                                <div className="flex items-center space-x-2 bg-white/20 backdrop-blur-sm rounded-xl px-5 py-2.5">
                                     <Coins className="h-5 w-5 text-yellow-300" />
                                     <span className="font-semibold text-lg">{user?.tokens || 0}</span>
                                     <span className="text-emerald-100">Token</span>
@@ -136,7 +136,7 @@ const Dashboard = () => {
                             <img
                                 src={`https://ui-avatars.com/api/?name=${encodeURIComponent(user?.name || 'User')}&size=64&background=ffffff&color=43A047&format=svg`}
                                 alt={user?.name}
-                                className="h-18 w-18 rounded-full border-4 border-white/20" /* Increased size */
+                                className="h-18 w-18 rounded-full border-4 border-white/20"
                             />
                         </div>
                     </div>
@@ -156,7 +156,7 @@ const Dashboard = () => {
             )}
 
             {/* Stats Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-7"> {/* Increased gap */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-7">
                 {user?.role === 'student' ? (
                     <>
                         <StatsCard
@@ -219,11 +219,11 @@ const Dashboard = () => {
             </div>
 
             {/* Main Content Grid */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-9"> {/* Increased gap */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-9">
                 {/* Recent Activity */}
                 <div className="lg:col-span-2">
                     <Card className="h-full">
-                        <CardHeader className="pb-5"> {/* Increased padding */}
+                        <CardHeader className="pb-5">
                             <div className="flex items-center justify-between">
                                 <CardTitle className="flex items-center space-x-2">
                                     <Clock className="h-5 w-5 text-green-600" />
@@ -241,10 +241,10 @@ const Dashboard = () => {
                         </CardHeader>
                         <CardContent>
                             {user?.role === 'student' ? (
-                                <div className="space-y-5"> {/* Increased space */}
+                                <div className="space-y-5">
                                     {dashboardData?.dashboard?.recent_applications && dashboardData.dashboard.recent_applications.length > 0 ? (
                                         dashboardData.dashboard.recent_applications.map((application) => (
-                                            <div key={application.id} className="group border border-gray-200 rounded-xl p-5 hover:border-green-200 hover:shadow-md transition-all duration-200"> {/* Increased padding */}
+                                            <div key={application.id} className="group border border-gray-200 rounded-xl p-5 hover:border-green-200 hover:shadow-md transition-all duration-200">
                                                 <div className="flex items-start justify-between">
                                                     <div className="flex-1">
                                                         <h3 className="font-semibold text-gray-900 group-hover:text-green-600 transition-colors">
@@ -284,10 +284,10 @@ const Dashboard = () => {
                                     )}
                                 </div>
                             ) : (
-                                <div className="space-y-5"> {/* Increased space */}
+                                <div className="space-y-5">
                                     {dashboardData?.dashboard?.recent_tasks && dashboardData.dashboard.recent_tasks.length > 0 ? (
                                         dashboardData.dashboard.recent_tasks.map((task) => (
-                                            <div key={task.id} className="group border border-gray-200 rounded-xl p-5 hover:border-green-200 hover:shadow-md transition-all duration-200"> {/* Increased padding */}
+                                            <div key={task.id} className="group border border-gray-200 rounded-xl p-5 hover:border-green-200 hover:shadow-md transition-all duration-200">
                                                 <div className="flex items-start justify-between">
                                                     <div className="flex-1">
                                                         <h3 className="font-semibold text-gray-900 group-hover:text-green-600 transition-colors">
@@ -333,7 +333,7 @@ const Dashboard = () => {
                 </div>
 
                 {/* Quick Actions & Insights */}
-                <div className="space-y-7"> {/* Increased space */}
+                <div className="space-y-7">
                     {/* Blockchain Info */}
                     <BlockchainInfo user={user} />
 
@@ -345,7 +345,7 @@ const Dashboard = () => {
                                 <span>Hành động nhanh</span>
                             </CardTitle>
                         </CardHeader>
-                        <CardContent className="space-y-3.5"> {/* Increased space */}
+                        <CardContent className="space-y-3.5">
                             {user?.role === 'student' ? (
                                 <>
                                     <Link to="/tasks" className="block">
@@ -362,13 +362,7 @@ const Dashboard = () => {
                                             <ArrowRight className="ml-auto h-4 w-4 group-hover:translate-x-1 transition-transform" />
                                         </Button>
                                     </Link>
-                                    <Link to="/tokens" className="block">
-                                        <Button variant="outline" className="w-full justify-start group">
-                                            <Coins className="h-4 w-4 mr-2" />
-                                            Lịch sử Token
-                                            <ArrowRight className="ml-auto h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                                        </Button>
-                                    </Link>
+
                                 </>
                             ) : (
                                 <>
@@ -410,8 +404,8 @@ const Dashboard = () => {
                         </CardHeader>
                         <CardContent>
                             {user?.role === 'student' ? (
-                                <div className="space-y-5"> {/* Increased space */}
-                                    <div className="p-5 bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl border border-green-200"> {/* Changed colors and increased padding */}
+                                <div className="space-y-5">
+                                    <div className="p-5 bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl border border-green-200">
                                         <h4 className="font-semibold text-gray-900 mb-2">🚀 Nhiệm vụ hot nhất tuần</h4>
                                         <p className="text-sm text-gray-600 mb-3">
                                             Phát triển ứng dụng React Native cho startup công nghệ
@@ -422,7 +416,7 @@ const Dashboard = () => {
                                         </div>
                                     </div>
 
-                                    <div className="p-5 bg-gradient-to-r from-teal-50 to-cyan-50 rounded-xl border border-teal-200"> {/* Increased padding */}
+                                    <div className="p-5 bg-gradient-to-r from-teal-50 to-cyan-50 rounded-xl border border-teal-200">
                                         <h4 className="font-semibold text-gray-900 mb-2">💡 Mẹo thành công</h4>
                                         <p className="text-sm text-gray-600">
                                             Hoàn thiện hồ sơ để tăng 70% cơ hội được chấp nhận
@@ -430,15 +424,15 @@ const Dashboard = () => {
                                     </div>
                                 </div>
                             ) : (
-                                <div className="space-y-5"> {/* Increased space */}
-                                    <div className="p-5 bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl border border-green-200"> {/* Changed colors and increased padding */}
+                                <div className="space-y-5">
+                                    <div className="p-5 bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl border border-green-200">
                                         <h4 className="font-semibold text-gray-900 mb-2">📊 Xu hướng tuyển dụng</h4>
                                         <p className="text-sm text-gray-600">
                                             React, Node.js và Python là những kỹ năng được tìm kiếm nhiều nhất
                                         </p>
                                     </div>
 
-                                    <div className="p-5 bg-gradient-to-r from-amber-50 to-orange-50 rounded-xl border border-amber-200"> {/* Increased padding */}
+                                    <div className="p-5 bg-gradient-to-r from-amber-50 to-orange-50 rounded-xl border border-amber-200">
                                         <h4 className="font-semibold text-gray-900 mb-2">⭐ Đánh giá cao</h4>
                                         <p className="text-sm text-gray-600">
                                             Công ty của bạn có rating 4.8/5 từ sinh viên

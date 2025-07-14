@@ -36,7 +36,7 @@ const StatsCard = ({
                 className
             )}
         >
-            <CardContent className="p-7"> {/* Increased padding from p-6 */}
+            <CardContent className="p-7">
                 <div className="flex items-center justify-between">
                     <div className="flex-1">
                         <p className="text-sm font-medium text-gray-600 mb-1">
@@ -74,7 +74,7 @@ const StatsCard = ({
                     </div>
                     {Icon && (
                         <div className={cn(
-                            'p-3.5 rounded-xl', /* Increased padding */
+                            'p-3.5 rounded-xl',
                             gradient
                                 ? 'bg-gradient-to-br from-green-500 to-emerald-600 text-white'
                                 : 'bg-green-100 text-green-600'

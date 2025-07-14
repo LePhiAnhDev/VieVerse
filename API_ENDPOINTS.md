@@ -109,9 +109,7 @@ Query params:
 - industry: string
 ```
 
-#### **GET** `/api/users/token-history`
 
-Lấy lịch sử token transactions (cần Bearer token)
 
 #### **GET** `/api/users/applications`
 
