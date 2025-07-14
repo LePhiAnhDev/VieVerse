@@ -482,7 +482,7 @@ const Register = () => {
 
                 {/* Footer */}
                 <div className="mt-8 text-center text-sm text-gray-500">
-                    <p>© 2024 VieVerse. Tất cả quyền được bảo lưu.</p>
+                    <p>© 2025 VieVerse. Tất cả quyền được bảo lưu.</p>
                 </div>
             </div>
         </div>
