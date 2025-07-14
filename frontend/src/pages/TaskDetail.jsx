@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import { useWeb3 } from '../contexts/Web3Context';
 import {
     Calendar,
     MapPin,
@@ -41,8 +42,10 @@ import toast from 'react-hot-toast';
 
 const TaskDetail = () => {
     const { id } = useParams();
-    const { user } = useAuth();
-    const navigate = useNavigate();
+    const { user, updateProfile } = useAuth();
+    const { connectWallet, isConnected, account, chainId } = useWeb3();
+    const [walletLoading, setWalletLoading] = useState(false);
+    const [showWalletModal, setShowWalletModal] = useState(false);
     const [task, setTask] = useState(null);
     const [userApplication, setUserApplication] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -88,6 +91,25 @@ const TaskDetail = () => {
             toast.error(message);
         } finally {
             setApplying(false);
+        }
+    };
+
+    const handleConnectWallet = async () => {
+        if (!isConnected) {
+            await connectWallet();
+        }
+        if (account && chainId === 11155111) {
+            setWalletLoading(true);
+            try {
+                await axios.put('/auth/connect-wallet', { wallet_address: account });
+                await updateProfile({}); // Refresh user info
+                setShowWalletModal(false);
+                toast.success('Đã liên kết ví thành công!');
+            } catch (err) {
+                toast.error('Lỗi liên kết ví');
+            } finally {
+                setWalletLoading(false);
+            }
         }
     };
 
@@ -203,7 +225,13 @@ const TaskDetail = () => {
                                     <Button
                                         variant="gradient"
                                         size="lg"
-                                        onClick={() => setShowApplyModal(true)}
+                                        onClick={() => {
+                                            if (!user?.wallet_address) {
+                                                setShowWalletModal(true);
+                                            } else {
+                                                setShowApplyModal(true);
+                                            }
+                                        }}
                                         className="ml-4 shadow-lg"
                                     >
                                         <Send className="h-4 w-4 mr-2" />
@@ -492,6 +520,26 @@ const TaskDetail = () => {
                     </Button>
                 </ModalFooter>
             </Modal>
+
+            {/* Modal yêu cầu liên kết ví nếu chưa có ví */}
+            {showWalletModal && (
+                <Modal open={showWalletModal} onClose={() => setShowWalletModal(false)}>
+                    <ModalHeader>
+                        <ModalTitle>Liên kết ví MetaMask</ModalTitle>
+                    </ModalHeader>
+                    <CardContent>
+                        <p className="mb-4">Bạn cần liên kết ví MetaMask để ứng tuyển nhiệm vụ này.</p>
+                        <Button onClick={handleConnectWallet} loading={walletLoading} disabled={walletLoading} className="bg-yellow-500 hover:bg-yellow-600 text-white w-full">
+                            Kết nối & Liên kết ví
+                        </Button>
+                    </CardContent>
+                    <ModalFooter>
+                        <Button variant="ghost" onClick={() => setShowWalletModal(false)}>
+                            Đóng
+                        </Button>
+                    </ModalFooter>
+                </Modal>
+            )}
         </div>
     );
 };

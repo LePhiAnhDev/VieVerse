@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import { useWeb3 } from '../contexts/Web3Context';
 import {
     Briefcase,
     Users,
@@ -25,7 +26,9 @@ import { getGreeting } from '../utils/helpers';
 import { formatDate } from '../utils/formatters';
 
 const Dashboard = () => {
-    const { user } = useAuth();
+    const { user, updateProfile } = useAuth();
+    const { connectWallet, isConnected, account, chainId } = useWeb3();
+    const [walletLoading, setWalletLoading] = useState(false);
     const [dashboardData, setDashboardData] = useState(null);
     const [loading, setLoading] = useState(true);
 
@@ -41,6 +44,24 @@ const Dashboard = () => {
             console.error('Error fetching dashboard data:', error);
         } finally {
             setLoading(false);
+        }
+    };
+
+    const handleConnectWallet = async () => {
+        if (!isConnected) {
+            await connectWallet();
+        }
+        if (account && chainId === 11155111) {
+            setWalletLoading(true);
+            try {
+                await axios.put('/auth/connect-wallet', { wallet_address: account });
+                await updateProfile({}); // Refresh user info
+                window.location.reload();
+            } catch (err) {
+                // Xử lý lỗi
+            } finally {
+                setWalletLoading(false);
+            }
         }
     };
 
@@ -121,6 +142,18 @@ const Dashboard = () => {
                     </div>
                 </div>
             </div>
+
+            {/* Thêm cảnh báo nếu chưa liên kết ví */}
+            {!user?.wallet_address && (
+                <div className="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 mb-6 rounded">
+                    <div className="flex items-center justify-between">
+                        <span>Bạn chưa liên kết ví MetaMask. Một số chức năng sẽ yêu cầu liên kết ví.</span>
+                        <Button onClick={handleConnectWallet} loading={walletLoading} disabled={walletLoading} className="ml-4 bg-yellow-500 hover:bg-yellow-600 text-white">
+                            Kết nối ví
+                        </Button>
+                    </div>
+                </div>
+            )}
 
             {/* Stats Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-7"> {/* Increased gap */}

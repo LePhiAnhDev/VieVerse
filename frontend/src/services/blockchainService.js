@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // Configure blockchain service
 const blockchainAPI = axios.create({
-    baseURL: 'http://localhost:5001/api',
+    baseURL: 'http://localhost:5000/api',
     timeout: 30000, // 30 seconds timeout for blockchain operations
 });
 
@@ -164,20 +164,6 @@ export const companyService = {
         } catch (error) {
             throw new Error(error.response?.data?.error || 'Failed to get company info');
         }
-    },
-
-    // Register company on blockchain
-    registerCompany: async (name, description, address) => {
-        try {
-            const response = await blockchainAPI.post('/company/register', {
-                name,
-                description,
-                address
-            });
-            return response.data;
-        } catch (error) {
-            throw new Error(error.response?.data?.error || 'Failed to register company');
-        }
     }
 };
 
@@ -190,20 +176,6 @@ export const studentService = {
             return response.data;
         } catch (error) {
             throw new Error(error.response?.data?.error || 'Failed to get student info');
-        }
-    },
-
-    // Register student on blockchain
-    registerStudent: async (name, skills, address) => {
-        try {
-            const response = await blockchainAPI.post('/student/register', {
-                name,
-                skills,
-                address
-            });
-            return response.data;
-        } catch (error) {
-            throw new Error(error.response?.data?.error || 'Failed to register student');
         }
     },
 

@@ -6,7 +6,8 @@ import {
     login,
     getProfile,
     updateProfile,
-    changePassword
+    changePassword,
+    connectWallet
 } from '../controllers/authController.js';
 
 const router = express.Router();
@@ -135,5 +136,10 @@ router.post('/login', loginValidation, login);
 router.get('/profile', authenticate, getProfile);
 router.put('/profile', authenticate, updateProfileValidation, updateProfile);
 router.put('/change-password', authenticate, changePasswordValidation, changePassword);
+router.put('/connect-wallet', authenticate, [
+    body('wallet_address')
+        .matches(/^0x[a-fA-F0-9]{40}$/)
+        .withMessage('Please provide a valid Ethereum address')
+], connectWallet);
 
 export default router; 

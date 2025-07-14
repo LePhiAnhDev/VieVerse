@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken';
 import { validationResult } from 'express-validator';
 import { User } from '../models/index.js';
+import { Op } from 'sequelize';
 
 const generateToken = (userId) => {
     return jwt.sign({ id: userId }, process.env.JWT_SECRET, {
@@ -28,7 +29,7 @@ export const register = async (req, res) => {
             });
         }
 
-        // Check if wallet address is already registered
+        // Check if wallet address is already registered (only if provided)
         if (wallet_address) {
             const existingWalletUser = await User.findOne({ where: { wallet_address } });
             if (existingWalletUser) {
@@ -45,7 +46,7 @@ export const register = async (req, res) => {
             name,
             role: role || 'student',
             wallet_address: wallet_address || null,
-            blockchain_registered: !!wallet_address
+            blockchain_registered: false // Will be updated when wallet is connected
         };
 
         if (role === 'student') {
@@ -226,6 +227,57 @@ export const changePassword = async (req, res) => {
         });
     } catch (error) {
         console.error('Change password error:', error);
+        res.status(500).json({
+            error: 'Internal server error'
+        });
+    }
+};
+
+export const connectWallet = async (req, res) => {
+    try {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({
+                error: 'Validation failed',
+                details: errors.array()
+            });
+        }
+
+        const { wallet_address } = req.body;
+
+        // Check if wallet address is already registered by another user
+        const existingWalletUser = await User.findOne({
+            where: {
+                wallet_address,
+                id: { [Op.ne]: req.user.id } // Exclude current user
+            }
+        });
+
+        if (existingWalletUser) {
+            return res.status(409).json({
+                error: 'Wallet address is already registered by another user'
+            });
+        }
+
+        const user = await User.findByPk(req.user.id);
+        if (!user) {
+            return res.status(404).json({
+                error: 'User not found'
+            });
+        }
+
+        // Update user's wallet address and blockchain registration status
+        await user.update({
+            wallet_address,
+            blockchain_registered: true
+        });
+
+        res.json({
+            message: 'Wallet connected successfully',
+            user: user.getPublicProfile()
+        });
+    } catch (error) {
+        console.error('Connect wallet error:', error);
         res.status(500).json({
             error: 'Internal server error'
         });
