@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { NavLink, useLocation, Link } from 'react-router-dom';
-import { Search, Bell, Menu, LogOut, User, Settings, Briefcase, Home, Coins, BarChart3, X, Plus } from 'lucide-react';
+import { Search, Bell, Menu, LogOut, User, Settings, Briefcase, Home, Coins, X, Plus } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import Button from '../ui/Button';
 import Input from '../ui/Input';
@@ -24,13 +24,6 @@ const Header = () => {
             href: '/tasks',
             icon: Briefcase,
             show: true
-        },
-
-        {
-            name: 'Thống kê',
-            href: '/analytics',
-            icon: BarChart3,
-            show: user?.role === 'company'
         },
         {
             name: 'Hồ sơ',

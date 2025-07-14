@@ -7,7 +7,6 @@ import {
     Users,
     CheckCircle,
     Coins,
-    TrendingUp,
     Calendar,
     Plus,
     ArrowRight,
@@ -178,7 +177,7 @@ const Dashboard = () => {
                         <StatsCard
                             title="Hoàn thành"
                             value={stats.completed_tasks || 0}
-                            icon={TrendingUp}
+                            icon={Calendar}
                             trend={8}
                         />
                         <StatsCard
@@ -379,13 +378,6 @@ const Dashboard = () => {
                                         <Button variant="outline" className="w-full justify-start group">
                                             <Calendar className="h-4 w-4 mr-2" />
                                             Quản lý nhiệm vụ
-                                            <ArrowRight className="ml-auto h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                                        </Button>
-                                    </Link>
-                                    <Link to="/analytics" className="block">
-                                        <Button variant="outline" className="w-full justify-start group">
-                                            <TrendingUp className="h-4 w-4 mr-2" />
-                                            Xem thống kê
                                             <ArrowRight className="ml-auto h-4 w-4 group-hover:translate-x-1 transition-transform" />
                                         </Button>
                                     </Link>
