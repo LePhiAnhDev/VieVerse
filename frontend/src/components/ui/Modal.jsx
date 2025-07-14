@@ -37,15 +37,15 @@ const Modal = ({
     if (!isOpen) return null;
 
     const sizeClasses = {
-        sm: 'max-w-md',
-        default: 'max-w-lg',
-        lg: 'max-w-2xl',
-        xl: 'max-w-4xl',
-        full: 'max-w-[95vw] max-h-[95vh]'
+        sm: 'max-w-md w-full mx-4',
+        default: 'max-w-lg w-full mx-4',
+        lg: 'max-w-2xl w-full mx-4',
+        xl: 'max-w-4xl w-full mx-4',
+        full: 'max-w-[95vw] w-[95vw] max-h-[95vh]'
     };
 
     const modalContent = (
-        <div className="fixed inset-0 z-50 flex items-center justify-center animate-fade-in">
+        <div className="fixed inset-0 z-50 flex items-start justify-center animate-fade-in p-4 pt-16">
             {/* Backdrop */}
             <div
                 className="fixed inset-0 bg-gray-900/50 backdrop-blur-sm transition-opacity"
@@ -55,22 +55,23 @@ const Modal = ({
             {/* Modal */}
             <div
                 className={cn(
-                    'relative w-full bg-white rounded-2xl shadow-2xl transform transition-all animate-scale-in mx-4',
+                    'relative bg-white rounded-2xl shadow-2xl transform transition-all animate-scale-in',
+                    'max-h-[calc(100vh-8rem)] overflow-hidden flex flex-col',
                     sizeClasses[size],
                     className
                 )}
             >
-                {/* Header */}
+                {/* Header - Fixed */}
                 {(title || showCloseButton) && (
-                    <div className="flex items-center justify-between p-6 border-b border-gray-100">
-                        <div>
+                    <div className="flex items-center justify-between p-4 sm:p-6 border-b border-gray-100 flex-shrink-0 bg-white">
+                        <div className="flex-1 min-w-0">
                             {title && (
-                                <h2 className="text-xl font-semibold text-gray-900">
+                                <h2 className="text-lg sm:text-xl font-semibold text-gray-900 truncate">
                                     {title}
                                 </h2>
                             )}
                             {description && (
-                                <p className="mt-1 text-sm text-gray-600">
+                                <p className="mt-1 text-sm text-gray-600 line-clamp-2">
                                     {description}
                                 </p>
                             )}
@@ -80,7 +81,7 @@ const Modal = ({
                                 variant="ghost"
                                 size="icon"
                                 onClick={onClose}
-                                className="flex-shrink-0"
+                                className="flex-shrink-0 ml-3"
                             >
                                 <X className="h-4 w-4" />
                             </Button>
@@ -88,22 +89,24 @@ const Modal = ({
                     </div>
                 )}
 
-                {/* Content */}
+                {/* Content - Scrollable */}
                 <div className={cn(
-                    'p-6',
+                    'flex-1 overflow-y-auto modal-scroll',
                     !(title || showCloseButton) && 'relative'
                 )}>
-                    {!(title || showCloseButton) && showCloseButton && (
-                        <Button
-                            variant="ghost"
-                            size="icon"
-                            onClick={onClose}
-                            className="absolute top-4 right-4 z-10"
-                        >
-                            <X className="h-4 w-4" />
-                        </Button>
-                    )}
-                    {children}
+                    <div className="p-4 sm:p-6">
+                        {!(title || showCloseButton) && showCloseButton && (
+                            <Button
+                                variant="ghost"
+                                size="icon"
+                                onClick={onClose}
+                                className="absolute top-4 right-4 z-10"
+                            >
+                                <X className="h-4 w-4" />
+                            </Button>
+                        )}
+                        {children}
+                    </div>
                 </div>
             </div>
         </div>

@@ -1,8 +1,4 @@
 -- VieVerse Database Initialization Script
--- The database 'VieVerse' is already created by Docker Compose
-
--- Connect to VieVerse database
-\c vieverse;
 
 -- Create extensions if needed
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
@@ -39,4 +35,3 @@ EXCEPTION
 END $$;
 
 -- Tables will be created by Sequelize automatically
--- This script only sets up the database extensions and types 

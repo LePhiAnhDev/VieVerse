@@ -7,7 +7,7 @@ import Input from '../ui/Input';
 import Textarea from '../ui/Textarea';
 import Select from '../ui/Select';
 import Modal from '../ui/Modal';
-import { Plus, Upload, FileText, Coins, Calendar, AlertCircle } from 'lucide-react';
+import { Plus, Upload, FileText, Coins, Calendar, AlertCircle, ChevronRight, ChevronLeft } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { TASK_DIFFICULTY, DIFFICULTY_LABELS } from '../../utils/constants';
 import { useAuth } from '../../contexts/AuthContext';
@@ -186,70 +186,78 @@ const CreateTaskModal = ({ isOpen, onClose, onSuccess }) => {
     };
 
     return (
-        <Modal isOpen={isOpen} onClose={handleClose} size="lg">
-            <Card>
-                <CardHeader>
-                    <CardTitle className="flex items-center space-x-2">
-                        <Plus className="h-5 w-5 text-green-600" />
-                        <span>Tạo nhiệm vụ mới</span>
-                    </CardTitle>
-                </CardHeader>
-                <CardContent>
-                    {/* Step indicator */}
-                    {step === 2 && (
-                        <div className="mb-6 p-4 rounded-lg border-2 border-dashed border-blue-200 bg-blue-50">
-                            <div className="flex items-center space-x-3">
-                                <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-blue-600"></div>
-                                <div>
-                                    <h3 className="font-medium text-blue-900">Đang tạo nhiệm vụ trên Blockchain</h3>
-                                    <p className="text-sm text-blue-700">Vui lòng chờ trong khi giao dịch được xử lý...</p>
-                                </div>
+        <Modal
+            isOpen={isOpen}
+            onClose={handleClose}
+            size="xl"
+            title="Tạo nhiệm vụ mới"
+            description="Điền thông tin chi tiết để tạo nhiệm vụ mới cho sinh viên"
+        >
+            <div className="space-y-4">
+                {/* Step indicator */}
+                {step === 2 && (
+                    <div className="p-3 rounded-lg border-2 border-dashed border-blue-200 bg-blue-50">
+                        <div className="flex items-center space-x-3">
+                            <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600"></div>
+                            <div>
+                                <h3 className="font-medium text-blue-900 text-sm">Đang tạo nhiệm vụ trên Blockchain</h3>
+                                <p className="text-xs text-blue-700">Vui lòng chờ trong khi giao dịch được xử lý...</p>
                             </div>
                         </div>
-                    )}
+                    </div>
+                )}
 
-                    {/* Wallet connection warning */}
-                    {!user?.wallet_address && (
-                        <div className="mb-6 p-4 rounded-lg border border-amber-200 bg-amber-50">
-                            <div className="flex items-center space-x-3">
-                                <AlertCircle className="h-5 w-5 text-amber-600" />
-                                <div>
-                                    <h3 className="font-medium text-amber-900">Liên kết ví bắt buộc</h3>
-                                    <p className="text-sm text-amber-700">
-                                        Bạn cần liên kết ví MetaMask với tài khoản để tạo nhiệm vụ mới.
-                                    </p>
-                                    <Button onClick={handleConnectWallet} loading={walletLoading} disabled={walletLoading} className="mt-2 bg-yellow-500 hover:bg-yellow-600 text-white">
-                                        Kết nối & Liên kết ví
-                                    </Button>
-                                </div>
+                {/* Wallet connection warning */}
+                {!user?.wallet_address && (
+                    <div className="p-3 rounded-lg border border-amber-200 bg-amber-50">
+                        <div className="flex items-start space-x-3">
+                            <AlertCircle className="h-4 w-4 text-amber-600 mt-0.5 flex-shrink-0" />
+                            <div className="flex-1 min-w-0">
+                                <h3 className="font-medium text-amber-900 text-sm">Liên kết ví bắt buộc</h3>
+                                <p className="text-xs text-amber-700 mt-1">
+                                    Bạn cần liên kết ví MetaMask với tài khoản để tạo nhiệm vụ mới.
+                                </p>
+                                <Button
+                                    onClick={handleConnectWallet}
+                                    loading={walletLoading}
+                                    disabled={walletLoading}
+                                    className="mt-2 bg-yellow-500 hover:bg-yellow-600 text-white text-sm px-3 py-1.5"
+                                >
+                                    Kết nối & Liên kết ví
+                                </Button>
                             </div>
                         </div>
-                    )}
+                    </div>
+                )}
 
-                    {/* Network warning */}
-                    {isConnected && chainId !== 11155111 && (
-                        <div className="mb-6 p-4 rounded-lg border border-red-200 bg-red-50">
-                            <div className="flex items-center space-x-3">
-                                <AlertCircle className="h-5 w-5 text-red-600" />
-                                <div>
-                                    <h3 className="font-medium text-red-900">Sai mạng</h3>
-                                    <p className="text-sm text-red-700">
-                                        Vui lòng chuyển sang mạng Sepolia Testnet để tiếp tục.
-                                    </p>
-                                </div>
+                {/* Network warning */}
+                {isConnected && chainId !== 11155111 && (
+                    <div className="p-3 rounded-lg border border-red-200 bg-red-50">
+                        <div className="flex items-start space-x-3">
+                            <AlertCircle className="h-4 w-4 text-red-600 mt-0.5 flex-shrink-0" />
+                            <div className="flex-1 min-w-0">
+                                <h3 className="font-medium text-red-900 text-sm">Sai mạng</h3>
+                                <p className="text-xs text-red-700 mt-1">
+                                    Vui lòng chuyển sang mạng Sepolia Testnet để tiếp tục.
+                                </p>
                             </div>
                         </div>
-                    )}
+                    </div>
+                )}
 
-                    {/* Form chỉ hiển thị nếu đã liên kết ví */}
-                    {user?.wallet_address && (
-                        <form onSubmit={handleSubmit} className="space-y-6">
-                            {/* Basic Information */}
-                            <div className="space-y-4">
-                                <h3 className="text-lg font-semibold text-gray-900">Thông tin cơ bản</h3>
+                {/* Form chỉ hiển thị nếu đã liên kết ví */}
+                {user?.wallet_address && (
+                    <form onSubmit={handleSubmit} className="space-y-4">
+                        {/* Basic Information */}
+                        <div className="modal-form-section">
+                            <h3 className="modal-form-title">
+                                <FileText className="h-4 w-4 mr-2 text-blue-600" />
+                                Thông tin cơ bản
+                            </h3>
 
-                                <div className="space-y-2">
-                                    <label htmlFor="title" className="text-sm font-medium text-gray-700">
+                            <div className="space-y-3">
+                                <div className="modal-form-field">
+                                    <label htmlFor="title" className="form-label">
                                         Tiêu đề nhiệm vụ <span className="text-red-500">*</span>
                                     </label>
                                     <Input
@@ -261,197 +269,206 @@ const CreateTaskModal = ({ isOpen, onClose, onSuccess }) => {
                                         error={errors.title}
                                     />
                                     {errors.title && (
-                                        <p className="text-sm text-red-600">{errors.title}</p>
+                                        <p className="form-error">{errors.title}</p>
                                     )}
                                 </div>
 
-                                <div className="space-y-2">
-                                    <label htmlFor="description" className="text-sm font-medium text-gray-700">
+                                <div className="modal-form-field">
+                                    <label htmlFor="description" className="form-label">
                                         Mô tả chi tiết <span className="text-red-500">*</span>
                                     </label>
                                     <Textarea
                                         id="description"
                                         name="description"
                                         placeholder="Mô tả chi tiết về nhiệm vụ, yêu cầu, kỳ vọng..."
-                                        rows={4}
+                                        rows={3}
                                         value={formData.description}
                                         onChange={handleChange}
                                         error={errors.description}
                                     />
                                     {errors.description && (
-                                        <p className="text-sm text-red-600">{errors.description}</p>
+                                        <p className="form-error">{errors.description}</p>
                                     )}
                                 </div>
 
-                                <div className="space-y-2">
-                                    <label htmlFor="requirements" className="text-sm font-medium text-gray-700">
+                                <div className="modal-form-field">
+                                    <label htmlFor="requirements" className="form-label">
                                         Yêu cầu kỹ thuật
                                     </label>
                                     <Textarea
                                         id="requirements"
                                         name="requirements"
                                         placeholder="Liệt kê các yêu cầu kỹ thuật cụ thể..."
-                                        rows={3}
+                                        rows={2}
                                         value={formData.requirements}
                                         onChange={handleChange}
                                     />
                                 </div>
                             </div>
+                        </div>
 
-                            {/* Task Details */}
-                            <div className="space-y-4">
-                                <h3 className="text-lg font-semibold text-gray-900">Chi tiết nhiệm vụ</h3>
+                        {/* Task Details */}
+                        <div className="modal-form-section">
+                            <h3 className="modal-form-title">
+                                <ChevronRight className="h-4 w-4 mr-2 text-blue-600" />
+                                Chi tiết nhiệm vụ
+                            </h3>
 
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                    <div className="space-y-2">
-                                        <label htmlFor="category" className="text-sm font-medium text-gray-700">
-                                            Danh mục <span className="text-red-500">*</span>
-                                        </label>
-                                        <Input
-                                            id="category"
-                                            name="category"
-                                            placeholder="VD: Web Development, Mobile App..."
-                                            value={formData.category}
-                                            onChange={handleChange}
-                                            error={errors.category}
-                                        />
-                                        {errors.category && (
-                                            <p className="text-sm text-red-600">{errors.category}</p>
-                                        )}
-                                    </div>
-
-                                    <div className="space-y-2">
-                                        <label htmlFor="difficulty" className="text-sm font-medium text-gray-700">
-                                            Độ khó
-                                        </label>
-                                        <Select
-                                            id="difficulty"
-                                            name="difficulty"
-                                            value={formData.difficulty}
-                                            onChange={handleChange}
-                                        >
-                                            {Object.entries(DIFFICULTY_LABELS).map(([value, label]) => (
-                                                <option key={value} value={value}>{label}</option>
-                                            ))}
-                                        </Select>
-                                    </div>
-                                </div>
-
-                                <div className="space-y-2">
-                                    <label htmlFor="skills_required" className="text-sm font-medium text-gray-700">
-                                        Kỹ năng yêu cầu
+                            <div className="form-grid">
+                                <div className="modal-form-field">
+                                    <label htmlFor="category" className="form-label">
+                                        Danh mục <span className="text-red-500">*</span>
                                     </label>
                                     <Input
-                                        id="skills_required"
-                                        name="skills_required"
-                                        placeholder="VD: React, Node.js, Python (phân cách bằng dấu phẩy)"
-                                        value={formData.skills_required}
+                                        id="category"
+                                        name="category"
+                                        placeholder="VD: Web Development, Mobile App..."
+                                        value={formData.category}
                                         onChange={handleChange}
+                                        error={errors.category}
                                     />
-                                </div>
-                            </div>
-
-                            {/* Reward & Deadline */}
-                            <div className="space-y-4">
-                                <h3 className="text-lg font-semibold text-gray-900">Thưởng & Thời hạn</h3>
-
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                    <div className="space-y-2">
-                                        <label htmlFor="reward_tokens" className="text-sm font-medium text-gray-700">
-                                            Số token thưởng <span className="text-red-500">*</span>
-                                        </label>
-                                        <div className="relative">
-                                            <Input
-                                                id="reward_tokens"
-                                                name="reward_tokens"
-                                                type="number"
-                                                placeholder="100"
-                                                value={formData.reward_tokens}
-                                                onChange={handleChange}
-                                                error={errors.reward_tokens}
-                                                className="pr-12"
-                                            />
-                                            <div className="absolute inset-y-0 right-0 flex items-center pr-3">
-                                                <Coins className="h-4 w-4 text-gray-400" />
-                                            </div>
-                                        </div>
-                                        {errors.reward_tokens && (
-                                            <p className="text-sm text-red-600">{errors.reward_tokens}</p>
-                                        )}
-                                    </div>
-
-                                    <div className="space-y-2">
-                                        <label htmlFor="deadline" className="text-sm font-medium text-gray-700">
-                                            Deadline <span className="text-red-500">*</span>
-                                        </label>
-                                        <div className="relative">
-                                            <Input
-                                                id="deadline"
-                                                name="deadline"
-                                                type="datetime-local"
-                                                value={formData.deadline}
-                                                onChange={handleChange}
-                                                error={errors.deadline}
-                                                className="pr-12"
-                                            />
-                                            <div className="absolute inset-y-0 right-0 flex items-center pr-3">
-                                                <Calendar className="h-4 w-4 text-gray-400" />
-                                            </div>
-                                        </div>
-                                        {errors.deadline && (
-                                            <p className="text-sm text-red-600">{errors.deadline}</p>
-                                        )}
-                                    </div>
-                                </div>
-
-                                <div className="space-y-2">
-                                    <label htmlFor="max_applicants" className="text-sm font-medium text-gray-700">
-                                        Số lượng ứng viên tối đa
-                                    </label>
-                                    <Input
-                                        id="max_applicants"
-                                        name="max_applicants"
-                                        type="number"
-                                        placeholder="5"
-                                        value={formData.max_applicants}
-                                        onChange={handleChange}
-                                        min="1"
-                                        max="20"
-                                    />
-                                </div>
-                            </div>
-
-                            {/* Action Buttons */}
-                            <div className="flex justify-end space-x-3 pt-6 border-t">
-                                <Button
-                                    type="button"
-                                    variant="outline"
-                                    onClick={handleClose}
-                                    disabled={loading}
-                                >
-                                    Hủy
-                                </Button>
-                                <Button
-                                    type="submit"
-                                    disabled={loading || !isConnected || chainId !== 11155111}
-                                >
-                                    {loading ? (
-                                        <>
-                                            <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                                            Đang tạo...
-                                        </>
-                                    ) : (
-                                        <>
-                                            <Plus className="h-4 w-4 mr-2" />
-                                            Tạo nhiệm vụ
-                                        </>
+                                    {errors.category && (
+                                        <p className="form-error">{errors.category}</p>
                                     )}
-                                </Button>
+                                </div>
+
+                                <div className="modal-form-field">
+                                    <label htmlFor="difficulty" className="form-label">
+                                        Độ khó
+                                    </label>
+                                    <Select
+                                        id="difficulty"
+                                        name="difficulty"
+                                        value={formData.difficulty}
+                                        onChange={handleChange}
+                                    >
+                                        {Object.entries(DIFFICULTY_LABELS).map(([value, label]) => (
+                                            <option key={value} value={value}>{label}</option>
+                                        ))}
+                                    </Select>
+                                </div>
                             </div>
-                        </form>
-                    )}
-                </CardContent>
-            </Card>
+
+                            <div className="modal-form-field">
+                                <label htmlFor="skills_required" className="form-label">
+                                    Kỹ năng yêu cầu
+                                </label>
+                                <Input
+                                    id="skills_required"
+                                    name="skills_required"
+                                    placeholder="VD: React, Node.js, Python (phân cách bằng dấu phẩy)"
+                                    value={formData.skills_required}
+                                    onChange={handleChange}
+                                />
+                            </div>
+                        </div>
+
+                        {/* Reward & Deadline */}
+                        <div className="modal-form-section">
+                            <h3 className="modal-form-title">
+                                <Coins className="h-4 w-4 mr-2 text-green-600" />
+                                Thưởng & Thời hạn
+                            </h3>
+
+                            <div className="form-grid">
+                                <div className="modal-form-field">
+                                    <label htmlFor="reward_tokens" className="form-label">
+                                        Số token thưởng <span className="text-red-500">*</span>
+                                    </label>
+                                    <div className="relative">
+                                        <Input
+                                            id="reward_tokens"
+                                            name="reward_tokens"
+                                            type="number"
+                                            placeholder="100"
+                                            value={formData.reward_tokens}
+                                            onChange={handleChange}
+                                            error={errors.reward_tokens}
+                                            className="pr-12"
+                                        />
+                                        <div className="absolute inset-y-0 right-0 flex items-center pr-3">
+                                            <Coins className="h-4 w-4 text-gray-400" />
+                                        </div>
+                                    </div>
+                                    {errors.reward_tokens && (
+                                        <p className="form-error">{errors.reward_tokens}</p>
+                                    )}
+                                </div>
+
+                                <div className="modal-form-field">
+                                    <label htmlFor="deadline" className="form-label">
+                                        Deadline <span className="text-red-500">*</span>
+                                    </label>
+                                    <div className="relative">
+                                        <Input
+                                            id="deadline"
+                                            name="deadline"
+                                            type="datetime-local"
+                                            value={formData.deadline}
+                                            onChange={handleChange}
+                                            error={errors.deadline}
+                                            className="pr-12"
+                                        />
+                                        <div className="absolute inset-y-0 right-0 flex items-center pr-3">
+                                            <Calendar className="h-4 w-4 text-gray-400" />
+                                        </div>
+                                    </div>
+                                    {errors.deadline && (
+                                        <p className="form-error">{errors.deadline}</p>
+                                    )}
+                                </div>
+                            </div>
+
+                            <div className="modal-form-field">
+                                <label htmlFor="max_applicants" className="form-label">
+                                    Số lượng ứng viên tối đa
+                                </label>
+                                <Input
+                                    id="max_applicants"
+                                    name="max_applicants"
+                                    type="number"
+                                    placeholder="5"
+                                    value={formData.max_applicants}
+                                    onChange={handleChange}
+                                    min="1"
+                                    max="20"
+                                />
+                            </div>
+                        </div>
+
+                        {/* Action Buttons */}
+                        <div className="flex mobile-stack justify-end mobile-space pt-3 border-t border-gray-100">
+                            <Button
+                                type="button"
+                                variant="outline"
+                                onClick={handleClose}
+                                disabled={loading}
+                                className="mobile-full"
+                            >
+                                Hủy
+                            </Button>
+                            <Button
+                                type="submit"
+                                disabled={loading || !isConnected || chainId !== 11155111}
+                                onClick={handleSubmit}
+                                className="mobile-full"
+                            >
+                                {loading ? (
+                                    <>
+                                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                                        Đang tạo...
+                                    </>
+                                ) : (
+                                    <>
+                                        <Plus className="h-4 w-4 mr-2" />
+                                        Tạo nhiệm vụ
+                                    </>
+                                )}
+                            </Button>
+                        </div>
+                    </form>
+                )}
+            </div>
         </Modal>
     );
 };

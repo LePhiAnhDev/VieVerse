@@ -1,8 +1,3 @@
-## Run database in docker
-```
-docker-compose up -d
-```
-
 ## Create file .env in backend/
 ```
 # ───── Environment ─────
@@ -56,6 +51,12 @@ PINATA_API_SECRET=<your_pinata_api_secret_key_here>
 
 # ───── Environment Mode ─────
 NODE_ENV=test
+```
+
+## Run database in docker
+```
+docker-compose down -v
+docker-compose up -d
 ```
 
 ## Run blockchain

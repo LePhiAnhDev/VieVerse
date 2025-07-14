@@ -69,6 +69,29 @@
         background-color: rgb(148 163 184);
     }
 
+    /* Modal specific scrollbar */
+    .modal-scroll {
+        scrollbar-width: thin;
+        scrollbar-color: rgb(156 163 175) transparent;
+    }
+
+    .modal-scroll::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    .modal-scroll::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    .modal-scroll::-webkit-scrollbar-thumb {
+        background-color: rgb(156 163 175);
+        border-radius: 3px;
+    }
+
+    .modal-scroll::-webkit-scrollbar-thumb:hover {
+        background-color: rgb(107 114 128);
+    }
+
     /* Glass effect */
     .glass {
         @apply bg-white/70 backdrop-blur-md border border-white/20;
@@ -167,6 +190,74 @@
         background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
         background-size: 200% 100%;
         animation: shimmer 2s infinite;
+    }
+
+    /* Modal improvements */
+    .modal-content {
+        @apply flex flex-col h-full;
+    }
+
+    .modal-header {
+        @apply flex-shrink-0;
+    }
+
+    .modal-body {
+        @apply flex-1 overflow-y-auto modal-scroll;
+    }
+
+    .modal-footer {
+        @apply flex-shrink-0 border-t border-gray-100 bg-gray-50;
+    }
+
+    /* Form improvements for mobile */
+    .form-section {
+        @apply space-y-4;
+    }
+
+    .form-section-title {
+        @apply text-lg font-semibold text-gray-900 flex items-center;
+    }
+
+    .form-grid {
+        @apply grid grid-cols-1 lg:grid-cols-2 gap-4;
+    }
+
+    .form-field {
+        @apply space-y-2;
+    }
+
+    .form-label {
+        @apply text-sm font-medium text-gray-700;
+    }
+
+    .form-error {
+        @apply text-sm text-red-600;
+    }
+
+    /* Responsive improvements */
+    .mobile-full {
+        @apply w-full sm:w-auto;
+    }
+
+    .mobile-stack {
+        @apply flex-col sm:flex-row;
+    }
+
+    .mobile-space {
+        @apply space-y-3 sm:space-y-0 sm:space-x-3;
+    }
+
+    /* Compact form spacing for modal */
+    .modal-form-section {
+        @apply space-y-3;
+    }
+
+    .modal-form-field {
+        @apply space-y-1.5;
+    }
+
+    .modal-form-title {
+        @apply text-base font-semibold text-gray-900 flex items-center;
     }
 }
 
