@@ -11,9 +11,10 @@ import {
     Plus,
     ArrowRight,
     Star,
-    Clock
+    Clock,
+    Settings
 } from 'lucide-react';
-import axios from 'axios';
+import { mainAPI } from '../services/blockchainService';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/Card';
 import Button from '../components/ui/Button';
 import LoadingSpinner from '../components/common/LoadingSpinner';
@@ -37,7 +38,7 @@ const Dashboard = () => {
 
     const fetchDashboardData = async () => {
         try {
-            const response = await axios.get('/users/dashboard');
+            const response = await mainAPI.get('/users/dashboard');
             setDashboardData(response.data);
         } catch (error) {
             console.error('Error fetching dashboard data:', error);
@@ -47,25 +48,78 @@ const Dashboard = () => {
     };
 
     const handleConnectWallet = async () => {
-        if (!isConnected) {
-            await connectWallet();
-        }
-        if (account && chainId === 11155111) {
-            setWalletLoading(true);
-            try {
-                await axios.put('/auth/connect-wallet', { wallet_address: account });
+        setWalletLoading(true);
+        try {
+            if (!isConnected) {
+                await connectWallet();
+            }
+            if (account && chainId === 11155111) {
+                await mainAPI.put('/auth/connect-wallet', { wallet_address: account });
                 await updateProfile({}); // Refresh user info
                 window.location.reload();
-            } catch (err) {
-                // Xử lý lỗi
-            } finally {
-                setWalletLoading(false);
             }
+        } catch (err) {
+            console.error('Error connecting wallet:', err);
+        } finally {
+            setWalletLoading(false);
         }
     };
 
     if (loading) {
         return <LoadingSpinner size="lg" text="Đang tải dashboard..." fullScreen />;
+    }
+
+    // Admin Dashboard - Simplified
+    if (user?.role === 'admin') {
+        return (
+            <div className="space-y-9 animate-fade-in">
+                {/* Welcome Header */}
+                <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-purple-600 via-pink-600 to-purple-700 p-9 text-white">
+                    <div className="absolute inset-0 grid-pattern opacity-10" />
+                    <div className="absolute inset-0 bg-gradient-to-r from-purple-600/20 to-pink-600/20" />
+                    <div className="relative z-10">
+                        <div className="flex flex-col md:flex-row items-start md:items-center justify-between">
+                            <div className="space-y-2">
+                                <h1 className="text-3xl font-bold">
+                                    {getGreeting()}, {user?.name}! 👋
+                                </h1>
+                                <p className="text-purple-100 text-lg">
+                                    Quản lý hệ thống và xác thực đăng ký blockchain
+                                </p>
+                            </div>
+                            <img
+                                src={`https://ui-avatars.com/api/?name=${encodeURIComponent(user?.name || 'Admin')}&size=64&background=ffffff&color=8B5CF6&format=svg`}
+                                alt={user?.name}
+                                className="h-18 w-18 rounded-full border-4 border-white/20"
+                            />
+                        </div>
+                    </div>
+                </div>
+
+                {/* Admin Panel */}
+                <Card className="card-hover">
+                    <CardHeader>
+                        <CardTitle className="flex items-center space-x-2">
+                            <Settings className="h-5 w-5 text-purple-600" />
+                            <span>Admin Panel</span>
+                        </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                        <div className="text-center space-y-4">
+                            <p className="text-gray-600">
+                                Quản lý đăng ký blockchain và xác thực doanh nghiệp
+                            </p>
+                            <Link to="/admin">
+                                <Button variant="gradient" className="bg-purple-600 hover:bg-purple-700">
+                                    <Settings className="h-4 w-4 mr-2" />
+                                    Truy cập Admin Panel
+                                </Button>
+                            </Link>
+                        </div>
+                    </CardContent>
+                </Card>
+            </div>
+        );
     }
 
     // Fallback for when dashboardData is null

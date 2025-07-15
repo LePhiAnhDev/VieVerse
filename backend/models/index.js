@@ -1,6 +1,8 @@
+// Import models in dependency order
 import User from './User.js';
 import Task from './Task.js';
 import Application from './Application.js';
+import BlockchainRegistration from './BlockchainRegistration.js';
 
 User.hasMany(Task, {
     foreignKey: 'company_id',
@@ -51,4 +53,29 @@ User.hasMany(Task, {
     onDelete: 'SET NULL'
 });
 
-export { User, Task, Application }; 
+// Blockchain Registration associations
+User.hasMany(BlockchainRegistration, {
+    foreignKey: 'user_id',
+    as: 'blockchainRegistrations',
+    onDelete: 'CASCADE'
+});
+
+BlockchainRegistration.belongsTo(User, {
+    foreignKey: 'user_id',
+    as: 'user',
+    onDelete: 'CASCADE'
+});
+
+User.hasMany(BlockchainRegistration, {
+    foreignKey: 'approved_by',
+    as: 'approvedRegistrations',
+    onDelete: 'SET NULL'
+});
+
+BlockchainRegistration.belongsTo(User, {
+    foreignKey: 'approved_by',
+    as: 'admin',
+    onDelete: 'SET NULL'
+});
+
+export { User, Task, Application, BlockchainRegistration }; 

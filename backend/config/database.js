@@ -21,6 +21,11 @@ const sequelize = new Sequelize({
         timestamps: true,
         underscored: true,
         freezeTableName: true
+    },
+    dialectOptions: {
+        // Ensure proper table name handling
+        supportBigNumbers: true,
+        bigNumberStrings: true
     }
 });
 

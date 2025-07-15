@@ -2,368 +2,448 @@ import axios from "axios";
 
 // Configure blockchain service
 const blockchainAPI = axios.create({
-  baseURL: "http://localhost:5000/api/blockchain",
-  timeout: 30000, // 30 seconds timeout for blockchain operations
+    baseURL: "http://localhost:5000/api/blockchain",
+    timeout: 30000, // 30 seconds timeout for blockchain operations
 });
+
+// Add request interceptor to include token for blockchainAPI
+blockchainAPI.interceptors.request.use(
+    (config) => {
+        const token = localStorage.getItem('token');
+        if (token) {
+            config.headers.Authorization = `Bearer ${token}`;
+        }
+        return config;
+    },
+    (error) => {
+        return Promise.reject(error);
+    }
+);
+// Add response interceptor to handle token expiration for blockchainAPI
+blockchainAPI.interceptors.response.use(
+    (response) => response,
+    (error) => {
+        if (error.response?.status === 401) {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            window.location.href = '/login';
+        }
+        return Promise.reject(error);
+    }
+);
+
+// Configure main API
+const mainAPI = axios.create({
+    baseURL: "http://localhost:5000/api",
+    timeout: 30000,
+});
+// Add request interceptor to include token for mainAPI
+mainAPI.interceptors.request.use(
+    (config) => {
+        const token = localStorage.getItem('token');
+        if (token) {
+            config.headers.Authorization = `Bearer ${token}`;
+        }
+        return config;
+    },
+    (error) => {
+        return Promise.reject(error);
+    }
+);
+// Add response interceptor to handle token expiration for mainAPI
+mainAPI.interceptors.response.use(
+    (response) => response,
+    (error) => {
+        if (error.response?.status === 401) {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            window.location.href = '/login';
+        }
+        return Promise.reject(error);
+    }
+);
 
 // Task Operations
 export const taskService = {
-  // Create task on blockchain
-  createTask: async (taskData) => {
-    try {
-      const response = await blockchainAPI.post("/tasks/create", {
-        title: taskData.title,
-        description: taskData.description,
-        reward: taskData.reward, // Should be in Wei format
-        deadline: taskData.deadline, // Unix timestamp
-      });
-      return response.data;
-    } catch (error) {
-      throw new Error(
-        error.response?.data?.error || "Failed to create task on blockchain"
-      );
-    }
-  },
+    // Create task on blockchain
+    createTask: async (taskData) => {
+        try {
+            const response = await blockchainAPI.post("/tasks/create", {
+                title: taskData.title,
+                description: taskData.description,
+                reward: taskData.reward, // Should be in Wei format
+                deadline: taskData.deadline, // Unix timestamp
+            });
+            return response.data;
+        } catch (error) {
+            throw new Error(
+                error.response?.data?.error || "Failed to create task on blockchain"
+            );
+        }
+    },
 
-  // Accept task
-  acceptTask: async (taskId) => {
-    try {
-      const response = await blockchainAPI.post("/tasks/accept", { taskId });
-      return response.data;
-    } catch (error) {
-      throw new Error(error.response?.data?.error || "Failed to accept task");
-    }
-  },
+    // Accept task
+    acceptTask: async (taskId) => {
+        try {
+            const response = await blockchainAPI.post("/tasks/accept", { taskId });
+            return response.data;
+        } catch (error) {
+            throw new Error(error.response?.data?.error || "Failed to accept task");
+        }
+    },
 
-  // Submit task
-  submitTask: async (taskId, submissionHash) => {
-    try {
-      const response = await blockchainAPI.post("/tasks/submit", {
-        taskId,
-        submissionHash,
-      });
-      return response.data;
-    } catch (error) {
-      throw new Error(error.response?.data?.error || "Failed to submit task");
-    }
-  },
+    // Submit task
+    submitTask: async (taskId, submissionHash) => {
+        try {
+            const response = await blockchainAPI.post("/tasks/submit", {
+                taskId,
+                submissionHash,
+            });
+            return response.data;
+        } catch (error) {
+            throw new Error(error.response?.data?.error || "Failed to submit task");
+        }
+    },
 
-  // Verify task (moderator only)
-  verifyTask: async (
-    taskId,
-    qualityScore,
-    deadlineScore,
-    attitudeScore,
-    feedback
-  ) => {
-    try {
-      const response = await blockchainAPI.post("/tasks/verify", {
+    // Verify task (moderator only)
+    verifyTask: async (
         taskId,
         qualityScore,
         deadlineScore,
         attitudeScore,
-        feedback,
-      });
-      return response.data;
-    } catch (error) {
-      throw new Error(error.response?.data?.error || "Failed to verify task");
-    }
-  },
+        feedback
+    ) => {
+        try {
+            const response = await blockchainAPI.post("/tasks/verify", {
+                taskId,
+                qualityScore,
+                deadlineScore,
+                attitudeScore,
+                feedback,
+            });
+            return response.data;
+        } catch (error) {
+            throw new Error(error.response?.data?.error || "Failed to verify task");
+        }
+    },
 
-  // Get task details
-  getTask: async (taskId) => {
-    try {
-      const response = await blockchainAPI.get(`/tasks/${taskId}`);
-      return response.data;
-    } catch (error) {
-      throw new Error(error.response?.data?.error || "Failed to get task");
-    }
-  },
+    // Get task details
+    getTask: async (taskId) => {
+        try {
+            const response = await blockchainAPI.get(`/tasks/${taskId}`);
+            return response.data;
+        } catch (error) {
+            throw new Error(error.response?.data?.error || "Failed to get task");
+        }
+    },
 
-  // Get company tasks
-  getCompanyTasks: async (address) => {
-    try {
-      const response = await blockchainAPI.get(`/tasks/company/${address}`);
-      return response.data;
-    } catch (error) {
-      throw new Error(
-        error.response?.data?.error || "Failed to get company tasks"
-      );
-    }
-  },
+    // Get company tasks
+    getCompanyTasks: async (address) => {
+        try {
+            const response = await blockchainAPI.get(`/tasks/company/${address}`);
+            return response.data;
+        } catch (error) {
+            throw new Error(
+                error.response?.data?.error || "Failed to get company tasks"
+            );
+        }
+    },
 
-  // Get student tasks
-  getStudentTasks: async (address) => {
-    try {
-      const response = await blockchainAPI.get(`/tasks/student/${address}`);
-      return response.data;
-    } catch (error) {
-      throw new Error(
-        error.response?.data?.error || "Failed to get student tasks"
-      );
-    }
-  },
+    // Get student tasks
+    getStudentTasks: async (address) => {
+        try {
+            const response = await blockchainAPI.get(`/tasks/student/${address}`);
+            return response.data;
+        } catch (error) {
+            throw new Error(
+                error.response?.data?.error || "Failed to get student tasks"
+            );
+        }
+    },
 };
 
 // Company Operations
 export const companyService = {
-  // Get company info
-  getCompany: async (address) => {
-    try {
-      const response = await blockchainAPI.get(`/company/${address}`);
-      return response.data;
-    } catch (error) {
-      throw new Error(
-        error.response?.data?.error || "Failed to get company info"
-      );
-    }
-  },
+    // Get company info
+    getCompany: async (address) => {
+        try {
+            const response = await blockchainAPI.get(`/company/${address}`);
+            return response.data;
+        } catch (error) {
+            throw new Error(
+                error.response?.data?.error || "Failed to get company info"
+            );
+        }
+    },
+
+    // Register company on blockchain
+    registerCompany: async (companyData) => {
+        try {
+            const response = await mainAPI.post("/blockchain-registration/company/register", {
+                name: companyData.name,
+                description: companyData.description,
+                address: companyData.address,
+            });
+            return response.data;
+        } catch (error) {
+            throw new Error(
+                error.response?.data?.error || "Failed to register company"
+            );
+        }
+    },
 };
 
 // Student Operations
 export const studentService = {
-  // Get student info
-  getStudent: async (address) => {
-    try {
-      const response = await blockchainAPI.get(`/student/${address}`);
-      return response.data;
-    } catch (error) {
-      throw new Error(
-        error.response?.data?.error || "Failed to get student info"
-      );
-    }
-  },
+    // Get student info
+    getStudent: async (address) => {
+        try {
+            const response = await blockchainAPI.get(`/student/${address}`);
+            return response.data;
+        } catch (error) {
+            throw new Error(
+                error.response?.data?.error || "Failed to get student info"
+            );
+        }
+    },
 
-  // Get student reputation
-  getReputation: async (address) => {
-    try {
-      const response = await blockchainAPI.get(
-        `/student/reputation/${address}`
-      );
-      return response.data;
-    } catch (error) {
-      throw new Error(
-        error.response?.data?.error || "Failed to get student reputation"
-      );
-    }
-  },
+    // Register student on blockchain
+    registerStudent: async (studentData) => {
+        try {
+            const response = await mainAPI.post("/blockchain-registration/student/register", {
+                name: studentData.name,
+                skills: studentData.skills,
+                address: studentData.address,
+            });
+            return response.data;
+        } catch (error) {
+            throw new Error(
+                error.response?.data?.error || "Failed to register student"
+            );
+        }
+    },
+
+    // Get student reputation
+    getReputation: async (address) => {
+        try {
+            const response = await blockchainAPI.get(
+                `/student/reputation/${address}`
+            );
+            return response.data;
+        } catch (error) {
+            throw new Error(
+                error.response?.data?.error || "Failed to get student reputation"
+            );
+        }
+    },
 };
 
 // IPFS Operations
 export const ipfsService = {
-  // Upload file to IPFS
-  uploadFile: async (file) => {
-    try {
-      const formData = new FormData();
-      formData.append("file", file);
+    // Upload file to IPFS
+    uploadFile: async (file) => {
+        try {
+            const formData = new FormData();
+            formData.append("file", file);
 
-      const response = await blockchainAPI.post("/ipfs/upload", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
-      return response.data;
-    } catch (error) {
-      throw new Error(
-        error.response?.data?.error || "Failed to upload file to IPFS"
-      );
-    }
-  },
+            const response = await blockchainAPI.post("/ipfs/upload", formData, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+            });
+            return response.data;
+        } catch (error) {
+            throw new Error(
+                error.response?.data?.error || "Failed to upload file to IPFS"
+            );
+        }
+    },
 
-  // Upload JSON to IPFS
-  uploadJSON: async (data, metadata = {}) => {
-    try {
-      const response = await blockchainAPI.post("/ipfs/upload-json", {
-        data,
-        metadata,
-      });
-      return response.data;
-    } catch (error) {
-      throw new Error(
-        error.response?.data?.error || "Failed to upload JSON to IPFS"
-      );
-    }
-  },
+    // Upload JSON to IPFS
+    uploadJSON: async (data, metadata = {}) => {
+        try {
+            const response = await blockchainAPI.post("/ipfs/upload-json", {
+                data,
+                metadata,
+            });
+            return response.data;
+        } catch (error) {
+            throw new Error(
+                error.response?.data?.error || "Failed to upload JSON to IPFS"
+            );
+        }
+    },
 
-  // Get file from IPFS
-  getFile: async (hash) => {
-    try {
-      const response = await blockchainAPI.get(`/ipfs/${hash}`);
-      return response.data;
-    } catch (error) {
-      throw new Error(
-        error.response?.data?.error || "Failed to get file from IPFS"
-      );
-    }
-  },
+    // Get file from IPFS
+    getFile: async (hash) => {
+        try {
+            const response = await blockchainAPI.get(`/ipfs/${hash}`);
+            return response.data;
+        } catch (error) {
+            throw new Error(
+                error.response?.data?.error || "Failed to get file from IPFS"
+            );
+        }
+    },
 };
 
 // Token Operations
 export const tokenService = {
-  // Get token balance
-  getBalance: async (address) => {
-    try {
-      const response = await blockchainAPI.get(`/tokens/balance/${address}`);
-      return response.data;
-    } catch (error) {
-      throw new Error(
-        error.response?.data?.error || "Failed to get token balance"
-      );
-    }
-  },
+    // Get token balance
+    getBalance: async (address) => {
+        try {
+            const response = await blockchainAPI.get(`/tokens/balance/${address}`);
+            return response.data;
+        } catch (error) {
+            throw new Error(
+                error.response?.data?.error || "Failed to get token balance"
+            );
+        }
+    },
 
-  // Mint tokens (admin only)
-  mintTokens: async (to, amount) => {
-    try {
-      const response = await blockchainAPI.post("/tokens/mint", { to, amount });
-      return response.data;
-    } catch (error) {
-      throw new Error(error.response?.data?.error || "Failed to mint tokens");
-    }
-  },
+    // Mint tokens (admin only)
+    mintTokens: async (to, amount) => {
+        try {
+            const response = await blockchainAPI.post("/tokens/mint", { to, amount });
+            return response.data;
+        } catch (error) {
+            throw new Error(error.response?.data?.error || "Failed to mint tokens");
+        }
+    },
 
-  // Burn tokens
-  burnTokens: async (from, amount) => {
-    try {
-      const response = await blockchainAPI.post("/tokens/burn", {
-        from,
-        amount,
-      });
-      return response.data;
-    } catch (error) {
-      throw new Error(error.response?.data?.error || "Failed to burn tokens");
-    }
-  },
+    // Burn tokens
+    burnTokens: async (from, amount) => {
+        try {
+            const response = await blockchainAPI.post("/tokens/burn", {
+                from,
+                amount,
+            });
+            return response.data;
+        } catch (error) {
+            throw new Error(error.response?.data?.error || "Failed to burn tokens");
+        }
+    },
 
-  // Get total supply
-  getTotalSupply: async () => {
-    try {
-      const response = await blockchainAPI.get("/tokens/supply");
-      return response.data;
-    } catch (error) {
-      throw new Error(
-        error.response?.data?.error || "Failed to get total supply"
-      );
-    }
-  },
+    // Get total supply
+    getTotalSupply: async () => {
+        try {
+            const response = await blockchainAPI.get("/tokens/supply");
+            return response.data;
+        } catch (error) {
+            throw new Error(
+                error.response?.data?.error || "Failed to get total supply"
+            );
+        }
+    },
 
-  // Get token info
-  getTokenInfo: async () => {
-    try {
-      const response = await blockchainAPI.get("/tokens/info");
-      return response.data;
-    } catch (error) {
-      throw new Error(
-        error.response?.data?.error || "Failed to get token info"
-      );
-    }
-  },
+    // Get token info
+    getTokenInfo: async () => {
+        try {
+            const response = await blockchainAPI.get("/tokens/info");
+            return response.data;
+        } catch (error) {
+            throw new Error(
+                error.response?.data?.error || "Failed to get token info"
+            );
+        }
+    },
 };
 
 // Gas Operations
 export const gasService = {
-  // Get gas analysis
-  getAnalysis: async () => {
-    try {
-      const response = await blockchainAPI.get("/gas/analysis");
-      return response.data;
-    } catch (error) {
-      throw new Error(
-        error.response?.data?.error || "Failed to get gas analysis"
-      );
-    }
-  },
+    // Get gas analysis
+    getAnalysis: async () => {
+        try {
+            const response = await blockchainAPI.get("/gas/analysis");
+            return response.data;
+        } catch (error) {
+            throw new Error(
+                error.response?.data?.error || "Failed to get gas analysis"
+            );
+        }
+    },
 
-  // Estimate gas for transaction
-  estimateGas: async (contract, method, args, options = {}) => {
-    try {
-      const response = await blockchainAPI.post("/gas/estimate", {
-        contract,
-        method,
-        args,
-        options,
-      });
-      return response.data;
-    } catch (error) {
-      throw new Error(error.response?.data?.error || "Failed to estimate gas");
-    }
-  },
+    // Estimate gas for transaction
+    estimateGas: async (contract, method, args, options = {}) => {
+        try {
+            const response = await blockchainAPI.post("/gas/estimate", {
+                contract,
+                method,
+                args,
+                options,
+            });
+            return response.data;
+        } catch (error) {
+            throw new Error(error.response?.data?.error || "Failed to estimate gas");
+        }
+    },
 
-  // Get default gas limits
-  getDefaults: async () => {
-    try {
-      const response = await blockchainAPI.get("/gas/defaults");
-      return response.data;
-    } catch (error) {
-      throw new Error(
-        error.response?.data?.error || "Failed to get gas defaults"
-      );
-    }
-  },
+    // Get default gas limits
+    getDefaults: async () => {
+        try {
+            const response = await blockchainAPI.get("/gas/defaults");
+            return response.data;
+        } catch (error) {
+            throw new Error(
+                error.response?.data?.error || "Failed to get gas defaults"
+            );
+        }
+    },
 };
 
 // Utility Operations
 export const utilityService = {
-  // Enroll in course
-  enrollCourse: async (courseId, student) => {
-    try {
-      const response = await blockchainAPI.post("/utility/course/enroll", {
-        courseId,
-        student,
-      });
-      return response.data;
-    } catch (error) {
-      throw new Error(
-        error.response?.data?.error || "Failed to enroll in course"
-      );
-    }
-  },
+    // Enroll in course
+    enrollCourse: async (courseId, student) => {
+        try {
+            const response = await blockchainAPI.post("/utility/course/enroll", {
+                courseId,
+                student,
+            });
+            return response.data;
+        } catch (error) {
+            throw new Error(
+                error.response?.data?.error || "Failed to enroll in course"
+            );
+        }
+    },
 
-  // Redeem reward
-  redeemReward: async (rewardId, student) => {
-    try {
-      const response = await blockchainAPI.post("/utility/reward/redeem", {
-        rewardId,
-        student,
-      });
-      return response.data;
-    } catch (error) {
-      throw new Error(error.response?.data?.error || "Failed to redeem reward");
-    }
-  },
+    // Redeem reward
+    redeemReward: async (rewardId, student) => {
+        try {
+            const response = await blockchainAPI.post("/utility/reward/redeem", {
+                rewardId,
+                student,
+            });
+            return response.data;
+        } catch (error) {
+            throw new Error(error.response?.data?.error || "Failed to redeem reward");
+        }
+    },
 
-  // Get student enrollments
-  getEnrollments: async (address) => {
-    try {
-      const response = await blockchainAPI.get(
-        `/utility/student/${address}/enrollments`
-      );
-      return response.data;
-    } catch (error) {
-      throw new Error(
-        error.response?.data?.error || "Failed to get enrollments"
-      );
-    }
-  },
+    // Get student enrollments
+    getEnrollments: async (address) => {
+        try {
+            const response = await blockchainAPI.get(
+                `/utility/student/${address}/enrollments`
+            );
+            return response.data;
+        } catch (error) {
+            throw new Error(
+                error.response?.data?.error || "Failed to get enrollments"
+            );
+        }
+    },
 };
 
 // Health check
 export const healthCheck = async () => {
-  try {
-    const response = await blockchainAPI.get("/health");
-    return response.data;
-  } catch (error) {
-    throw new Error("Blockchain service is not available");
-  }
+    try {
+        const response = await blockchainAPI.get("/health");
+        return response.data;
+    } catch (error) {
+        throw new Error("Blockchain service is not available");
+    }
 };
 
-export default {
-  taskService,
-  companyService,
-  studentService,
-  ipfsService,
-  tokenService,
-  gasService,
-  utilityService,
-  healthCheck,
-};
+export { mainAPI, blockchainAPI };

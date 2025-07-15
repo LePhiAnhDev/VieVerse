@@ -15,6 +15,7 @@ import Dashboard from './pages/Dashboard';
 import Tasks from './pages/Tasks';
 import TaskDetail from './pages/TaskDetail';
 import Profile from './pages/Profile';
+import AdminPanel from './pages/AdminPanel';
 
 // Create a client
 const queryClient = new QueryClient({
@@ -36,6 +37,17 @@ const ProtectedRoute = ({ children }) => {
     }
 
     return user ? children : <Navigate to="/login" replace />;
+};
+
+// Admin Route Component
+const AdminRoute = ({ children }) => {
+    const { user, loading } = useAuth();
+
+    if (loading) {
+        return <LoadingSpinner size="xl" text="Đang tải..." fullScreen />;
+    }
+
+    return user && user.role === 'admin' ? children : <Navigate to="/dashboard" replace />;
 };
 
 // Public Route Component (redirect to dashboard if logged in)
@@ -120,6 +132,14 @@ function App() {
                                     <Route path="tasks" element={<Tasks />} />
                                     <Route path="tasks/:id" element={<TaskDetail />} />
                                     <Route path="profile" element={<Profile />} />
+                                    <Route
+                                        path="admin"
+                                        element={
+                                            <AdminRoute>
+                                                <AdminPanel />
+                                            </AdminRoute>
+                                        }
+                                    />
                                 </Route>
 
                                 {/* Fallback route */}

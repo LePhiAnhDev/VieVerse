@@ -42,27 +42,39 @@ export const Web3Provider = ({ children }) => {
 
         setIsConnecting(true);
         try {
-            // Request account access
+            // Check if MetaMask is locked
             const accounts = await window.ethereum.request({
-                method: 'eth_requestAccounts'
+                method: 'eth_accounts'
             });
 
-            if (accounts.length > 0) {
-                const account = accounts[0];
-                setAccount(account);
-                setIsConnected(true);
+            if (accounts.length === 0) {
+                // MetaMask is locked, request to unlock
+                const accounts = await window.ethereum.request({
+                    method: 'eth_requestAccounts'
+                });
 
-                // Get chain ID
-                const chainId = await window.ethereum.request({ method: 'eth_chainId' });
-                setChainId(parseInt(chainId, 16));
-
-                toast.success('Kết nối ví thành công!');
-                return account;
+                if (accounts.length === 0) {
+                    toast.error('Vui lòng mở khóa MetaMask và chọn tài khoản');
+                    return null;
+                }
             }
+
+            const account = accounts[0];
+            setAccount(account);
+            setIsConnected(true);
+
+            // Get chain ID
+            const chainId = await window.ethereum.request({ method: 'eth_chainId' });
+            setChainId(parseInt(chainId, 16));
+
+            toast.success('Kết nối ví thành công!');
+            return account;
         } catch (error) {
             console.error('Error connecting wallet:', error);
             if (error.code === 4001) {
                 toast.error('Người dùng từ chối kết nối ví');
+            } else if (error.code === -32002) {
+                toast.error('Vui lòng kiểm tra MetaMask popup và chấp nhận kết nối');
             } else {
                 toast.error('Lỗi kết nối ví: ' + error.message);
             }
