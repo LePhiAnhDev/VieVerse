@@ -692,7 +692,4 @@ class BlockchainClient {
   }
 }
 
-// Create singleton instance
-const blockchainClient = new BlockchainClient();
-
-export default blockchainClient;
+export default BlockchainClient;

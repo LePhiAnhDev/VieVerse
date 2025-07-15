@@ -112,17 +112,22 @@ const validateJSON = (json, fieldName = "JSON") => {
   if (typeof json !== "object") {
     throw new ValidationError(`${fieldName} must be a valid object or array`);
   }
-  
+
   // Check for circular references by trying to stringify
   try {
     JSON.stringify(json);
   } catch (error) {
-    if (error.message.includes('circular') || error.message.includes('call stack')) {
+    if (
+      error.message.includes("circular") ||
+      error.message.includes("call stack")
+    ) {
       throw new ValidationError(`${fieldName} contains circular references`);
     }
-    throw new ValidationError(`${fieldName} is not valid JSON: ${error.message}`);
+    throw new ValidationError(
+      `${fieldName} is not valid JSON: ${error.message}`
+    );
   }
-  
+
   return json;
 };
 
