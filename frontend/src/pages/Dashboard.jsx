@@ -31,7 +31,7 @@ import { getGreeting } from "../utils/helpers";
 import { formatDate } from "../utils/formatters";
 
 const Dashboard = () => {
-  const { user, updateProfile } = useAuth();
+  const { user, connectWallet: authConnectWallet } = useAuth();
   const { connectWallet, isConnected, account, chainId } = useWeb3();
   const [walletLoading, setWalletLoading] = useState(false);
   const [dashboardData, setDashboardData] = useState(null);
@@ -63,9 +63,10 @@ const Dashboard = () => {
         await connectWallet();
       }
       if (account && chainId === 11155111) {
-        await mainAPI.put("/auth/connect-wallet", { wallet_address: account });
-        await updateProfile({}); // Refresh user info
-        window.location.reload();
+        const result = await authConnectWallet(account);
+        if (result.success) {
+          window.location.reload();
+        }
       }
     } catch (err) {
       console.error("Error connecting wallet:", err);
@@ -434,13 +435,7 @@ const Dashboard = () => {
                     <EmptyState
                       icon={Briefcase}
                       title="Chưa có nhiệm vụ nào"
-                      description="Tạo nhiệm vụ đầu tiên để bắt đầu tuyển dụng tài năng trẻ!"
-                      actionLabel="Tạo nhiệm vụ"
-                      action={
-                        <Link to="/tasks/create">
-                          <Button>Tạo nhiệm vụ</Button>
-                        </Link>
-                      }
+                      description="Bạn chưa tạo nhiệm vụ nào. Hãy truy cập trang Nhiệm vụ để tạo nhiệm vụ đầu tiên!"
                     />
                   )}
                 </div>
@@ -488,23 +483,23 @@ const Dashboard = () => {
                 </>
               ) : (
                 <>
-                  <Link to="/tasks/create" className="block">
+                  <Link to="/tasks" className="block">
                     <Button
                       variant="gradient"
                       className="w-full justify-start group"
                     >
-                      <Plus className="h-4 w-4 mr-2" />
-                      Tạo nhiệm vụ mới
+                      <Calendar className="h-4 w-4 mr-2" />
+                      Quản lý nhiệm vụ
                       <ArrowRight className="ml-auto h-4 w-4 group-hover:translate-x-1 transition-transform" />
                     </Button>
                   </Link>
-                  <Link to="/tasks" className="block">
+                  <Link to="/profile" className="block">
                     <Button
                       variant="outline"
                       className="w-full justify-start group"
                     >
-                      <Calendar className="h-4 w-4 mr-2" />
-                      Quản lý nhiệm vụ
+                      <Users className="h-4 w-4 mr-2" />
+                      Cập nhật hồ sơ
                       <ArrowRight className="ml-auto h-4 w-4 group-hover:translate-x-1 transition-transform" />
                     </Button>
                   </Link>

@@ -59,7 +59,25 @@ const BlockchainInfo = ({ user }) => {
       } else if (user?.role === "company") {
         const companyResult = await companyService.getCompany(account);
         if (companyResult.success) {
-          setBlockchainInfo(companyResult.company);
+          // Parse company data from array format
+          const companyData = companyResult.company;
+          if (Array.isArray(companyData)) {
+            // Convert array to object format
+            const parsedData = {
+              name: companyData[0],
+              description: companyData[1],
+              isVerified: companyData[2],
+              totalTasks: parseInt(companyData[3]) || 0,
+              completedTasks: parseInt(companyData[4]) || 0,
+              totalRewardsDistributed: parseInt(companyData[5]) || 0,
+              verificationCount: parseInt(companyData[6]) || 0,
+              lastVerificationAt: parseInt(companyData[7]) || 0,
+            };
+            setBlockchainInfo(parsedData);
+          } else {
+            // If already object format, use as is
+            setBlockchainInfo(companyData);
+          }
         }
       }
     } catch (error) {
@@ -287,6 +305,7 @@ const BlockchainInfo = ({ user }) => {
                       {blockchainInfo.totalRewardsDistributed || 0}
                     </span>
                   </div>
+                  {/* Trạng thái đăng ký - ưu tiên blockchain status */}
                   <div className="flex justify-between">
                     <span className="text-sm text-gray-600">
                       Trạng thái đăng ký:
@@ -303,6 +322,7 @@ const BlockchainInfo = ({ user }) => {
                         : "Chưa xác thực"}
                     </span>
                   </div>
+
                   {/* Nút đăng ký blockchain cho company */}
                   {!blockchainInfo.isVerified && !registrationStatus && (
                     <div className="mt-4 pt-4 border-t border-gray-200">
@@ -317,12 +337,13 @@ const BlockchainInfo = ({ user }) => {
                       </Button>
                     </div>
                   )}
-                  {/* Hiển thị trạng thái đăng ký */}
-                  {registrationStatus && (
+
+                  {/* Hiển thị trạng thái đăng ký từ database (chỉ khi chưa xác thực trên blockchain) */}
+                  {registrationStatus && !blockchainInfo.isVerified && (
                     <div className="mt-4 pt-4 border-t border-gray-200">
                       <div className="text-sm">
                         <span className="text-gray-600">
-                          Trạng thái đăng ký:{" "}
+                          Trạng thái yêu cầu:{" "}
                         </span>
                         <span
                           className={`font-medium ${
@@ -334,7 +355,7 @@ const BlockchainInfo = ({ user }) => {
                           }`}
                         >
                           {registrationStatus.status === "approved"
-                            ? "Đã xác thực"
+                            ? "Đã duyệt"
                             : registrationStatus.status === "pending"
                             ? "Đang chờ duyệt"
                             : "Bị từ chối"}

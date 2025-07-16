@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useWeb3 } from "../../contexts/Web3Context";
-import { taskService, ipfsService } from "../../services/blockchainService";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/Card";
 import Button from "../ui/Button";
 import Input from "../ui/Input";
@@ -24,7 +23,7 @@ import axios from "axios";
 
 const CreateTaskModal = ({ isOpen, onClose, onSuccess }) => {
   const { account, isConnected, chainId, connectWallet } = useWeb3();
-  const { user, updateProfile } = useAuth();
+  const { user, connectWallet: authConnectWallet } = useAuth();
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -96,6 +95,9 @@ const CreateTaskModal = ({ isOpen, onClose, onSuccess }) => {
 
     if (!validateForm()) return;
 
+    // Prevent duplicate calls
+    if (loading) return;
+
     // Check wallet connection
     if (!isConnected) {
       toast.error("Vui lòng kết nối ví MetaMask trước!", {
@@ -116,31 +118,25 @@ const CreateTaskModal = ({ isOpen, onClose, onSuccess }) => {
     setStep(2);
 
     try {
-      // Convert reward to Wei (18 decimals)
-      const rewardInWei = (
-        parseInt(formData.reward_tokens) * Math.pow(10, 18)
-      ).toString();
-
-      // Convert deadline to Unix timestamp
-      const deadlineTimestamp = Math.floor(
-        new Date(formData.deadline).getTime() / 1000
-      );
-
-      // Create task on blockchain
-      const blockchainResult = await taskService.createTask({
+      // Create task through backend API (which will handle both blockchain and database)
+      const response = await axios.post("/tasks", {
         title: formData.title,
         description: formData.description,
-        reward: rewardInWei,
-        deadline: deadlineTimestamp,
+        requirements: formData.requirements,
+        skills_required: formData.skills_required
+          ? formData.skills_required.split(",").map((s) => s.trim())
+          : [],
+        reward_tokens: parseInt(formData.reward_tokens),
+        deadline: formData.deadline,
+        difficulty: formData.difficulty,
+        category: formData.category,
+        max_applicants: parseInt(formData.max_applicants),
+        is_remote: true,
       });
 
-      if (!blockchainResult.success) {
-        throw new Error(
-          blockchainResult.error || "Failed to create task on blockchain"
-        );
-      }
+      const result = response.data;
 
-      toast.success("Tạo nhiệm vụ thành công trên blockchain!", {
+      toast.success(result.message || "Tạo nhiệm vụ thành công!", {
         id: "create-task-success",
       });
 
@@ -157,7 +153,7 @@ const CreateTaskModal = ({ isOpen, onClose, onSuccess }) => {
         max_applicants: "5",
       });
       setStep(1);
-      onSuccess && onSuccess(blockchainResult);
+      onSuccess && onSuccess(result);
       onClose();
     } catch (error) {
       console.error("Error creating task:", error);
@@ -196,13 +192,12 @@ const CreateTaskModal = ({ isOpen, onClose, onSuccess }) => {
     if (account && chainId === 11155111) {
       setWalletLoading(true);
       try {
-        await axios.put("/auth/connect-wallet", { wallet_address: account });
-        await updateProfile({});
-        toast.success("Đã liên kết ví thành công!", {
-          id: "create-task-wallet-link-success",
-        });
+        const result = await authConnectWallet(account);
+        if (result.success) {
+          // Wallet linked successfully
+        }
       } catch (err) {
-        toast.error("Lỗi liên kết ví", { id: "create-task-wallet-link-error" });
+        console.error("Error connecting wallet:", err);
       } finally {
         setWalletLoading(false);
       }

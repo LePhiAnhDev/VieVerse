@@ -45,12 +45,19 @@ class TaskService {
         ]
       );
 
+      // Get the task ID from the transaction receipt
+      // The createTask function returns the new task ID
+      const taskId = result.receipt.logs[0]?.topics[1]
+        ? parseInt(result.receipt.logs[0].topics[1], 16)
+        : null;
+
       return {
         success: true,
         txHash: result.tx.hash,
         receipt: result.receipt,
         gasUsed: result.gasUsed,
         totalCost: result.totalCost,
+        taskId: taskId, // ✅ Thêm taskId
         taskData: {
           title: validatedTitle,
           description: validatedDescription,
@@ -244,11 +251,56 @@ class TaskService {
       );
 
       // Execute call with retry
-      const tasks = await retryCall(() =>
+      const taskIds = await retryCall(() =>
         verificationContract.getCompanyTasks(validatedAddress)
       );
 
-      return { success: true, tasks, companyAddress: validatedAddress };
+      return {
+        success: true,
+        tasks: taskIds,
+        companyAddress: validatedAddress,
+      };
+    } catch (error) {
+      if (error instanceof ValidationError) {
+        return { success: false, error: error.message, type: "validation" };
+      }
+      return { success: false, error: error.message, type: "blockchain" };
+    }
+  }
+
+  async getAllCompanyTasks(companyAddress) {
+    try {
+      // Validate inputs
+      const validatedAddress = validateAddress(
+        companyAddress,
+        "companyAddress"
+      );
+
+      // Get task IDs first
+      const taskIds = await retryCall(() =>
+        verificationContract.getCompanyTasks(validatedAddress)
+      );
+
+      // Get details for each task
+      const tasks = [];
+      for (let i = 0; i < taskIds.length; i++) {
+        try {
+          const task = await retryCall(() =>
+            verificationContract.getTask(taskIds[i])
+          );
+          tasks.push(task);
+        } catch (taskError) {
+          console.warn(`Failed to get task ${taskIds[i]}:`, taskError.message);
+          // Continue with other tasks
+        }
+      }
+
+      return {
+        success: true,
+        tasks,
+        totalTasks: taskIds.length,
+        companyAddress: validatedAddress,
+      };
     } catch (error) {
       if (error instanceof ValidationError) {
         return { success: false, error: error.message, type: "validation" };

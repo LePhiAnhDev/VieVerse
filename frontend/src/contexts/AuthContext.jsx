@@ -159,6 +159,23 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const connectWallet = async (walletAddress) => {
+    try {
+      await axios.put("/auth/connect-wallet", {
+        wallet_address: walletAddress,
+      });
+      await updateProfile({}); // Refresh user info
+      toast.success("Đã liên kết ví thành công!", {
+        id: "wallet-link-success",
+      });
+      return { success: true };
+    } catch (error) {
+      const message = error.response?.data?.error || "Lỗi liên kết ví";
+      toast.error(message, { id: "wallet-link-error" });
+      return { success: false, error: message };
+    }
+  };
+
   const value = {
     user,
     loading,
@@ -167,6 +184,7 @@ export const AuthProvider = ({ children }) => {
     logout,
     updateProfile,
     changePassword,
+    connectWallet,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

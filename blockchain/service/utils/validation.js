@@ -64,10 +64,19 @@ const validateDeadline = (deadline) => {
   if (!deadline) {
     throw new ValidationError("Deadline is required");
   }
-  const deadlineTime = new Date(deadline).getTime();
-  const now = Date.now();
-  const minDeadline = now + 60 * 60 * 1000; // 1 hour from now
-  const maxDeadline = now + 30 * 24 * 60 * 60 * 1000; // 30 days from now
+
+  // Convert to seconds if it's in milliseconds
+  let deadlineTime;
+  if (deadline > 1000000000000) {
+    // If timestamp is in milliseconds
+    deadlineTime = Math.floor(deadline / 1000);
+  } else {
+    deadlineTime = deadline; // Already in seconds
+  }
+
+  const now = Math.floor(Date.now() / 1000); // Current time in seconds
+  const minDeadline = now + 60 * 60; // 1 hour from now
+  const maxDeadline = now + 30 * 24 * 60 * 60; // 30 days from now
 
   if (deadlineTime < minDeadline) {
     throw new ValidationError("Deadline must be at least 1 hour from now");

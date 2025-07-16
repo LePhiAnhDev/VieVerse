@@ -89,19 +89,6 @@ const Header = () => {
 
                     {/* Right side */}
                     <div className="flex items-center space-x-3">
-                        {/* Create Task Button (For companies) */}
-                        {user?.role === 'company' && (
-                            <Link to="/tasks/create" className="hidden sm:block">
-                                <Button
-                                    variant="gradient"
-                                    size="default"
-                                    className="mr-2 h-11"
-                                >
-                                    Tạo nhiệm vụ
-                                </Button>
-                            </Link>
-                        )}
-
                         {/* Search button for mobile */}
                         <Button
                             variant="ghost"

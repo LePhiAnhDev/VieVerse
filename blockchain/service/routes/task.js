@@ -14,6 +14,8 @@ router.post("/verify", taskController.verifyTask);
 router.get("/:taskId", taskController.getTask);
 // GET /api/task/company/:address (for tests compatibility)
 router.get("/company/:address", taskController.getCompanyTasks);
+// GET /api/task/company/:address/all (get all company tasks with details)
+router.get("/company/:address/all", taskController.getAllCompanyTasks);
 // GET /api/task/student/:address (for tests compatibility)
 router.get("/student/:address", taskController.getStudentTasks);
 

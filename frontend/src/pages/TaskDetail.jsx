@@ -52,7 +52,8 @@ import toast from "react-hot-toast";
 
 const TaskDetail = () => {
   const { id } = useParams();
-  const { user, updateProfile } = useAuth();
+  const navigate = useNavigate();
+  const { user, connectWallet: authConnectWallet } = useAuth();
   const { connectWallet, isConnected, account, chainId } = useWeb3();
   const [walletLoading, setWalletLoading] = useState(false);
   const [showWalletModal, setShowWalletModal] = useState(false);
@@ -116,14 +117,12 @@ const TaskDetail = () => {
     if (account && chainId === 11155111) {
       setWalletLoading(true);
       try {
-        await axios.put("/auth/connect-wallet", { wallet_address: account });
-        await updateProfile({}); // Refresh user info
-        setShowWalletModal(false);
-        toast.success("Đã liên kết ví thành công!", {
-          id: "wallet-link-success",
-        });
+        const result = await authConnectWallet(account);
+        if (result.success) {
+          setShowWalletModal(false);
+        }
       } catch (err) {
-        toast.error("Lỗi liên kết ví", { id: "wallet-link-error" });
+        console.error("Error connecting wallet:", err);
       } finally {
         setWalletLoading(false);
       }

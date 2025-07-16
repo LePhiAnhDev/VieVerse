@@ -224,6 +224,16 @@ class BlockchainClient {
   }
 
   /**
+   * Get all company tasks with details
+   */
+  async getAllCompanyTasks(companyAddress) {
+    return this.makeRequest(
+      "GET",
+      `${config.endpoints.getCompanyTasks}/${companyAddress}/all`
+    );
+  }
+
+  /**
    * Get student tasks
    */
   async getStudentTasks(studentAddress) {

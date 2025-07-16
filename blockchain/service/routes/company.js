@@ -6,5 +6,7 @@ const companyController = require("../controllers/companyController");
 router.get("/:address", companyController.getCompany);
 // POST /api/company/register
 router.post("/register", companyController.registerCompany);
+// POST /api/company/verify
+router.post("/verify", companyController.verifyCompany);
 
 module.exports = router;

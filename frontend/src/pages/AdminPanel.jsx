@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import {
   Card,
@@ -25,9 +25,13 @@ const AdminPanel = () => {
   const [registrations, setRegistrations] = useState([]);
   const [loading, setLoading] = useState(true);
   const [processing, setProcessing] = useState({});
+  
+  // Use refs to track if data has been fetched
+  const dataFetched = useRef(false);
 
   useEffect(() => {
-    if (user?.role === "admin") {
+    if (user?.role === "admin" && !dataFetched.current) {
+      dataFetched.current = true;
       fetchPendingRegistrations();
     }
   }, [user]);
@@ -47,6 +51,9 @@ const AdminPanel = () => {
   };
 
   const handleVerify = async (registrationId, action, rejectionReason = "") => {
+    // Prevent duplicate calls
+    if (processing[registrationId]) return;
+    
     setProcessing((prev) => ({ ...prev, [registrationId]: true }));
 
     try {
@@ -60,17 +67,19 @@ const AdminPanel = () => {
       );
 
       if (response.data.success) {
-        toast.success(response.data.message, { id: "admin-verify-success" });
+        toast.success(response.data.message, { 
+          id: `admin-verify-success-${registrationId}` 
+        });
         fetchPendingRegistrations(); // Refresh list
       } else {
         toast.error(response.data.error || "Có lỗi xảy ra", {
-          id: "admin-verify-response-error",
+          id: `admin-verify-response-error-${registrationId}`,
         });
       }
     } catch (error) {
       console.error("Error verifying registration:", error);
       toast.error(error.response?.data?.error || "Có lỗi xảy ra khi duyệt", {
-        id: "admin-verify-catch-error",
+        id: `admin-verify-catch-error-${registrationId}`,
       });
     } finally {
       setProcessing((prev) => ({ ...prev, [registrationId]: false }));

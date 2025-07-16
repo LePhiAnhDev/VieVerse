@@ -145,7 +145,6 @@ const Register = () => {
 
       const result = await register(registrationData);
       if (result.success) {
-        toast.success("Đăng ký thành công!", { id: "register-page-success" });
         setTimeout(() => {
           navigate("/dashboard");
         }, 1500);

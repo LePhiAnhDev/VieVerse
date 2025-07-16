@@ -160,9 +160,6 @@ const Profile = () => {
       const result = await updateProfile(updateData);
       if (result.success) {
         setIsEditing(false);
-        toast.success("Cập nhật hồ sơ thành công!", {
-          id: "profile-update-page-success",
-        });
       }
     } catch (error) {
       console.error("Profile update error:", error);
@@ -185,9 +182,6 @@ const Profile = () => {
           current_password: "",
           new_password: "",
           confirm_password: "",
-        });
-        toast.success("Đổi mật khẩu thành công!", {
-          id: "password-change-page-success",
         });
       }
     } catch (error) {
