@@ -1,3 +1,4 @@
+const { ethers } = require("ethers");
 const { verificationContract } = require("./contractService");
 const {
   retryTransaction,
@@ -45,11 +46,34 @@ class TaskService {
         ]
       );
 
-      // Get the task ID from the transaction receipt
-      // The createTask function returns the new task ID
-      const taskId = result.receipt.logs[0]?.topics[1]
-        ? parseInt(result.receipt.logs[0].topics[1], 16)
-        : null;
+      // Get the task ID from the TaskCreated event
+      // Event TaskCreated(uint256 indexed taskId, address indexed company, string title, uint256 reward)
+      let taskId = null;
+      
+      if (result.receipt && result.receipt.logs) {
+        for (const log of result.receipt.logs) {
+          // TaskCreated event signature - using ethers v6 syntax
+          const taskCreatedTopic = ethers.id("TaskCreated(uint256,address,string,uint256)");
+          
+          if (log.topics[0] === taskCreatedTopic) {
+            // taskId is the first indexed parameter (topics[1])
+            taskId = parseInt(log.topics[1], 16);
+            console.log('✅ TaskCreated event found, taskId:', taskId);
+            break;
+          }
+        }
+      }
+      
+      if (!taskId) {
+        console.warn('⚠️ Could not extract taskId from transaction logs');
+        console.log('📋 Available logs:', result.receipt.logs);
+        // Fallback: try to get from any log
+        if (result.receipt.logs && result.receipt.logs.length > 0) {
+          taskId = result.receipt.logs[0]?.topics[1]
+            ? parseInt(result.receipt.logs[0].topics[1], 16)
+            : null;
+        }
+      }
 
       return {
         success: true,

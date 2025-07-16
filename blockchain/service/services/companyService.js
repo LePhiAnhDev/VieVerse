@@ -27,19 +27,31 @@ class CompanyService {
                 verificationContract.getCompany(validatedAddress)
             );
 
+            // Check if company data is empty (not registered)
+            if (!company || !company.name || company.name.length === 0) {
+                return {
+                    success: false,
+                    error: "Company not registered on blockchain",
+                    type: "not_found",
+                };
+            }
+
             return {
                 success: true,
                 company,
                 address: validatedAddress,
             };
         } catch (error) {
+            console.error("❌ Error in getCompany:", error);
             if (error instanceof ValidationError) {
                 return { success: false, error: error.message, type: "validation" };
             }
-            if (error.message.includes("Company not registered")) {
+            if (error.message.includes("Company not registered") || 
+                error.message.includes("could not decode result data") ||
+                error.code === "BAD_DATA") {
                 return {
                     success: false,
-                    error: "Company not found",
+                    error: "Company not registered on blockchain",
                     type: "not_found",
                 };
             }

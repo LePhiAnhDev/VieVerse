@@ -493,6 +493,23 @@ export const reviewApplication = async (req, res) => {
 
     // If accepted, update task status and selected student
     if (status === "accepted") {
+      // Gọi blockchain acceptTask nếu có blockchain_task_id
+      if (task.blockchain_task_id) {
+        try {
+          const blockchainResult = await blockchainClient.acceptTask(task.blockchain_task_id);
+          
+          if (!blockchainResult.success) {
+            console.warn("⚠️ Blockchain acceptTask failed:", blockchainResult.error);
+            // Vẫn tiếp tục update database nhưng log warning
+          } else {
+            console.log("✅ Task accepted on blockchain successfully:", task.blockchain_task_id);
+          }
+        } catch (blockchainError) {
+          console.error("❌ Blockchain acceptTask error:", blockchainError.message);
+          // Vẫn tiếp tục update database nhưng log error
+        }
+      }
+
       await task.update({
         status: "in_progress",
         selected_student_id: application.student_id,
@@ -539,6 +556,13 @@ export const submitWork = async (req, res) => {
         student_id: req.user.id,
         status: "accepted",
       },
+      include: [
+        {
+          model: Task,
+          as: "task",
+          attributes: ["blockchain_task_id"],
+        },
+      ],
     });
 
     if (!application) {
@@ -551,6 +575,30 @@ export const submitWork = async (req, res) => {
       return res.status(400).json({
         error: "Work is not in progress",
       });
+    }
+
+    // Gọi blockchain submitTask nếu có blockchain_task_id
+    const task = application.task;
+    if (task && task.blockchain_task_id) {
+      try {
+        // Tạo submission hash (có thể là IPFS hash hoặc hash của submission data)
+        const submissionHash = `submission_${id}_${Date.now()}`;
+        
+        const blockchainResult = await blockchainClient.submitTask(
+          task.blockchain_task_id,
+          submissionHash
+        );
+        
+        if (!blockchainResult.success) {
+          console.warn("⚠️ Blockchain submitTask failed:", blockchainResult.error);
+          // Vẫn tiếp tục update database nhưng log warning
+        } else {
+          console.log("✅ Task submitted on blockchain successfully:", task.blockchain_task_id);
+        }
+      } catch (blockchainError) {
+        console.error("❌ Blockchain submitTask error:", blockchainError.message);
+        // Vẫn tiếp tục update database nhưng log error
+      }
     }
 
     await application.update({
@@ -610,6 +658,34 @@ export const confirmCompletion = async (req, res) => {
       return res.status(404).json({
         error: "No submitted work found for this task",
       });
+    }
+
+    // Gọi blockchain verifyTask nếu có blockchain_task_id
+    if (task.blockchain_task_id) {
+      try {
+        // Convert rating (1-5) to scores (0-100)
+        const qualityScore = Math.round((rating / 5) * 100);
+        const deadlineScore = 100; // Assume on time for now
+        const attitudeScore = Math.round((rating / 5) * 100);
+        
+        const blockchainResult = await blockchainClient.verifyTask(
+          task.blockchain_task_id,
+          qualityScore,
+          deadlineScore,
+          attitudeScore,
+          feedback
+        );
+        
+        if (!blockchainResult.success) {
+          console.warn("⚠️ Blockchain verifyTask failed:", blockchainResult.error);
+          // Vẫn tiếp tục update database nhưng log warning
+        } else {
+          console.log("✅ Task verified on blockchain successfully:", task.blockchain_task_id);
+        }
+      } catch (blockchainError) {
+        console.error("❌ Blockchain verifyTask error:", blockchainError.message);
+        // Vẫn tiếp tục update database nhưng log error
+      }
     }
 
     // Update application and task status
