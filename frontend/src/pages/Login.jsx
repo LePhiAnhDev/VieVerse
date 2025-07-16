@@ -72,26 +72,38 @@ const Login = () => {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center modern-gradient p-4">
+        <div className="min-h-screen flex items-center justify-center modern-gradient p-4 relative overflow-hidden">
             {/* Background decoration */}
             <div className="absolute inset-0 grid-pattern opacity-20" />
 
-            {/* Floating elements */}
+            {/* Enhanced floating elements with more variety */}
             <div className="absolute top-20 left-20 w-32 h-32 bg-blue-500/10 rounded-full blur-3xl animate-float"></div>
             <div className="absolute bottom-20 right-20 w-40 h-40 bg-indigo-500/10 rounded-full blur-3xl animate-float" style={{ animationDelay: '2s' }}></div>
             <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-60 h-60 bg-blue-400/5 rounded-full blur-3xl animate-pulse-glow"></div>
 
+            {/* Additional floating elements for more dynamic effect */}
+            <div className="absolute top-1/4 right-1/4 w-24 h-24 bg-purple-400/8 rounded-full blur-2xl animate-float" style={{ animationDelay: '1s' }}></div>
+            <div className="absolute bottom-1/4 left-1/4 w-28 h-28 bg-cyan-400/8 rounded-full blur-2xl animate-float" style={{ animationDelay: '3s' }}></div>
+            <div className="absolute top-3/4 left-1/3 w-20 h-20 bg-pink-400/6 rounded-full blur-2xl animate-float" style={{ animationDelay: '4s' }}></div>
+
+            {/* Moving particles */}
+            <div className="absolute top-10 left-1/2 w-2 h-2 bg-blue-400/30 rounded-full animate-particles"></div>
+            <div className="absolute top-20 right-1/3 w-1.5 h-1.5 bg-indigo-400/40 rounded-full animate-particles" style={{ animationDelay: '1s' }}></div>
+            <div className="absolute bottom-10 left-1/3 w-1 h-1 bg-purple-400/50 rounded-full animate-particles" style={{ animationDelay: '2s' }}></div>
+            <div className="absolute bottom-20 right-1/2 w-1.5 h-1.5 bg-cyan-400/35 rounded-full animate-particles" style={{ animationDelay: '3s' }}></div>
+
+            {/* Gradient orbs */}
+            <div className="absolute top-1/3 right-10 w-16 h-16 bg-gradient-to-r from-blue-400/20 to-purple-400/20 rounded-full blur-xl animate-orb-float"></div>
+            <div className="absolute bottom-1/3 left-10 w-20 h-20 bg-gradient-to-r from-indigo-400/15 to-cyan-400/15 rounded-full blur-xl animate-orb-float" style={{ animationDelay: '2.5s' }}></div>
+
             <div className="w-full max-w-md relative z-10">
                 {/* Logo */}
                 <div className="text-center mb-8 animate-fade-in">
-                    <div className="relative inline-block">
-                        <img
-                            src="/logo.svg"
-                            alt="VieVerse"
-                            className="h-16 w-16 mx-auto mb-1"
-                        />
-                        <div className="absolute inset-0 bg-blue-500/20 rounded-full blur-sm"></div>
-                    </div>
+                    <img
+                        src="/logo.svg"
+                        alt="VieVerse"
+                        className="h-16 w-16 mx-auto mb-1"
+                    />
                     <h1 className="text-3xl font-bold text-gradient">VieVerse</h1>
                     <p className="text-gray-600 mt-2">Kết nối sinh viên và doanh nghiệp</p>
                 </div>
