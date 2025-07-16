@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { NavLink, useLocation, Link } from 'react-router-dom';
-import { Search, Bell, Menu, LogOut, User, Settings, Briefcase, Home, Coins, X, Plus, Shield } from 'lucide-react';
+import { Search, Bell, Menu, LogOut, User, Settings, Briefcase, Home, Coins, X, Plus, Shield, BookOpen, Users } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import Button from '../ui/Button';
 import Input from '../ui/Input';
@@ -30,6 +30,18 @@ const Header = () => {
             href: '/profile',
             icon: User,
             show: true
+        },
+        {
+            name: 'Hồ sơ kỹ năng',
+            href: '/skill-profile',
+            icon: BookOpen,
+            show: user?.role === 'student'
+        },
+        {
+            name: 'Tìm kiếm tài năng',
+            href: '/skill-profile-search',
+            icon: Users,
+            show: user?.role === 'company'
         },
         {
             name: 'Admin Panel',

@@ -15,6 +15,9 @@ import Dashboard from './pages/Dashboard';
 import Tasks from './pages/Tasks';
 import TaskDetail from './pages/TaskDetail';
 import Profile from './pages/Profile';
+import SkillProfile from './pages/SkillProfile';
+import SkillProfileSearch from './pages/SkillProfileSearch';
+import SkillProfileDetail from './pages/SkillProfileDetail';
 import AdminPanel from './pages/AdminPanel';
 
 // Create a client
@@ -132,6 +135,9 @@ function App() {
                                     <Route path="tasks" element={<Tasks />} />
                                     <Route path="tasks/:id" element={<TaskDetail />} />
                                     <Route path="profile" element={<Profile />} />
+                                    <Route path="skill-profile" element={<SkillProfile />} />
+                                    <Route path="skill-profile-search" element={<SkillProfileSearch />} />
+                                    <Route path="skill-profile/:userId" element={<SkillProfileDetail />} />
                                     <Route
                                         path="admin"
                                         element={

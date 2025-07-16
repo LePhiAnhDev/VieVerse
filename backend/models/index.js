@@ -3,6 +3,7 @@ import User from './User.js';
 import Task from './Task.js';
 import Application from './Application.js';
 import BlockchainRegistration from './BlockchainRegistration.js';
+import SkillProfile from './SkillProfile.js';
 
 User.hasMany(Task, {
     foreignKey: 'company_id',
@@ -78,4 +79,17 @@ BlockchainRegistration.belongsTo(User, {
     onDelete: 'SET NULL'
 });
 
-export { User, Task, Application, BlockchainRegistration }; 
+// Skill Profile associations
+User.hasOne(SkillProfile, {
+    foreignKey: 'user_id',
+    as: 'skillProfile',
+    onDelete: 'CASCADE'
+});
+
+SkillProfile.belongsTo(User, {
+    foreignKey: 'user_id',
+    as: 'user',
+    onDelete: 'CASCADE'
+});
+
+export { User, Task, Application, BlockchainRegistration, SkillProfile }; 

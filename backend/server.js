@@ -10,6 +10,7 @@ import taskRoutes from "./routes/tasks.js";
 import userRoutes from "./routes/users.js";
 import blockchainRoutes from "./routes/blockchain.js";
 import blockchainRegistrationRoutes from "./routes/blockchainRegistration.js";
+import skillProfileRoutes from "./routes/skillProfile.js";
 
 // Import database
 import { sequelize } from "./config/database.js";
@@ -22,9 +23,9 @@ const PORT = process.env.PORT || 5000;
 
 // Rate limiting - tăng giới hạn cho development
 const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: process.env.NODE_ENV === "development" ? 1000 : 100, // Tăng limit cho dev
-  message: "Too many requests from this IP, please try again later.",
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: process.env.NODE_ENV === "development" ? 1000 : 100, // Tăng limit cho dev
+    message: "Too many requests from this IP, please try again later.",
 });
 
 // Middleware
@@ -48,51 +49,52 @@ app.use("/api/tasks", taskRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/blockchain", blockchainRoutes);
 app.use("/api/blockchain-registration", blockchainRegistrationRoutes);
+app.use("/api/skill-profiles", skillProfileRoutes);
 
 // Health check endpoint
 app.get("/api/health", (req, res) => {
-  res.status(200).json({
-    status: "OK",
-    message: "VieVerse Backend is running",
-    timestamp: new Date().toISOString(),
-  });
+    res.status(200).json({
+        status: "OK",
+        message: "VieVerse Backend is running",
+        timestamp: new Date().toISOString(),
+    });
 });
 
 // Error handling middleware
 app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).json({
-    error: "Something went wrong!",
-    message:
-      process.env.NODE_ENV === "development"
-        ? err.message
-        : "Internal Server Error",
-  });
+    console.error(err.stack);
+    res.status(500).json({
+        error: "Something went wrong!",
+        message:
+            process.env.NODE_ENV === "development"
+                ? err.message
+                : "Internal Server Error",
+    });
 });
 
 // 404 handler
 app.use("*", (req, res) => {
-  res.status(404).json({ error: "Route not found" });
+    res.status(404).json({ error: "Route not found" });
 });
 
 // Database connection and server startup
 const startServer = async () => {
-  try {
-    await sequelize.authenticate();
-    console.log("✅ Database connected successfully");
+    try {
+        await sequelize.authenticate();
+        console.log("✅ Database connected successfully");
 
-    // Sync database models
-    await sequelize.sync({ alter: true });
-    console.log("✅ Database models synchronized");
+        // Sync database models
+        await sequelize.sync({ alter: true });
+        console.log("✅ Database models synchronized");
 
-    app.listen(PORT, () => {
-      console.log(`🚀 Server running on port ${PORT}`);
-      console.log(`🌍 Environment: ${process.env.NODE_ENV}`);
-    });
-  } catch (error) {
-    console.error("Unable to start server:", error);
-    process.exit(1);
-  }
+        app.listen(PORT, () => {
+            console.log(`🚀 Server running on port ${PORT}`);
+            console.log(`🌍 Environment: ${process.env.NODE_ENV}`);
+        });
+    } catch (error) {
+        console.error("Unable to start server:", error);
+        process.exit(1);
+    }
 };
 
 startServer();
