@@ -27,6 +27,8 @@ import Textarea from "../components/ui/Textarea";
 import { isValidEmail, isValidUrl, parseSkills } from "../utils/helpers";
 import { USER_ROLES } from "../utils/constants";
 import toast from "react-hot-toast";
+import EmptyState from '../components/common/EmptyState';
+import LoadingSpinner from '../components/common/LoadingSpinner';
 
 const Register = () => {
     const [formData, setFormData] = useState({
@@ -50,7 +52,7 @@ const Register = () => {
     const [loading, setLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-
+    const [registered, setRegistered] = useState(false);
     const { register } = useAuth();
     const navigate = useNavigate();
 
@@ -145,6 +147,7 @@ const Register = () => {
 
             const result = await register(registrationData);
             if (result.success) {
+                toast.success('Vui lòng kiểm tra Email để xác minh đăng ký.');
                 setTimeout(() => {
                     navigate("/dashboard");
                 }, 1500);
@@ -158,6 +161,25 @@ const Register = () => {
             setLoading(false);
         }
     };
+    if (registered) {
+        return (
+            <div className="min-h-screen flex items-center justify-center modern-gradient p-4">
+                <div className="absolute inset-0 grid-pattern opacity-20" />
+                <div className="w-full max-w-md relative z-10">
+                    <EmptyState
+                        title="Đăng ký thành công!"
+                        description="Vui lòng kiểm tra email của bạn để xác minh tài khoản. Link xác minh đã được gửi đến email bạn cung cấp."
+                        action={
+                            <Button onClick={() => navigate('/login')}>
+                                Quay lại đăng nhập
+                            </Button>
+                        }
+                    />
+                </div>
+            </div>
+        );
+    }
+    //..
 
     return (
         <div className="min-h-screen flex items-center justify-center modern-gradient p-4 relative overflow-hidden">
@@ -211,7 +233,14 @@ const Register = () => {
                         {/* Xoá hoàn toàn UI hiển thị trạng thái ví ở Register.jsx (phần Wallet, AlertCircle, các đoạn liên quan connect wallet) */}
 
                         {/* Network Warning (if connected but wrong network) - already handled above */}
-
+                        {errors.general && (
+                            <EmptyState
+                                title="Lỗi"
+                                description={errors.general}
+                                className="mb-6"
+                            />
+                        )}
+                        
                         <form onSubmit={handleSubmit} className="space-y-6">
                             {/* Role selection */}
                             <div className="space-y-2">

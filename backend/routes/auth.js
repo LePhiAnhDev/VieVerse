@@ -5,6 +5,9 @@ import {
     register,
     login,
     getProfile,
+    verifyloginOTP,
+    resendOTP,
+    verifyEmailLink,
     updateProfile,
     changePassword,
     connectWallet
@@ -132,7 +135,10 @@ const changePasswordValidation = [
 
 // Routes
 router.post('/register', registerValidation, register);
+router.get('/verify-email', verifyEmailLink);
 router.post('/login', loginValidation, login);
+router.post('/verify-login-OTP', verifyloginOTP);
+router.post('/resend-otp', resendOTP);
 router.get('/profile', authenticate, getProfile);
 router.put('/profile', authenticate, updateProfileValidation, updateProfile);
 router.put('/change-password', authenticate, changePasswordValidation, changePassword);

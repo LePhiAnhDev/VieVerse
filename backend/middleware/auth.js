@@ -81,3 +81,22 @@ export const optionalAuth = async (req, res, next) => {
         next();
     }
 }; 
+//Require Email
+export const requireEmailVerification = async (req, res, next) => {
+    try {
+        if (!req.user) {
+            return res.status(401).json({ error: 'Authentication required.' });
+        }
+        if (!req.user.email_verified) {
+            return res.status(403).json({
+                error: 'Tài khoản chưa xác minh email. Vui lòng kiểm tra email để nhận link xác minh.',
+                needEmailVerification: true,
+                email: req.user.email
+            });
+        }
+        next();
+    } catch (error) {
+        console.error('Email verification error:', error);
+        res.status(500).json({ error: 'Lỗi server' });
+    }
+};

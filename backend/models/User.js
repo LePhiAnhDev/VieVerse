@@ -3,6 +3,32 @@ import { sequelize } from '../config/database.js';
 import bcrypt from 'bcryptjs';
 
 const User = sequelize.define('User', {
+    //Mail OTP
+    otp_hash: {
+        type: DataTypes.STRING,
+        allowNull: true
+    },
+    otp_expires: {
+        type: DataTypes.DATE,
+        allowNull: true
+    },
+    email_verified: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false
+    },
+    verification_token: {
+        type: DataTypes.STRING,
+        allowNull: true
+    },
+    createdAt: {
+        type: DataTypes.DATE,
+        allowNull: false
+    },
+    updatedAt: {
+        type: DataTypes.DATE,
+        allowNull: false
+    },
+    //..
     id: {
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,

@@ -14,6 +14,7 @@ import {
   Clock,
   Settings,
 } from "lucide-react";
+import axios from 'axios';
 import { mainAPI } from "../services/blockchainService";
 import {
   Card,
@@ -47,7 +48,8 @@ const Dashboard = () => {
 
   const fetchDashboardData = async () => {
     try {
-      const response = await mainAPI.get("/users/dashboard");
+      const response = await axios.get('/users/dashboard');
+      // const response = await mainAPI.get("/users/dashboard");
       setDashboardData(response.data);
     } catch (error) {
       console.error("Error fetching dashboard data:", error);

@@ -11,6 +11,7 @@ import LoadingSpinner from './components/common/LoadingSpinner';
 // Pages
 import Login from './pages/Login';
 import Register from './pages/Register';
+import VerifyEmail from './pages/VerifyEmail';
 import Dashboard from './pages/Dashboard';
 import Tasks from './pages/Tasks';
 import TaskDetail from './pages/TaskDetail';
@@ -120,7 +121,14 @@ function App() {
                                         </PublicRoute>
                                     }
                                 />
-
+                                <Route
+                                    path="/verify-email"
+                                    element={
+                                        <PublicRoute>
+                                            <VerifyEmail />
+                                        </PublicRoute>
+                                    }
+                                />
                                 {/* Protected routes */}
                                 <Route
                                     path="/"

@@ -6,15 +6,21 @@ import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/Card'
 import Button from '../components/ui/Button';
 import Input from '../components/ui/Input';
 import { isValidEmail } from '../utils/helpers';
+import LoadingSpinner from '../components/common/LoadingSpinner';
+import EmptyState from '../components/common/EmptyState';
+import axios from 'axios';
 
 const Login = () => {
     const [formData, setFormData] = useState({
         email: '',
-        password: ''
+        password: '',
+        otp: ''
     });
     const [errors, setErrors] = useState({});
     const [loading, setLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
+    const [showOtpInput, setShowOtpInput] = useState(false);
+    const [otpMessage, setOtpMessage] = useState('');
 
     const { login } = useAuth();
     const navigate = useNavigate();
@@ -37,40 +43,98 @@ const Login = () => {
     const validateForm = () => {
         const newErrors = {};
 
-        if (!formData.email) {
+         if (!showOtpInput){
+            if (!formData.email) {
             newErrors.email = 'Email là bắt buộc';
-        } else if (!isValidEmail(formData.email)) {
+        } 
+        else if (!isValidEmail(formData.email)) {
             newErrors.email = 'Email không hợp lệ';
         }
-
         if (!formData.password) {
             newErrors.password = 'Mật khẩu là bắt buộc';
         } else if (formData.password.length < 6) {
             newErrors.password = 'Mật khẩu phải có ít nhất 6 ký tự';
         }
+        }
+        else {
+            if (!formData.otp) {
+                newErrors.otp = 'Mã OTP là bắt buộc';
+            }
+            else if (formData.otp.length !== 6) {
+                newErrors.otp = 'Mã OTP phải có 6 chữ số';
+            }
+        }
 
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
     };
-
+    //.//
+    const { user, setUser } = useAuth();
+    console.log('useAuth result:', { user, setUser }, 'from file:', import.meta.url);
+    //.//
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         if (!validateForm()) return;
 
+        setLoading(true);   
+        try {
+            if (!showOtpInput) {
+            const result = await axios.post(`${import.meta.env.VITE_API_URL}/api/auth/login`, {
+                email: formData.email,
+                password: formData.password
+            });
+            console.log('Login result:', result.data);
+            if (result.data.error && result.data.needEmailVerification) {
+                setShowOtpInput(true);
+                setOtpMessage('Vui lòng nhập mã OTP được gửi đến email của bạn.');
+            } else if (result.data.success) {
+                setShowOtpInput(true); // Chờ OTP cho email đã xác minh
+                setOtpMessage(result.data.message);
+            }
+        } else {
+            const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/auth/verify-login-otp`, {
+                email: formData.email,
+                otp: formData.otp
+            });
+            if (response.data.success) {
+                localStorage.setItem('token', response.data.token);
+                localStorage.setItem('user', JSON.stringify(response.data.user));
+                if (setUser && typeof setUser === 'function') {
+                    setUser(response.data.user);
+                    console.log('setUser called, user state:', user);
+                }
+                setTimeout(() => navigate('/dashboard'), window.location.reload(), 100);
+            } else {
+                setErrors({ otp: response.data.error || 'Mã OTP không hợp lệ' });
+            }
+        }
+    } catch (error) {
+        console.error('Login error:', error.response?.data || error);
+        setErrors({ general: error.response?.data?.error || 'Đăng nhập thất bại' });
+    } finally {
+        setLoading(false);
+    }
+    };
+    const handleResendOtp = async () => {
         setLoading(true);
         try {
-            const result = await login(formData.email, formData.password);
-            if (result.success) {
-                navigate('/dashboard');
+            // const response = await axios.post('/auth/resend-otp',
+            const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/auth/resend-otp`, {
+                email: formData.email
+            });
+            if (response.data.success) {
+                setOtpMessage('Mã OTP mới đã được gửi đến email của bạn.');
+            } else {
+                setErrors({ general: response.data.error || 'Không thể gửi lại OTP' });
             }
         } catch (error) {
-            console.error('Login error:', error);
+            setErrors({ general: 'Lỗi khi gửi lại OTP' });
         } finally {
             setLoading(false);
         }
     };
-
+    //..
     return (
         <div className="min-h-screen flex items-center justify-center modern-gradient p-4 relative overflow-hidden">
             {/* Background decoration */}
@@ -119,8 +183,24 @@ const Login = () => {
                     </CardHeader>
 
                     <CardContent>
+                        {errors.general && (
+                            <EmptyState
+                                title="Lỗi"
+                                description={errors.general}
+                                className="mb-6"
+                            />
+                        )}
+                        {otpMessage && (
+                            <EmptyState
+                                title="Mã OTP đã được gửi"
+                                description={otpMessage}
+                                className="mb-6"
+                            />
+                        )}
                         <form onSubmit={handleSubmit} className="space-y-6">
                             {/* Email field */}
+                            {!showOtpInput ? (
+                                <>
                             <div className="space-y-2">
                                 <label htmlFor="email" className="text-sm font-medium text-gray-700">
                                     Email <span className="text-red-500">*</span>
@@ -190,6 +270,50 @@ const Login = () => {
                             >
                                 Đăng nhập
                             </Button>
+                            </>
+                            ) : (
+                                <>
+                                <div className="space-y-2">
+                                        <label htmlFor="otp" className="text-sm font-medium text-gray-700">
+                                            Mã OTP <span className="text-red-500">*</span>
+                                        </label>
+                                        <Input
+                                            id="otp"
+                                            name="otp"
+                                            type="text"
+                                            icon={Mail}
+                                            placeholder="Nhập mã OTP 6 chữ số"
+                                            value={formData.otp}
+                                            onChange={handleChange}
+                                            error={errors.otp}
+                                        />
+                                        {errors.otp && (
+                                            <p className="text-sm text-red-600">{errors.otp}</p>
+                                        )}
+                                    </div>
+
+                                    <Button
+                                        type="submit"
+                                        variant="gradient"
+                                        className="w-full h-12"
+                                        loading={loading}
+                                        disabled={loading}
+                                    >
+                                        Xác minh OTP
+                                    </Button>
+
+                                    <div className="text-center">
+                                        <button
+                                            type="button"
+                                            onClick={handleResendOtp}
+                                            className="text-sm text-green-600 hover:text-green-700 font-medium"
+                                            disabled={loading}
+                                        >
+                                            Gửi lại OTP
+                                        </button>
+                                    </div>
+                                </>
+                            )}
                         </form>
 
                         {/* Register link */}

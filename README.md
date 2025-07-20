@@ -120,3 +120,11 @@ docker-compose up -d
 ## 📄 License
 
 MIT License - xem file [LICENSE](LICENSE) để biết thêm chi tiết.
+
+
+## Create file .env for API on Frontend
+VITE_API_URL=http://localhost:5000
+## Install nodemailer for Verify Email Link on Backend
+npm install 
+npm install nodemailer
+
