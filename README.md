@@ -125,11 +125,13 @@ MIT License - xem file [LICENSE](LICENSE) để biết thêm chi tiết.
 ## Create file .env for API on Frontend
 VITE_API_URL=http://localhost:5000
 ## Create file .env on Backend for server OTP
-1. `MAIL_HOST=smtp.gmail.com`
-2. `MAIL_PORT=465`
-3. `MAIL_SECURE=true`
-4. `MAIL_USER=youremail@gmail.com`
-5. `MAIL_PASS=yourpassword`
+```bash
+MAIL_HOST=smtp.gmail.com
+MAIL_PORT=465
+MAIL_SECURE=true
+MAIL_SERVER=youremail@gmail.com
+MAIL_PASS=yourpassword
+```
 ## Install nodemailer for Verify Email Link on Backend
 ```bash
 npm install nodemailer
